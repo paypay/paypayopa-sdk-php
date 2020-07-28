@@ -1,5 +1,5 @@
 {
-    "name": "paypay/paypay-sdk-php",
+    "name": "paypayopa/php-sdk",
     "description": "PHP SDK for PayPay Open Payment API",
     "license": "Apache-2.0",
     "type": "library",
