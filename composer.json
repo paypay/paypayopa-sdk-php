@@ -1,0 +1,66 @@
+{
+    "name": "paypay/paypay-sdk-php",
+    "description": "PHP SDK for PayPay Open Payment API",
+    "license": "Apache-2.0",
+    "type": "library",
+    "keywords": [
+        "japan",
+        "opa",
+        "paypay",
+        "payment",
+        "qr",
+        "qrcode"
+    ],
+    "authors": [
+        {
+            "name": "PayPay Open Source Development Team",
+            "email": "opensource@paypay-corp.co.jp"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PayPay\\OpenPaymentAPI\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PayPay\\OpenPaymentAPI\\Test\\": "test/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.4.8"
+        },
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.0.0",
+        "firebase/php-jwt": "^5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9",
+        "phpstan/phpstan": "^0.12.33",
+        "friendsofphp/php-cs-fixer": "^2.16"
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit --testdox tests",
+        "check-style": "vendor/bin/php-cs-fixer fix --dry-run --rules=@PSR2 --using-cache no src && vendor/bin/php-cs-fixer fix --dry-run --rules=@PSR2 --using-cache no tests && vendor/bin/php-cs-fixer fix --dry-run --rules=@PSR2 --using-cache no examples",
+        "fix-style": "vendor/bin/php-cs-fixer fix --rules=@PSR2 --using-cache no src && vendor/bin/php-cs-fixer fix --rules=@PSR2 --using-cache no tests && vendor/bin/php-cs-fixer fix --rules=@PSR2 --using-cache no tests",
+        "phpstan": "vendor/bin/phpstan analyze -c phpstan.neon",
+        "tests_run": "vendor/bin/phpunit --testdox tests",
+        "qr_test": "vendor/bin/phpunit --testdox --debug tests/QrTest.php",
+        "refund_test": "vendor/bin/phpunit --testdox --debug tests/RefundTest.php",
+        "users_test": "vendor/bin/phpunit --testdox --debug tests/UserTest.php",
+        "auth_test": "vendor/bin/phpunit --testdox --debug tests/UserAuthTest.php",
+        "payloads_test": "vendor/bin/phpunit --testdox --debug tests/PayloadsTest.php",
+        "wallet_test": "vendor/bin/phpunit --testdox --debug tests/WalletTest.php"
+    },
+    "scripts-descriptions": {
+        "test": "Run all tests.",
+        "check-style": "Run style checks (only dry run - no fixing!).",
+        "fix-style": "Run style checks and fix violations.",
+        "phpstan": "Run phpstan static code analysis"
+    }
+}
