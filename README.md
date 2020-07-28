@@ -31,20 +31,10 @@ For the complete step-by-step explanation refer the link [here](https://www.payp
 
 ### Composer
 
-To install the bindings via [Composer](http://getcomposer.org/), add the following to `composer.json` :
+To install the bindings via [Composer](http://getcomposer.org/), run the following command in your shell :
 
-``` json
-{
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
-    }
-  ],
-  "require": {
-    "GIT_USER_ID/GIT_REPO_ID": "*@dev"
-  }
-}
+``` sh
+composer require paypayopa/php-sdk
 ```
 
 ## Getting Started
