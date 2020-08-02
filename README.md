@@ -1,6 +1,8 @@
 # Paypay PHP Client
 
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
+[![codecov](https://codecov.io/gh/paypay/paypayopa-sdk-php/branch/master/graph/badge.svg)](https://codecov.io/gh/paypay/paypayopa-sdk-php)
+
 PHP Class for interacting with the Paypay API
 This is the quickest way to integrate PayPay payment services, primarily meant for merchants who wish to perform interactions with the Paypay API programatically.
 With PayPay's OPA SDK, you can build a custom payment checkout process to suit your unique business needs and branding guidelines.
