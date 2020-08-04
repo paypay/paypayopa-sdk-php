@@ -80,7 +80,7 @@ class OrderItem extends Model
      */
     public function setCategory($category)
     {
-        $this->_memberize('category', 'string');
+        $this->_memberize('category', 'string',255);
         $this->category = $category;
 
         return $this;
@@ -123,7 +123,7 @@ class OrderItem extends Model
      */
     public function setProductId($productId)
     {
-        $this->_memberize('productId', 'string');
+        $this->_memberize('productId', 'string',255);
         $this->productId = $productId;
 
         return $this;

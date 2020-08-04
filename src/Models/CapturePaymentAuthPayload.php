@@ -40,11 +40,11 @@ class CapturePaymentAuthPayload extends Model
 
     public function __construct()
     {
-        $this->_memberize("merchantPaymentId", 'string');
+        $this->_memberize("merchantPaymentId", 'string',64);
         $this->_memberize("amount", 'array');
-        $this->_memberize("merchantCaptureId", 'string');
+        $this->_memberize("merchantCaptureId", 'string',64);
         $this->_memberize("requestedAt", 'integer');
-        $this->_memberize("orderDescription", 'string');
+        $this->_memberize("orderDescription", 'string',255);
     }
 
     /**

@@ -66,15 +66,15 @@ class Client
      * Initialize a Client object with session,
      * optional auth handler, and options      *
      * @param Array $auth API credentials
-     * @param boolean $staging Sandbox environment flag
+     * @param boolean $productionmode Sandbox environment flag
      */
-    public function __construct($auth = null, $staging = false)
+    public function __construct($auth = null, $productionmode = false)
     {
         if (!isset($auth['API_KEY']) || !isset($auth['API_SECRET'])) {
             throw new Exception("Invalid auth credentials", 1);
         }
         $this->auth = $auth;
-        $toStg = $staging ? '-stg' : '';
+        $toStg = !$productionmode ? '-stg' : '';
         require("conf/config${toStg}.php");
         /** @phpstan-ignore-next-line */
         $this->config = $config;

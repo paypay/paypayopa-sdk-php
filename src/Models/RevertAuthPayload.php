@@ -33,8 +33,8 @@ class RevertAuthPayload extends Model
 
     public function __construct()
     {
-        $this->_memberize("merchantRevertId", 'string');
-        $this->_memberize("paymentId", 'string');
+        $this->_memberize("merchantRevertId", 'string',64);
+        $this->_memberize("paymentId", 'string',64);
         $this->_memberize("requestedAt", 'integer');
     }
 
@@ -119,7 +119,7 @@ class RevertAuthPayload extends Model
      */
     public function setReason($reason)
     {
-        $this->_memberize("reason", 'string');
+        $this->_memberize("reason", 'string',255);
         $this->reason = $reason;
 
         return $this;
