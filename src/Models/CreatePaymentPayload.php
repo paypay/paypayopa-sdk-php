@@ -75,8 +75,8 @@ class CreatePaymentPayload extends Model
     protected $productType;
     public function __construct()
     {
-        $this->_memberize('merchantPaymentId', 'string');
-        $this->_memberize('userAuthorizationId', 'string');
+        $this->_memberize('merchantPaymentId', 'string',64);
+        $this->_memberize('userAuthorizationId', 'string',64);
         $this->_memberize('amount', 'array');
         $this->_memberize('requestedAt', 'integer');
     }
@@ -99,7 +99,7 @@ class CreatePaymentPayload extends Model
     public function setProductType($productType)
     {
         if ($productType === "VIRTUAL_BONUS_INVESTMENT" || $productType === "PAY_LATER_REPAYMENT") {
-            $this->_memberize('productType', 'string');
+            $this->_memberize('productType', 'string',24);
             $this->productType = $productType;
 
             return $this;
@@ -174,7 +174,7 @@ class CreatePaymentPayload extends Model
      */
     public function setOrderDescription($orderDescription)
     {
-        $this->_memberize('orderDescription', 'string');
+        $this->_memberize('orderDescription', 'string',255);
         $this->orderDescription = $orderDescription;
 
         return $this;
@@ -196,7 +196,7 @@ class CreatePaymentPayload extends Model
      */
     public function setOrderReceiptNumber($orderReceiptNumber)
     {
-        $this->_memberize('orderReceiptNumber', 'string');
+        $this->_memberize('orderReceiptNumber', 'string',255);
         $this->orderReceiptNumber = $orderReceiptNumber;
 
         return $this;
@@ -218,7 +218,7 @@ class CreatePaymentPayload extends Model
      */
     public function setTerminalId($terminalId)
     {
-        $this->_memberize('terminalId', 'string');
+        $this->_memberize('terminalId', 'string',255);
         $this->terminalId = $terminalId;
 
         return $this;
@@ -240,7 +240,7 @@ class CreatePaymentPayload extends Model
      */
     public function setStoreId($storeId)
     {
-        $this->_memberize('storeId', 'string');
+        $this->_memberize('storeId', 'string',255);
         $this->storeId = $storeId;
 
         return $this;

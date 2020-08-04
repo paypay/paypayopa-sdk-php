@@ -100,7 +100,7 @@ class CreateQrCodePayload extends Model
 
     public function __construct()
     {
-        $this->_memberize('merchantPaymentId', 'string');
+        $this->_memberize('merchantPaymentId', 'string',64);
         $this->_memberize('amount', 'array');
         $this->_memberize('codeType', 'string');
     }
@@ -170,7 +170,7 @@ class CreateQrCodePayload extends Model
      */
     public function setOrderDescription($orderDescription)
     {
-        $this->_memberize('orderDescription', 'string');
+        $this->_memberize('orderDescription', 'string',255);
         $this->orderDescription = $orderDescription;
         return $this;
     }
@@ -221,7 +221,7 @@ class CreateQrCodePayload extends Model
      */
     public function setMetadata($metadata)
     {
-        $this->_memberize('metadata', 'string');
+        $this->_memberize('metadata', 'array');
         $this->metadata = $metadata;
 
         return $this;
@@ -264,7 +264,7 @@ class CreateQrCodePayload extends Model
      */
     public function setStoreInfo($storeInfo)
     {
-        $this->_memberize('storeInfo', 'string');
+        $this->_memberize('storeInfo', 'string',255);
         $this->storeInfo = $storeInfo;
         return $this;
     }
@@ -285,7 +285,7 @@ class CreateQrCodePayload extends Model
      */
     public function setStoreId($storeId)
     {
-        $this->_memberize('storeId', 'string');
+        $this->_memberize('storeId', 'string',255);
         $this->storeId = $storeId;
 
         return $this;
@@ -307,7 +307,7 @@ class CreateQrCodePayload extends Model
      */
     public function setTerminalId($terminalId)
     {
-        $this->_memberize('terminalId', 'string');
+        $this->_memberize('terminalId', 'string',255);
         $this->terminalId = $terminalId;
 
         return $this;
@@ -373,10 +373,13 @@ class CreateQrCodePayload extends Model
      */
     public function setRedirectType($redirectType)
     {
-        $this->_memberize('redirectType', 'string');
-        $this->redirectType = $redirectType;
-
-        return $this;
+        if ($redirectType === "WEB_LINK" || $redirectType === "APP_DEEP_LINK") {
+            $this->_memberize('redirectType', 'string');
+            $this->redirectType = $redirectType;
+            return $this;
+        }else {
+            throw new Exception("Invalid redirection type", 500);
+        }
     }
 
     /**

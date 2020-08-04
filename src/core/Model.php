@@ -15,12 +15,12 @@ class Model
      *
      * @param string $name
      * @param string $type
-     * @param boolean $required
+     * @param integer $strlen
      * @return void
      */
-    protected function _memberize($name, $type, $required = false)
+    protected function _memberize($name, $type, $strlen = 0)
     {
-        $this->descriptor[$name] = ['type' => $type, 'required' => $required];
+        $this->descriptor[$name] = ['type' => $type, 'strlen' => $strlen];
     }
     /**
      * Enforce validations in descriptor
@@ -36,6 +36,12 @@ class Model
             $member = $iterable[$memberName];
             if (!isset($iterable[$memberName]) || (gettype($member) !== $memberInfo['type'])) {
                 $faults[] = $memberName;
+            }
+            if ($memberInfo['type'] == 'string') {
+                if (strlen($member) < 1)
+                    throw new Exception("${memberName} cannot be empty", 1);
+                if (isset($memberInfo['strlen']) && $memberInfo['strlen'] != 0 && strlen($member) > $memberInfo['strlen'])
+                    throw new Exception("${memberName} exceeds maximum size of  characters", 1);
             }
         }
         if (count($faults) > 0) {
