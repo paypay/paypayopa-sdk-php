@@ -2,6 +2,7 @@
 namespace PayPay\OpenPaymentAPI\Controller;
 
 use PayPay\OpenPaymentAPI\Client;
+use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
 
 class User extends Controller
 {
@@ -58,6 +59,29 @@ class User extends Controller
     }
 
     /**
+     * Create a ACCOUNT LINK QR and display it to the user
+     *
+     * @param AccountLinkPayload $payload
+     * @return void
+     */
+    public function createAccountLinkQrCode($payload)
+    {
+        $url = $this->api_url . $this->main()->GetEndpoint('SESSIONS');
+        $endpoint = 'v2' . $this->main()->GetEndpoint('SESSIONS');
+        $data = $payload->serialize();
+        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $mid = $this->main()->GetMid();
+        if ($mid) {
+            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
+        }
+                
+        $options['CURLOPT_TIMEOUT'] = 10;
+        if ($data) {
+            /** @phpstan-ignore-next-line */
+            return json_decode(HttpPost($url, $data, $options), true);
+        }
+    }
+    /**
      * Get the authorization status of a user
      *
      * @param string $userAuthorizationId
@@ -69,7 +93,6 @@ class User extends Controller
             $userAuthorizationId = $this->userAuthorizationId;
         }
         $url = $this->api_url . $this->main()->GetEndpoint('USER_AUTH');
-        var_dump($url);
         $endpoint = '/v2' . $this->main()->GetEndpoint('USER_AUTH');
         $options = $this->HmacCallOpts('GET', $endpoint);
         $mid = $this->main()->GetMid();
