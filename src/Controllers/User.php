@@ -3,7 +3,7 @@ namespace PayPay\OpenPaymentAPI\Controller;
 
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
-
+use \Firebase\JWT\JWT;
 class User extends Controller
 {
     /**
@@ -67,7 +67,8 @@ class User extends Controller
     public function createAccountLinkQrCode($payload)
     {
         $url = $this->api_url . $this->main()->GetEndpoint('SESSIONS');
-        $endpoint = 'v2' . $this->main()->GetEndpoint('SESSIONS');
+        $url = str_replace('v2','v1',$url);
+        $endpoint = 'v1' . $this->main()->GetEndpoint('SESSIONS');
         $data = $payload->serialize();
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $mid = $this->main()->GetMid();
@@ -80,6 +81,18 @@ class User extends Controller
             /** @phpstan-ignore-next-line */
             return json_decode(HttpPost($url, $data, $options), true);
         }
+    }
+    /**
+     * Decode User Authorization data from token after user is redirected back
+     *
+     * @param string $encodedString
+     * @return array
+     */
+    public function decodeUserAuth($encodedString)
+    {
+        $key = base64_encode($this->auth['API_SECRET']);
+        $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
+        return $decoded;
     }
     /**
      * Get the authorization status of a user

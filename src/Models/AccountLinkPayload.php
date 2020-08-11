@@ -212,13 +212,11 @@ class AccountLinkPayload extends Model
      */
     public function setPhoneNumber($phoneNumber)
     {
-        $this->_memberize("userAgent", "string", 255);
         $this->_memberize("phoneNumber", "string");
         $this->phoneNumber = $phoneNumber;
-
         return $this;
     }
-
+    
     /**
      * Get the value of deviceId
      * @return string
@@ -227,7 +225,7 @@ class AccountLinkPayload extends Model
     {
         return $this->deviceId;
     }
-
+    
     /**
      * Set the value of deviceId
      * @param string $deviceId
@@ -257,6 +255,7 @@ class AccountLinkPayload extends Model
      */
     public function setUserAgent($userAgent)
     {
+        $this->_memberize("userAgent", "string", 255);
         $this->userAgent = $userAgent;
 
         return $this;

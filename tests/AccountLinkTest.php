@@ -19,7 +19,7 @@ class AccountLinkTest extends TestBoilerplate
             ->setScopes(["continuous_payments","merchant_topup"])
             ->setRedirectUrl("http://localhost/reflector")
             ->setReferenceId(uniqid("TEST123"));
-            
+        print_r(json_encode($payload->serialize()));    
         $resp = $client->user->createAccountLinkQrCode($payload);
         $this->data = $resp;
     }    
