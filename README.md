@@ -151,11 +151,14 @@ $data = $response['data'];
 .....initialize SDK
 */
 
-use PayPay\OpenPaymentAPI\Models\UserAuthUrlInfo;
-$expiry = new DateTime(); 
-$expiry->add(new DateInterval('PT1H'));
-$payload = new UserAuthUrlInfo($this->config['mid'],$expiry,'https://foobar.com/xyz','TESTUSER!@#');
-$url=$client->payment->getUserAuthUrl($payload);
+use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
+$payload = new AccountLinkPayload();
+$payload
+    ->setScopes(["direct_debit"])
+    ->setRedirectUrl("https://merchant.domain/test/callback")
+    ->setReferenceId(uniqid("TEST123"));
+$resp = $client->user->createAccountLinkQrCode($payload);
+$url=$resp['data']['linkQRCodeURL'];
 echo $url.'   ';
 $nonce = $payload->getNonce();
 /*
@@ -165,18 +168,19 @@ $nonce = $payload->getNonce();
 
 ### Decode user authorization from token
 
+The PayPay authorization system will redirect user back to your site with a JWT token in the `responseToken` URL parameter. 
 ``` php
 /*
 .....initialize SDK
 */
 $token = $_GET['responseToken'];
-$authorization = $client->payment->decodeUserAuth($token);
+$authorization = $client->user->decodeUserAuth($token);
 /*
 ...fetch stored nonce for integrity check
 */
 $userAuthorizationId = false;
 if ($authorization['result']==='succeeded' && $authorization['nonce']===$fetchedNonce){
-    $userAuthorizationId = $authorization['userAuthorizationId'] 
+    $userAuthorizationId = $authoriresponseTokenzation['userAuthorizationId'] 
 }
 ```
 
