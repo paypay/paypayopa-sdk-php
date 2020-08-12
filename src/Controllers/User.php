@@ -4,6 +4,7 @@ namespace PayPay\OpenPaymentAPI\Controller;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
 use \Firebase\JWT\JWT;
+
 class User extends Controller
 {
     /**
@@ -67,8 +68,8 @@ class User extends Controller
     public function createAccountLinkQrCode($payload)
     {
         $url = $this->api_url . $this->main()->GetEndpoint('SESSIONS');
-        $url = str_replace('v2','v1',$url);
-        $endpoint = 'v1' . $this->main()->GetEndpoint('SESSIONS');
+        $url = str_replace('v2', 'v1', $url);
+        $endpoint = '/v1' . $this->main()->GetEndpoint('SESSIONS');
         $data = $payload->serialize();
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $mid = $this->main()->GetMid();
@@ -90,8 +91,18 @@ class User extends Controller
      */
     public function decodeUserAuth($encodedString)
     {
+        $verified = false;
         $key = base64_encode($this->auth['API_SECRET']);
-        $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
+        try {
+            $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
+            $verified = true;
+        } catch (\Exception $e) {
+            if ($e->getMessage()== "Signature verification failed") {
+                $split = explode('.', $encodedString);
+                $decoded =  json_decode(base64_decode($split[1]), true);
+            }
+        }
+       
         return $decoded;
     }
     /**

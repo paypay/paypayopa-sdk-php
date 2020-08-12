@@ -2,7 +2,6 @@
 require_once('TestBoilerplate.php');
 
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
-use PayPay\OpenPaymentAPI\Models\Model;
 
 class AccountLinkTest extends TestBoilerplate
 {
@@ -16,11 +15,12 @@ class AccountLinkTest extends TestBoilerplate
         $client = $this->client;
         $payload = new AccountLinkPayload();
         $payload
-            ->setScopes(["continuous_payments","merchant_topup"])
-            ->setRedirectUrl("http://localhost/reflector")
+            ->setScopes(["direct_debit"])
+            ->setRedirectUrl("https://merchant.domain/test/callback")
             ->setReferenceId(uniqid("TEST123"));
-        print_r(json_encode($payload->serialize()));    
         $resp = $client->user->createAccountLinkQrCode($payload);
+        print_r('AuthURL:');
+        var_dump($resp);
         $this->data = $resp;
     }    
     /**
@@ -35,6 +35,12 @@ class AccountLinkTest extends TestBoilerplate
         // var_dump($data);
         $this->assertTrue(isset($data));
         $this->assertEquals('SUCCESS',$data['resultInfo']['code'],$data['resultInfo']['message'].':'.$data['transit'][4]);
+    }
+    function testDecode(){
+        $uaresponse  = $this->config['uaresponse'];
+        $data = $this->client->user->decodeUserAuth($uaresponse);
+        var_dump($data);
+        $this->assertTrue(isset($data['userAuthorizationId']));
     }
 }
 
