@@ -52,6 +52,7 @@
         "phpstan": "vendor/bin/phpstan analyze -c phpstan.neon",
         "tests_run": "vendor/bin/phpunit --testdox tests",
         "qr_test": "vendor/bin/phpunit --testdox --debug tests/QrTest.php",
+        "aclink_test":"vendor/bin/phpunit --debug --testdox ./tests/AccountLinkTest.php",
         "refund_test": "vendor/bin/phpunit --testdox --debug tests/RefundTest.php",
         "users_test": "vendor/bin/phpunit --testdox --debug tests/UserTest.php",
         "auth_test": "vendor/bin/phpunit --testdox --debug tests/UserAuthTest.php",

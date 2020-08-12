@@ -6,5 +6,6 @@ $endpoint = [
     'WALLET_BALANCE'        =>     '/wallet/check_balance',
     'USER_AUTH'             =>     '/user/authorizations',
     'USER_PROFILE_SECURE'   =>     '/user/profile/secure',
+    'SESSIONS'              =>     '/qr/sessions',
     'REFUND'                =>     '/refunds',
 ];
