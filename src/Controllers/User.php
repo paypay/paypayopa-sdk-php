@@ -91,17 +91,13 @@ class User extends Controller
      */
     public function decodeUserAuth($encodedString)
     {
+        $decoded = [];
         $verified = false;
-        $key = base64_encode($this->auth['API_SECRET']);
-        try {
+        $key = base64_decode($this->auth['API_SECRET']);
+      
             $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
             $verified = true;
-        } catch (\Exception $e) {
-            if ($e->getMessage()== "Signature verification failed") {
-                $split = explode('.', $encodedString);
-                $decoded =  json_decode(base64_decode($split[1]), true);
-            }
-        }
+        
        
         return $decoded;
     }
