@@ -128,7 +128,7 @@ $data = $response['data'];
 .....initialize SDK
 */
 
-$response =  $client->payment->getPaymentDetails('MERCHANT_PAYMENT_ID');
+$response =  $client->code->getPaymentDetails('MERCHANT_PAYMENT_ID');
 $data = $response['data'];
 ```
 
@@ -213,6 +213,16 @@ $data = $response['data'];
     For a list of params refer to the API guide :
     https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#operation/capturePaymentAuth
 
+### Fetch a particular Direct Debit payment detail
+
+``` php
+/*
+.....initialize SDK
+*/
+
+$response =  $client->payments->getPaymentDetails('MERCHANT_PAYMENT_ID');
+$data = $response['data'];
+```
 ### Revert payment
 
 ``` php

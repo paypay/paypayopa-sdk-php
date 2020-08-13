@@ -65,8 +65,8 @@ class Payment extends Controller
     public function getPaymentDetails($merchantPaymentId)
     {
         $main = $this->MainInst;
-        $endpoint = '/v2' . $this->main()->GetEndpoint('CODE') . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
-        $url = $this->api_url . $main->GetEndpoint('CODE') . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+        $endpoint = '/v2' . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+        $url = $this->api_url . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
         $options = $this->HmacCallOpts('GET', $endpoint);
         $mid = $this->main()->GetMid();
         if ($mid) {
