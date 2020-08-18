@@ -2,4 +2,4 @@ language: php
 php:
   - '7.3'
 install: composer install
-script: vendor/bin/phpunit --testdox --debug tests/QrTest.php
+script: cd mock && java -jar wiremock.jar & vendor/bin/phpunit --testdox --debug tests/QrTest.php
