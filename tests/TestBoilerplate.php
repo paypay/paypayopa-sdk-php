@@ -37,7 +37,7 @@ class TestBoilerplate extends TestCase
             'API_SECRET' => $config['secret'],
             /** @phpstan-ignore-next-line */ 
             'MERCHANT_ID' => $config['mid'] 
-        ]);
+        ], 'test');
         /** @phpstan-ignore-next-line */
         $this->config = $config;
     }

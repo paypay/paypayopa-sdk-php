@@ -1,0 +1,42 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/v2/codes"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "codeId": "04-XnF5od9mVD0dypDX",
+                "url": "https://qr-stg.paypay-corp.co.jp/28180104XnF5od9mVD0dypDX",
+                "expiryDate": 1600310646,
+                "merchantPaymentId": "Test1235f3b407594331",
+                "amount": {
+                    "amount": 20,
+                    "currency": "JPY"
+                },
+                "orderItems": [
+                    {
+                        "name": "Cake",
+                        "quantity": 1,
+                        "unit_price": {
+                            "amount": 20,
+                            "currency": "JPY"
+                        }
+                    }
+                ],
+                "codeType": "ORDER_QR",
+                "isAuthorization": false,
+                "deeplink": "paypay://payment?link_key=https%3A%2F%2Fqr-stg.paypay-corp.co.jp%2F28180104XnF5od9mVD0dypDX"
+            }
+        }
+    }
+}
