@@ -75,7 +75,7 @@ class Client
         }
         $this->auth = $auth;
         $toStg = !$productionmode ? '-stg' : '';
-        $toStg = $productionmode == 'test'?'-test':'';
+        $toStg = $productionmode == 'test'?'-test':$toStg;
         require("conf/config${toStg}.php");
         /** @phpstan-ignore-next-line */
         $this->config = $config;
