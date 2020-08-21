@@ -1,4 +1,4 @@
-# Paypay PHP Client
+# Paypay SDK - PHP
 
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 [![codecov](https://codecov.io/gh/paypay/paypayopa-sdk-php/branch/master/graph/badge.svg)](https://codecov.io/gh/paypay/paypayopa-sdk-php)
