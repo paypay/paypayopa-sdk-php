@@ -2,4 +2,8 @@ language: php
 php:
   - '7.3'
 install: composer install
-script: make -j 1 run_mock
+script: 
+  cd mock && java -jar wiremock.jar --verbose &
+	sleep 7 &&
+	vendor/bin/phpunit --testdox --debug tests/UserTest.php
+	
