@@ -55,8 +55,6 @@
         "aclink_test":"vendor/bin/phpunit --debug --testdox ./tests/AccountLinkTest.php",
         "refund_test": "vendor/bin/phpunit --testdox --debug tests/RefundTest.php",
         "users_test": "vendor/bin/phpunit --testdox --debug tests/UserTest.php",
-        "auth_test": "vendor/bin/phpunit --testdox --debug tests/UserAuthTest.php",
-        "payloads_test": "vendor/bin/phpunit --testdox --debug tests/PayloadsTest.php",
         "wallet_test": "vendor/bin/phpunit --testdox --debug tests/WalletTest.php"
     },
     "scripts-descriptions": {

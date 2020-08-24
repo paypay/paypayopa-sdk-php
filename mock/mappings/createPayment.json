@@ -1,0 +1,32 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/v2/payments"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "paymentId": "03428106693764104192",
+                "status": "COMPLETED",
+                "acceptedAt": 1598229745,
+                "merchantPaymentId": "TESTMERCH_PAY_ID5f430cf061773",
+                "userAuthorizationId": "YOUR-CUSTOMER_S-AUTHORIZATION-IDENTIFIER-HERE",
+                "amount": {
+                    "amount": 1,
+                    "currency": "JPY"
+                },
+                "requestedAt": 1598229744,
+                "assumeMerchant": "126235119159427072"
+            }
+        }
+    }
+}
