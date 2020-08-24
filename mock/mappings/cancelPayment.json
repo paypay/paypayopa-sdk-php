@@ -19,7 +19,7 @@
                 "status": "COMPLETED",
                 "acceptedAt": 1598229745,
                 "merchantPaymentId": "TESTMERCH_PAY_ID5f430cf061773",
-                "userAuthorizationId": "0ef0948e-314c-42e1-9312-03ce446fa5ef",
+                "userAuthorizationId": "YOUR-CUSTOMER_S-AUTHORIZATION-IDENTIFIER-HERE",
                 "amount": {
                     "amount": 1,
                     "currency": "JPY"

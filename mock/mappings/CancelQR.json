@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "DELETE",
-        "urlPattern": "^\\/v2\\/payments\\/\\w+$"
+        "urlPattern": "^\\/v2\\/payments\\/.*[0-9a-zA-Z].*$"
     },
     "response": {
         "status": 201,
