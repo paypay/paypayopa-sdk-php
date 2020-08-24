@@ -43,6 +43,26 @@ class Code extends Controller
         /** @phpstan-ignore-next-line */
         return json_decode(HttpPost($url, $data, $options), true);
     }
+    /**
+     * Fetches Payment details
+     *
+     * @param String $merchantPaymentId The unique payment transaction id provided by merchant
+     * @return mixed
+     */
+    public function getPaymentDetails($merchantPaymentId)
+    {
+        $main = $this->MainInst;
+        $endpoint = '/v2' . $this->main()->GetEndpoint('CODE') . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+        $url = $this->api_url . $main->GetEndpoint('CODE') . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+        $options = $this->HmacCallOpts('GET', $endpoint);
+        $mid = $this->main()->GetMid();
+        if ($mid) {
+            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
+        }
+        /** @phpstan-ignore-next-line */
+        return json_decode(HttpGet($url, [], $options), true);
+    }
+
 
     /**
      * Invalidates QR Code for payment
