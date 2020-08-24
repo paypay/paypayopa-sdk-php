@@ -15,8 +15,8 @@
                 "codeId": "08100001"
             },
             "data": {
-                "codeId": "04-XnF5od9mVD0dypDX",
-                "url": "https://qr-stg.paypay-corp.co.jp/28180104XnF5od9mVD0dypDX",
+                "codeId": "04-DXod9mVD0nFX5dyp",
+                "url": "https://qr-stg.maypay-corp.co.jp/some-random-gibberish",
                 "expiryDate": 1600310646,
                 "merchantPaymentId": "Test1235f3b407594331",
                 "amount": {
@@ -35,7 +35,7 @@
                 ],
                 "codeType": "ORDER_QR",
                 "isAuthorization": false,
-                "deeplink": "paypay://payment?link_key=https%3A%2F%2Fqr-stg.paypay-corp.co.jp%2F28180104XnF5od9mVD0dypDX"
+                "deeplink": "paypay://payment?link_key=https%3A%2F%2Fqr-stg.maypay-corp.co.jp%2Fsome-random-gibberish"
             }
         }
     }

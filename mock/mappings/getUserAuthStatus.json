@@ -1,0 +1,46 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath":"/v2/user/authorizations"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "userAuthorizationId": "SAME-USER-AUTH-ID-PROVIDED_BY_YOU",
+                "referenceIds": [
+                    "TEST1235f327e12ce721",
+                    "TEST1235f42fa5344952",
+                    "TEST1235f34498bc399d",
+                    "TEST1235f3357730eb71"
+                ],
+                "status": "ACTIVE",
+                "scopes": [
+                    "direct_debit",
+                    "mini_app_payment_balance",
+                    "mini_app_user_location",
+                    "mini_app_user_name",
+                    "mini_app_user_phone_number",
+                    "mini_app_user_avatar",
+                    "mini_app_user_email_address",
+                    "mini_app_device_battery",
+                    "mini_app_user_nickname",
+                    "mini_app_user_phone_camera",
+                    "preauth_capture_native",
+                    "mini_app_user_phone_album",
+                    "mini_app_notification_center"
+                ],
+                "expireAt": 1629761030,
+                "issuedAt": 1587125811
+            }
+        }
+    }
+}
