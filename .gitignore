@@ -27,3 +27,5 @@ composer.phar
 
 .php_cs.cache
 tests/config.php
+
+composer.lock
