@@ -1,7 +1,16 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=148ea266f96a637c1f5f85179aab3ba533a5a64d0dfccab0ab7ce703f44fd80b
 language: php
 php:
   - '7.3'
 install: composer install
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script: make run_mock
 after_success:
   - bash <(curl -s https://copilot.blackducksoftware.com/ci/travis/scripts/upload)
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  
