@@ -1,0 +1,31 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "^\\/v2\\/refunds\\/.*[0-9a-zA-Z].*$"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "status": "CREATED",
+                "acceptedAt": 1597893536,
+                "merchantRefundId": "TESTUSER5f3deb9fa5776",
+                "paymentId": "PAYPAY_TRANSACTION_ID",
+                "amount": {
+                    "amount": 1,
+                    "currency": "JPY"
+                },
+                "requestedAt": 1597893535,
+                "assumeMerchant": "YOUR_MERCHANT_IDENTIFIER"
+            }
+        }
+    }
+}

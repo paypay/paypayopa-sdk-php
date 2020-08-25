@@ -26,3 +26,4 @@ composer.phar
 # End of https://www.toptal.com/developers/gitignore/api/composer,phpunit
 
 .php_cs.cache
+tests/config.php

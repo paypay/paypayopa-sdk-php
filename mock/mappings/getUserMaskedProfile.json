@@ -1,0 +1,22 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/v2/user/profile/secure"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "phoneNumber": "*******4567"
+            }
+        }
+    }
+}

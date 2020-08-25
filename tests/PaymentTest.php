@@ -27,7 +27,7 @@ final class PaymentTest extends TestBoilerplate
         $CPPayload = new CreatePaymentPayload();
         // Save Cart totals
         $amount = [
-            "amount" => 1,
+            "amount" => 12,
             "currency" => "JPY"
         ];
         $CPPayload->setMerchantPaymentId(uniqid('TESTMERCH_PAY_ID'))->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
@@ -53,15 +53,7 @@ final class PaymentTest extends TestBoilerplate
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
     }
-    /**
-     * tests DD Create
-     *
-     * @return void
-     */
-    public function testCreate()
-    {
-        $this->Create();
-    }
+    
     /**
      * tests Create And Cancel
      *
@@ -116,7 +108,7 @@ final class PaymentTest extends TestBoilerplate
      *
      * @return void
      */
-    public function testCaptureAndRevert()
+    public function CaptureAndRevert()
     {
         $this->CaptureAuthorization();
         $this->RevertAuthorization();

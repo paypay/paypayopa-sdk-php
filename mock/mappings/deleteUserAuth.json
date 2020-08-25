@@ -1,0 +1,22 @@
+{
+    "request": {
+        "method": "DELETE",
+        "urlPattern": "^\\/v2\\/user\\/authorizations\\/.*[0-9a-zA-Z].*$"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "REQUEST_ACCEPTED",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                
+            }
+        }
+    }
+}
