@@ -3,3 +3,5 @@ php:
   - '7.3'
 install: composer install
 script: make run_mock
+after_success:
+  - bash <(curl -s https://copilot.blackducksoftware.com/ci/travis/scripts/upload)
