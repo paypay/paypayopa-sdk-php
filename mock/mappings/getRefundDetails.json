@@ -18,13 +18,13 @@
                 "status": "CREATED",
                 "acceptedAt": 1597893536,
                 "merchantRefundId": "TESTUSER5f3deb9fa5776",
-                "paymentId": "03425217254515679232",
+                "paymentId": "PAYPAY_TRANSACTION_ID",
                 "amount": {
                     "amount": 1,
                     "currency": "JPY"
                 },
                 "requestedAt": 1597893535,
-                "assumeMerchant": "126235119159427072"
+                "assumeMerchant": "YOUR_MERCHANT_IDENTIFIER"
             }
         }
     }

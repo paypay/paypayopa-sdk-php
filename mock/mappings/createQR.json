@@ -18,7 +18,7 @@
                 "codeId": "04-DXod9mVD0nFX5dyp",
                 "url": "https://qr-stg.maypay-corp.co.jp/some-random-gibberish",
                 "expiryDate": 1600310646,
-                "merchantPaymentId": "Test1235f3b407594331",
+                "merchantPaymentId":"YOUR_MERCHANT_PAYMENT_ID",
                 "amount": {
                     "amount": 20,
                     "currency": "JPY"

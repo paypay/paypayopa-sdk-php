@@ -41,9 +41,10 @@
         "firebase/php-jwt": "^5.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "php-coveralls/php-coveralls": "^2.2",
         "phpstan/phpstan": "^0.12.33",
-        "friendsofphp/php-cs-fixer": "^2.16"
+        "phpunit/phpunit": "^9"
     },
     "scripts": {
         "test": "./vendor/bin/phpunit --testdox tests",
