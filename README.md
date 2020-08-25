@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Status](https://travis-ci.org/paypay/paypayopa-sdk-php.svg?branch=master)](https://travis-ci.org/paypay/paypayopa-sdk-php)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7f020ad8816dc9f64f6f/maintainability)](https://codeclimate.com/github/paypay/paypayopa-sdk-php/maintainability)
+[![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-php/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-php/branches/master)
 
 PHP Class for interacting with the Paypay API
 This is the quickest way to integrate PayPay payment services, primarily meant for merchants who wish to perform interactions with the Paypay API programatically.
