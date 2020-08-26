@@ -15,13 +15,13 @@
                 "codeId": "08100001"
             },
             "data": {
-                "paymentId": "03425217254515679232",
+                "paymentId": "PAYPAY_TRANSACTION_ID",
                 "status": "COMPLETED",
                 "acceptedAt": 1597893369,
                 "refunds": {
                     "data": []
                 },
-                "merchantPaymentId": "Test1235f3deaa4abae6",
+                "merchantPaymentId":"YOUR_MERCHANT_PAYMENT_ID",
                 "amount": {
                     "amount": 20,
                     "currency": "JPY"
