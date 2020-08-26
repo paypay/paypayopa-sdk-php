@@ -100,32 +100,7 @@ class Payment extends Controller
         return json_decode(HttpDelete($url, [], $options), true);
     }
 
-    /**
-     * Get user authorization page url
-     *
-     * @param UserAuthUrlInfo $payload
-     * @return string
-     */
-    public function getUserAuthUrl($payload)
-    {
-        $key = base64_encode($this->auth['API_SECRET']);
-        $id = $this->auth['API_KEY'];
-        $jwt = JWT::encode($payload->serialize(), $key);
-        return "https://www.paypay.ne.jp/app/opa/user_authorization?apiKey=${id}&requestToken=${jwt}";
-    }
-
-    /**
-     * Decode User Authorization data from token after user is redirected back
-     *
-     * @param string $encodedString
-     * @return array
-     */
-    public function decodeUserAuth($encodedString)
-    {
-        $key = base64_encode($this->auth['API_SECRET']);
-        $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
-        return $decoded;
-    }
+    
 
     /**
      * For payments to be updated with amount after creation,
