@@ -9,6 +9,7 @@ use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 use PayPay\OpenPaymentAPI\Models\UserAuthUrlInfo;
 use Exception;
 use PayPay\OpenPaymentAPI\Client;
+use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
 
 class Payment extends Controller
 {
@@ -100,7 +101,37 @@ class Payment extends Controller
         return json_decode(HttpDelete($url, [], $options), true);
     }
 
-    
+    /**
+     * Create preauthorized payment request
+     *
+     * @param CreatePaymentAuthPayload $payload
+     * @param boolean $agreeSimilarTransaction If set to true, payment duplication check will be bypassed
+     * @return mixed
+     */
+    public function createPaymentAuth($payload, $agreeSimilarTransaction=false)
+    {
+        if (!($payload instanceof CreatePaymentAuthPayload)) {
+            throw new Exception("Payload not of type CreatePaymentAuthPayload", 1);
+        }
+        $data = $payload->serialize();
+
+        $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
+        $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
+        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $mid = $this->main()->GetMid();
+        if ($mid) {
+            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
+        }
+        $options['CURLOPT_TIMEOUT'] = 30;
+        if ($agreeSimilarTransaction) {
+            $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
+            /** @phpstan-ignore-next-line */
+            return json_decode($response, true);
+        } else {
+            /** @phpstan-ignore-next-line */
+            return json_decode(HttpPost($url, $data, $options), true);
+        }
+    }
 
     /**
      * For payments to be updated with amount after creation,
