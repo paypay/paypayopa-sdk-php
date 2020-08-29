@@ -6,15 +6,6 @@ require_once('TestBoilerplate.php');
 final class PaymentTest extends TestBoilerplate
 {
     /**
-     * Init check
-     *
-     * @return void
-     */
-    public function testInit()
-    {
-        $this->InitCheck();
-    }
-    /**
      * Create direct debit payment
      *
      * @return void

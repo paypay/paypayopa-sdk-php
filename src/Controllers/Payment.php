@@ -176,8 +176,8 @@ class Payment extends Controller
         }
         $main = $this->MainInst;
         $data = $payload->serialize();
-        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "preauthorize/revert";
-        $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "preauthorize/revert";
+        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/preauthorize/revert";
+        $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/preauthorize/revert";
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $mid = $this->main()->GetMid();
         if ($mid) {
