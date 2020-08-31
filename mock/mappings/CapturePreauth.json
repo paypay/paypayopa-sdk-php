@@ -4,40 +4,46 @@
         "urlPath": "/v2/payments/capture"
     },
     "response": {
-        "resultInfo": {
-            "code": "SUCCESS",
-            "message": "Success",
-            "codeId": "08100001"
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
         },
-        "data": {
-            "paymentId": "03431133082339794944",
-            "status": "COMPLETED",
-            "acceptedAt": 1598582062,
-            "merchantPaymentId": "TEST_PREAUTH5f486d2d4e5e7",
-            "userAuthorizationId": "0ef0948e-314c-42e1-9312-03ce446fa5ef",
-            "amount": {
-                "amount": 20,
-                "currency": "JPY"
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
             },
-            "requestedAt": 1598582061,
-            "orderItems": [],
-            "assumeMerchant": "126235119159427072",
-            "captures": {
-                "data": [
-                    {
-                        "acceptedAt": 1598582096,
-                        "merchantCaptureId": "TESTMERCH_CAP_ID5f486d4f86994",
-                        "amount": {
-                            "amount": 20,
-                            "currency": "JPY"
-                        },
-                        "orderDescription": "TESTMERCH_CAP_ID5f486d4f869b8",
-                        "requestedAt": 1598582095,
-                        "status": "COMPLETED"
-                    }
-                ]
-            },
-            "expiresAt": 1630118062
+            "data": {
+                "paymentId": "03431133082339794944",
+                "status": "COMPLETED",
+                "acceptedAt": 1598582062,
+                "merchantPaymentId": "TEST_PREAUTH5f486d2d4e5e7",
+                "userAuthorizationId": "0ef0948e-314c-42e1-9312-03ce446fa5ef",
+                "amount": {
+                    "amount": 20,
+                    "currency": "JPY"
+                },
+                "requestedAt": 1598582061,
+                "orderItems": [],
+                "assumeMerchant": "126235119159427072",
+                "captures": {
+                    "data": [
+                        {
+                            "acceptedAt": 1598582096,
+                            "merchantCaptureId": "TESTMERCH_CAP_ID5f486d4f86994",
+                            "amount": {
+                                "amount": 20,
+                                "currency": "JPY"
+                            },
+                            "orderDescription": "TESTMERCH_CAP_ID5f486d4f869b8",
+                            "requestedAt": 1598582095,
+                            "status": "COMPLETED"
+                        }
+                    ]
+                },
+                "expiresAt": 1630118062
+            }
         }
     }
 }
