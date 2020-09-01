@@ -5,6 +5,7 @@
         <testsuite name="All Tests">
             <file> tests/QrTest.php</file>
             <file> tests/PaymentTest.php</file>
+            <file> tests/PreAuthTest.php</file>
             <file> tests/RefundTest.php</file>
             <file> tests/UserTest.php</file>
             <file> tests/WalletTest.php </file>
