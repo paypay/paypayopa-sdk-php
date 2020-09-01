@@ -8,15 +8,7 @@ require_once('TestBoilerplate.php');
 
 class PreAuthTest extends TestBoilerplate
 {
-    /**
-     * Init check
-     *
-     * @return void
-     */
-    public function testInit()
-    {
-        $this->InitCheck();
-    }
+    
 
     public function Create()
     {
