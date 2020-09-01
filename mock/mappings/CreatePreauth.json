@@ -25,7 +25,7 @@
                     "currency": "JPY"
                 },
                 "requestedAt": 1598580496,
-                "assumeMerchant": "126235119159427072",
+                "assumeMerchant": "",
                 "expiresAt": 1630116497
             }
         }
