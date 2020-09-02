@@ -1,0 +1,26 @@
+{
+    "request": {
+        "method": "POST",
+        "urlPath": "/v2/payments/preauthorize/revert"
+        
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "status": "CANCELED",
+                "acceptedAt": 1598924877,
+                "paymentId": "PAYPAY_TRANSACTION_ID",
+                "requestedAt": 1598924876
+            }
+        }
+    }
+}

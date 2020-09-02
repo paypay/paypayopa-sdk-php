@@ -1,0 +1,49 @@
+{
+    "request": {
+        "method": "POST",
+        "urlPath": "/v2/payments/capture"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "paymentId": "PAYPAY_TRANSACTION_ID",
+                "status": "COMPLETED",
+                "acceptedAt": 1598582062,
+                "merchantPaymentId": "TEST_PREAUTH5f486d2d4e5e7",
+                "userAuthorizationId": "YOUR-CUSTOMER_S-AUTHORIZATION-IDENTIFIER-HERE",
+                "amount": {
+                    "amount": 20,
+                    "currency": "JPY"
+                },
+                "requestedAt": 1598582061,
+                "orderItems": [],
+                "assumeMerchant": "YOUR_MERCHANT_IDENTIFIER",
+                "captures": {
+                    "data": [
+                        {
+                            "acceptedAt": 1598582096,
+                            "merchantCaptureId": "TESTMERCH_CAP_ID5f486d4f86994",
+                            "amount": {
+                                "amount": 20,
+                                "currency": "JPY"
+                            },
+                            "orderDescription": "TESTMERCH_CAP_ID5f486d4f869b8",
+                            "requestedAt": 1598582095,
+                            "status": "COMPLETED"
+                        }
+                    ]
+                },
+                "expiresAt": 1630118062
+            }
+        }
+    }
+}

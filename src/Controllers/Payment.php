@@ -9,6 +9,8 @@ use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 use PayPay\OpenPaymentAPI\Models\UserAuthUrlInfo;
 use Exception;
 use PayPay\OpenPaymentAPI\Client;
+use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
+use PayPay\OpenPaymentAPI\Models\ModelException;
 
 class Payment extends Controller
 {
@@ -101,30 +103,35 @@ class Payment extends Controller
     }
 
     /**
-     * Get user authorization page url
+     * Create preauthorized payment request
      *
-     * @param UserAuthUrlInfo $payload
-     * @return string
+     * @param CreatePaymentAuthPayload $payload
+     * @param boolean $agreeSimilarTransaction If set to true, payment duplication check will be bypassed
+     * @return mixed
      */
-    public function getUserAuthUrl($payload)
+    public function createPaymentAuth($payload, $agreeSimilarTransaction=false)
     {
-        $key = base64_encode($this->auth['API_SECRET']);
-        $id = $this->auth['API_KEY'];
-        $jwt = JWT::encode($payload->serialize(), $key);
-        return "https://www.paypay.ne.jp/app/opa/user_authorization?apiKey=${id}&requestToken=${jwt}";
-    }
+        if (!($payload instanceof CreatePaymentAuthPayload)) {
+            throw new ModelException("Payload not of type CreatePaymentAuthPayload", 1,[]);
+        }
+        $data = $payload->serialize();
 
-    /**
-     * Decode User Authorization data from token after user is redirected back
-     *
-     * @param string $encodedString
-     * @return array
-     */
-    public function decodeUserAuth($encodedString)
-    {
-        $key = base64_encode($this->auth['API_SECRET']);
-        $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
-        return $decoded;
+        $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
+        $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
+        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $mid = $this->main()->GetMid();
+        if ($mid) {
+            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
+        }
+        $options['CURLOPT_TIMEOUT'] = 30;
+        if ($agreeSimilarTransaction) {
+            $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
+            /** @phpstan-ignore-next-line */
+            return json_decode($response, true);
+        } else {
+            /** @phpstan-ignore-next-line */
+            return json_decode(HttpPost($url, $data, $options), true);
+        }
     }
 
     /**
@@ -170,8 +177,8 @@ class Payment extends Controller
         }
         $main = $this->MainInst;
         $data = $payload->serialize();
-        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "preauthorize/revert";
-        $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "preauthorize/revert";
+        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/preauthorize/revert";
+        $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/preauthorize/revert";
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $mid = $this->main()->GetMid();
         if ($mid) {

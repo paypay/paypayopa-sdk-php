@@ -1,0 +1,33 @@
+{
+    "request": {
+        "method": "POST",
+        "urlPath": "/v2/payments/preauthorize"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "paymentId": "PAYPAY-PAYMENT-ID",
+                "status": "AUTHORIZED",
+                "acceptedAt": 1598580497,
+                "merchantPaymentId": "TEST_PREAUTH5f486710943cf",
+                "userAuthorizationId": "YOUR-USER-AUTH-ID-STRING",
+                "amount": {
+                    "amount": 20,
+                    "currency": "JPY"
+                },
+                "requestedAt": 1598580496,
+                "assumeMerchant": "",
+                "expiresAt": 1630116497
+            }
+        }
+    }
+}

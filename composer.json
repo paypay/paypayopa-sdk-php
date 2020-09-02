@@ -38,6 +38,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.0.0",
+        "atoum/atoum": "^3.4",
         "firebase/php-jwt": "^5.2"
     },
     "require-dev": {
