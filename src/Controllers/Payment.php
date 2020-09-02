@@ -10,6 +10,7 @@ use PayPay\OpenPaymentAPI\Models\UserAuthUrlInfo;
 use Exception;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
+use PayPay\OpenPaymentAPI\Models\ModelException;
 
 class Payment extends Controller
 {
@@ -111,7 +112,7 @@ class Payment extends Controller
     public function createPaymentAuth($payload, $agreeSimilarTransaction=false)
     {
         if (!($payload instanceof CreatePaymentAuthPayload)) {
-            throw new Exception("Payload not of type CreatePaymentAuthPayload", 1);
+            throw new ModelException("Payload not of type CreatePaymentAuthPayload", 1,[]);
         }
         $data = $payload->serialize();
 

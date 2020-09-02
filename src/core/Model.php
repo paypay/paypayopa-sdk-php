@@ -4,6 +4,16 @@ namespace PayPay\OpenPaymentAPI\Models;
 
 use Exception;
 
+class ModelException extends Exception
+{
+    public $fields;
+
+    public function __construct($message, $code, $fields)
+    {
+        $this->fields=$fields;
+        parent::__construct($message, $code);
+    }
+}
 class Model
 {
     /**
@@ -38,15 +48,17 @@ class Model
                 $faults[] = $memberName;
             }
             if ($memberInfo['type'] == 'string') {
-                if (strlen($member) < 1)
-                    throw new Exception("${memberName} cannot be empty", 1);
-                if (isset($memberInfo['strlen']) && $memberInfo['strlen'] != 0 && strlen($member) > $memberInfo['strlen'])
-                    throw new Exception("${memberName} exceeds maximum size of  characters", 1);
+                if (strlen($member) < 1) {
+                    throw new ModelException("${memberName} cannot be empty", 1,[$memberName]);
+                }
+                if (isset($memberInfo['strlen']) && $memberInfo['strlen'] != 0 && strlen($member) > $memberInfo['strlen']) {
+                    throw new ModelException("${memberName} exceeds maximum size of  characters", 1,[$memberName]);
+                }
             }
         }
         if (count($faults) > 0) {
             if ($throwErrors) {
-                throw new Exception('Invalid fields: ' . implode(',', $faults), 403);
+                throw new ModelException('Invalid fields: ' . implode(',', $faults), 403,$faults);
             }
             return false;
         }

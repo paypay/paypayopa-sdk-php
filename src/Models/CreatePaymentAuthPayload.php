@@ -142,7 +142,7 @@ class CreatePaymentAuthPayload extends Model
     public function setAmount($amount)
     {
         if (!isset($amount['currency']) || !isset($amount['amount'])) {
-            throw new Exception("Invalid amount");
+            throw new ModelException("Invalid amount",400,['amount']);
         }
 
         $this->amount = $amount;
@@ -304,7 +304,7 @@ class CreatePaymentAuthPayload extends Model
         $serialized = [];
         foreach ($orderItems as $item) {
             if (get_class($item) !== 'PayPay\OpenPaymentAPI\Models\OrderItem') {
-                throw new Exception("Invalid Order Items");
+                throw new ModelException("Invalid Order Items",400,['orderItems']);
             }
             $serialized[] = $item->serialize();
         }
