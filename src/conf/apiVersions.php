@@ -1,4 +1,4 @@
 <?php
 $versions = [
-    'SUBSCRIPTION'          =>     'v2',
+    'SUBSCRIPTION'          =>     'v1',
 ];

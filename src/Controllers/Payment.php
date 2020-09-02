@@ -73,7 +73,7 @@ class Payment extends Controller
         $version = $this->main()->GetEndpointVersion('SUBSCRIPTION');
         $url = $this->api_url . $this->main()->GetEndpoint('SUBSCRIPTION');
         $url = str_replace('v2', $version, $url);
-        $endpoint = $version . $this->main()->GetEndpoint('SUBSCRIPTION');
+        $endpoint = '/'.$version . $this->main()->GetEndpoint('SUBSCRIPTION');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $mid = $this->main()->GetMid();
         if ($mid) {

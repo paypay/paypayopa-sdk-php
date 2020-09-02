@@ -2,13 +2,20 @@
 
 <phpunit colors="true">
     <testsuites>
-        <testsuite name="All Tests">
+        <testsuite name="QR Code">
             <file> tests/QrTest.php</file>
+            
+        </testsuite>
+        <testsuite name="Payments">
             <file> tests/PaymentTest.php</file>
             <file> tests/PreAuthTest.php</file>
             <file> tests/RefundTest.php</file>
+        </testsuite>
+        <testsuite name="User">
             <file> tests/UserTest.php</file>
             <file> tests/WalletTest.php </file>
+        </testsuite>
+        <testsuite name="Housekeeping">
             <file> tests/ZCleanupTest.php</file>
         </testsuite>
     </testsuites>
