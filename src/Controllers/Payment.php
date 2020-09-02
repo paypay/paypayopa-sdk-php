@@ -37,7 +37,7 @@ class Payment extends Controller
     public function createPayment($payload, $agreeSimilarTransaction = false)
     {
         if (!($payload instanceof CreatePaymentPayload)) {
-            throw new Exception("Payload not of type CreatePaymentPayload", 1);
+            throw new ModelException("Payload not of type CreatePaymentPayload", 500,[]);
         }
         $data = $payload->serialize();
 
