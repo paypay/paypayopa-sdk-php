@@ -32,6 +32,12 @@ class Client
      */
     private $endpoints;
     /**
+     * api endpoint versions
+     *
+     * @var array
+     */
+    private $versions;
+    /**
      * Instance of code controller
      *
      * @var Code
@@ -82,6 +88,8 @@ class Client
         require('conf/endpoints.php');
         /** @phpstan-ignore-next-line */
         $this->endpoints = $endpoint;
+        require("conf/apiVersions.php");
+        $this->versions=$versions;
         $this->code = new Code($this, $auth);
         $this->payment = new Payment($this, $auth);
         $this->refund = new Refund($this, $auth);
@@ -109,6 +117,16 @@ class Client
     public function GetEndpoint($endpointName)
     {
         return $this->endpoints[$endpointName];
+    }
+    /**
+     * Returns relevant endpoint version
+     *
+     * @param String $endpointName Name of Endpoint
+     * @return String
+     */
+    public function GetEndpointVersion($endpointName)
+    {
+        return $this->versions[$endpointName];
     }
     /**
      * Returns Merchant ID

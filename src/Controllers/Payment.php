@@ -9,6 +9,7 @@ use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 use PayPay\OpenPaymentAPI\Models\UserAuthUrlInfo;
 use Exception;
 use PayPay\OpenPaymentAPI\Client;
+use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\ModelException;
 
@@ -36,7 +37,7 @@ class Payment extends Controller
     public function createPayment($payload, $agreeSimilarTransaction = false)
     {
         if (!($payload instanceof CreatePaymentPayload)) {
-            throw new Exception("Payload not of type CreateQrCodePayload", 1);
+            throw new ModelException("Payload not of type CreatePaymentPayload", 500,[]);
         }
         $data = $payload->serialize();
 
@@ -56,6 +57,30 @@ class Payment extends Controller
             /** @phpstan-ignore-next-line */
             return json_decode(HttpPost($url, $data, $options), true);
         }
+    }
+    /**
+     * Create a direct debit payment and start the money transfer.
+     *
+     * @param CreateContinuousPaymentPayload $payload SDK payload object
+     * @return mixed
+     */
+    public function createContinuousPayment($payload)
+    {
+        if (!($payload instanceof CreateContinuousPaymentPayload)) {
+            throw new ModelException("Payload not of type CreateContinuousPaymentPayload", 500,[]);
+        }
+        $data = $payload->serialize();
+        $version = $this->main()->GetEndpointVersion('SUBSCRIPTION');
+        $url = $this->api_url . $this->main()->GetEndpoint('SUBSCRIPTION');
+        $url = str_replace('v2', $version, $url);
+        $endpoint = '/'.$version . $this->main()->GetEndpoint('SUBSCRIPTION');
+        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $mid = $this->main()->GetMid();
+        if ($mid) {
+            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
+        }
+        $options['CURLOPT_TIMEOUT'] = 30;
+        return json_decode(HttpPost($url, $data, $options), true);
     }
 
     /**
