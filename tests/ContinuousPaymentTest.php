@@ -19,7 +19,11 @@ final class ContinuousPaymentTest extends TestBoilerplate
             "amount" => 12,
             "currency" => "JPY"
         ];
-        $CCPPayload->setMerchantPaymentId(uniqid('TESTMERCH_PAY_ID'))->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
+        $CCPPayload
+            ->setMerchantPaymentId(uniqid('TESTMERCH_PAY_ID'))
+            ->setRequestedAt()
+            ->setUserAuthorizationId($this->config['uaid'])
+            ->setAmount($amount);
         // Get data for QR code
         $resp = $client->payment->createContinuousPayment($CCPPayload);
         $resultInfo = $resp['resultInfo'];
@@ -42,7 +46,7 @@ final class ContinuousPaymentTest extends TestBoilerplate
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
     }
-    
+
     /**
      * tests Create And Cancel
      *
@@ -53,5 +57,4 @@ final class ContinuousPaymentTest extends TestBoilerplate
         $this->Create();
         $this->Cancel();
     }
-    
 }
