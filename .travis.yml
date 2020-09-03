@@ -13,4 +13,5 @@ script: make run_mock
 after_success:
   - bash <(curl -s https://copilot.blackducksoftware.com/ci/travis/scripts/upload)
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - travis_retry php vendor/bin/php-coveralls -v
   
