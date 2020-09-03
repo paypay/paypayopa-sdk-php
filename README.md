@@ -3,6 +3,7 @@
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Packagist Version](https://img.shields.io/packagist/v/paypayopa/php-sdk)](https://packagist.org/packages/paypayopa/php-sdk)
 [![Build Status](https://travis-ci.org/paypay/paypayopa-sdk-php.svg?branch=master)](https://travis-ci.org/paypay/paypayopa-sdk-php)
+[![Coverage Status](https://coveralls.io/repos/github/paypay/paypayopa-sdk-php/badge.svg)](https://coveralls.io/github/paypay/paypayopa-sdk-php)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7f020ad8816dc9f64f6f/maintainability)](https://codeclimate.com/github/paypay/paypayopa-sdk-php/maintainability)
 [![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-php/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-php/branches/master)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-php.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-php?ref=badge_shield)
