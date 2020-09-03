@@ -17,6 +17,7 @@
         <testsuite name="Payments">
             <file> tests/PaymentTest.php</file>
             <file> tests/PreAuthTest.php</file>
+            <file> tests/ContinuousPaymentTest.php</file>
             <file> tests/RefundTest.php</file>
         </testsuite>
         <testsuite name="User">
