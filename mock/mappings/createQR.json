@@ -1,0 +1,42 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/v2/codes"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "codeId": "04-DXod9mVD0nFX5dyp",
+                "url": "https://qr-stg.maypay-corp.co.jp/some-random-gibberish",
+                "expiryDate": 1600310646,
+                "merchantPaymentId":"YOUR_MERCHANT_PAYMENT_ID",
+                "amount": {
+                    "amount": 20,
+                    "currency": "JPY"
+                },
+                "orderItems": [
+                    {
+                        "name": "Cake",
+                        "quantity": 1,
+                        "unit_price": {
+                            "amount": 20,
+                            "currency": "JPY"
+                        }
+                    }
+                ],
+                "codeType": "ORDER_QR",
+                "isAuthorization": false,
+                "deeplink": "paypay://payment?link_key=https%3A%2F%2Fqr-stg.maypay-corp.co.jp%2Fsome-random-gibberish"
+            }
+        }
+    }
+}

@@ -15,7 +15,7 @@ class AccountLinkTest extends TestBoilerplate
         $client = $this->client;
         $payload = new AccountLinkPayload();
         $payload
-            ->setScopes(["direct_debit"])
+            ->setScopes(["direct_debit","preauth_capture_native","continuous_payments"])
             ->setRedirectUrl("https://merchant.domain/test/callback")
             ->setReferenceId(uniqid("TEST123"));
         $resp = $client->user->createAccountLinkQrCode($payload);

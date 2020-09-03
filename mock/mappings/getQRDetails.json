@@ -1,0 +1,45 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "^\\/v2\\/codes\\/payments\\/.*[0-9a-zA-Z].*$"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "paymentId": "PAYPAY_TRANSACTION_ID",
+                "status": "COMPLETED",
+                "acceptedAt": 1597893369,
+                "refunds": {
+                    "data": []
+                },
+                "merchantPaymentId":"YOUR_MERCHANT_PAYMENT_ID",
+                "amount": {
+                    "amount": 20,
+                    "currency": "JPY"
+                },
+                "requestedAt": 1597893369,
+                "storeId": "",
+                "terminalId": "",
+                "orderItems": [
+                    {
+                        "name": "Cake",
+                        "quantity": 1,
+                        "unitPrice": {
+                            "amount": 20,
+                            "currency": "JPY"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

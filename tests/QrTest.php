@@ -39,6 +39,9 @@ final class QrTest extends TestBoilerplate
         // Get data for QR code
         $resp = $client->code->createQRCode($CQCPayload);
         var_dump($resp);
+        $payDeets = $client->code->getPaymentDetails($CQCPayload->getMerchantPaymentId());
+        print_r('\n===================Details===================\n');
+        var_dump($payDeets);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
 
@@ -55,7 +58,8 @@ final class QrTest extends TestBoilerplate
     {
         $data =  $this->data;
         $codeId = $data['codeId'];
-        $this->assertTrue(isset($codeId), 'Code ID not set');;
+        $this->assertTrue(isset($codeId), 'Code ID not set');
+        ;
         $resp = $this->client->code->deleteQRCode($codeId);
         var_dump($resp);
         $resultInfo = $resp['resultInfo'];
@@ -70,7 +74,8 @@ final class QrTest extends TestBoilerplate
     {
         $data =  $this->data;
         $merchantPaymentId = $data['merchantPaymentId'];
-        $this->assertTrue(isset($merchantPaymentId), 'Code ID not set');;
+        $this->assertTrue(isset($merchantPaymentId), 'Code ID not set');
+        ;
         $resp = $this->client->payment->cancelPayment($merchantPaymentId);
         var_dump($resp);
         $resultInfo = $resp['resultInfo'];

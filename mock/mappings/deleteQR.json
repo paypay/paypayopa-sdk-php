@@ -1,0 +1,22 @@
+{
+    "request": {
+        "method": "DELETE",
+        "urlPattern": "^\\/v2\\/codes\\/.*[0-9a-zA-Z].*$"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "qrStatus": "DELETED"
+            }
+        }
+    }
+}
