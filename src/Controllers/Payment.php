@@ -2,6 +2,7 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
+use CreatePendingPaymentPayload;
 use \Firebase\JWT\JWT;
 use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
@@ -111,13 +112,14 @@ class Payment extends Controller
      * Fetches Payment details
      *
      * @param String $merchantPaymentId The unique payment transaction id provided by merchant
+     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
      * @return mixed
      */
-    public function getPaymentDetails($merchantPaymentId)
+    public function getPaymentDetails($merchantPaymentId, $paymentType = 'web_cashier')
     {
-        $main = $this->MainInst;
-        $endpoint = '/v2' . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
-        $url = $this->api_url . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+        $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
+        $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
+
         $options = $this->HmacCallOpts('GET', $endpoint);
         $mid = $this->main()->GetMid();
         if ($mid) {
@@ -135,12 +137,14 @@ class Payment extends Controller
      * Note: The Cancel API can be used until 00:14:59 AM the day after the Payment has happened.
      *       For 00:15 AM or later, please call the refund method to refund the payment.
      * @param String $merchantPaymentId The unique payment transaction id provided by merchant
+     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
      * @return mixed
      */
-    public function cancelPayment($merchantPaymentId)
+    public function cancelPayment($merchantPaymentId, $paymentType = 'web_cashier')
     {
-        $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
-        $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+
+        $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
+        $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
         $options = $this->HmacCallOpts('DELETE', $endpoint);
         $mid = $this->main()->GetMid();
         if ($mid) {
@@ -158,10 +162,10 @@ class Payment extends Controller
      * @param boolean $agreeSimilarTransaction If set to true, payment duplication check will be bypassed
      * @return mixed
      */
-    public function createPaymentAuth($payload, $agreeSimilarTransaction=false)
+    public function createPaymentAuth($payload, $agreeSimilarTransaction = false)
     {
         if (!($payload instanceof CreatePaymentAuthPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentAuthPayload", 1,[]);
+            throw new ModelException("Payload not of type CreatePaymentAuthPayload", 1, []);
         }
         $data = $payload->serialize();
 
