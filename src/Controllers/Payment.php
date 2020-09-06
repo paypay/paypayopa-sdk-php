@@ -37,7 +37,7 @@ class Payment extends Controller
     public function createPayment($payload, $agreeSimilarTransaction = false)
     {
         if (!($payload instanceof CreatePaymentPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentPayload", 500,[]);
+            throw new ModelException("Payload not of type CreatePaymentPayload", 500, []);
         }
         $data = $payload->serialize();
 
@@ -67,13 +67,37 @@ class Payment extends Controller
     public function createContinuousPayment($payload)
     {
         if (!($payload instanceof CreateContinuousPaymentPayload)) {
-            throw new ModelException("Payload not of type CreateContinuousPaymentPayload", 500,[]);
+            throw new ModelException("Payload not of type CreateContinuousPaymentPayload", 500, []);
         }
         $data = $payload->serialize();
         $version = $this->main()->GetEndpointVersion('SUBSCRIPTION');
         $url = $this->api_url . $this->main()->GetEndpoint('SUBSCRIPTION');
         $url = str_replace('v2', $version, $url);
-        $endpoint = '/'.$version . $this->main()->GetEndpoint('SUBSCRIPTION');
+        $endpoint = '/' . $version . $this->main()->GetEndpoint('SUBSCRIPTION');
+        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $mid = $this->main()->GetMid();
+        if ($mid) {
+            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
+        }
+        $options['CURLOPT_TIMEOUT'] = 30;
+        return json_decode(HttpPost($url, $data, $options), true);
+    }
+    /**
+     * Create a direct debit payment and start the money transfer.
+     *
+     * @param CreatePendingPaymentPayload $payload SDK payload object
+     * @return mixed
+     */
+    public function createPendingPayment($payload)
+    {
+        if (!($payload instanceof CreatePendingPaymentPayload)) {
+            throw new ModelException("Payload not of type CreatePendingPaymentPayload", 500, []);
+        }
+        $data = $payload->serialize();
+        $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
+        $url = $this->api_url . $this->main()->GetEndpoint('REQUEST_ORDER');
+        $url = str_replace('v2', $version, $url);
+        $endpoint = '/' . $version . $this->main()->GetEndpoint('REQUEST_ORDER');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $mid = $this->main()->GetMid();
         if ($mid) {
@@ -212,5 +236,31 @@ class Payment extends Controller
         $options['CURLOPT_TIMEOUT'] = 30;
         /** @phpstan-ignore-next-line */
         return json_decode(HttpPost($url, $data, $options), true);
+    }
+    // Class helper
+    /**
+     * Returns endpoint data by payment type for payment details and cancellation
+     *
+     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
+     * @param String $merchantPaymentId The merchant payment id for transaction
+     * @return void
+     */
+    private function endpointByPaymentType($paymentType, $merchantPaymentId)
+    {
+        $main = $this->main();
+        switch ($paymentType) {
+            case 'pending':
+                $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
+                $endpoint = "/${version}" . $main->GetEndpoint('REQUEST_ORDER') . "/$merchantPaymentId";
+                $url = $this->api_url . $main->GetEndpoint('REQUEST_ORDER') . "/$merchantPaymentId";
+                break;
+
+            default:
+                $endpoint = '/v2' . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+                $url = $this->api_url . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+                break;
+        }
+        $endpointData = ["endpoint" => $endpoint, "url" => $url];
+        return $endpointData;
     }
 }
