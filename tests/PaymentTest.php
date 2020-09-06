@@ -21,7 +21,7 @@ final class PaymentTest extends TestBoilerplate
         ];
         $CPPayload->setMerchantPaymentId(uniqid('TESTMERCH_PAY_ID'))->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
         // Get data for QR code
-        $resp = $client->payment->createPayment($CPPayload);
+        $resp = $client->payment->createPayment($CPPayload,true);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
         $data = $resp['data'];

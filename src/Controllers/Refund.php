@@ -22,6 +22,7 @@ class Refund extends Controller
      * Refund a payment
      *
      * @param RefundPaymentPayload $payload SDK payload object
+     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
      * @return mixed
      */
     public function refundPayment($payload, $paymentType = 'web_cashier')

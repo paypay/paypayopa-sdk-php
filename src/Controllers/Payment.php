@@ -81,6 +81,7 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['CURLOPT_TIMEOUT'] = 30;
+        /** @phpstan-ignore-next-line */
         return json_decode(HttpPost($url, $data, $options), true);
     }
     /**
@@ -105,6 +106,7 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['CURLOPT_TIMEOUT'] = 30;
+        /** @phpstan-ignore-next-line */
         return json_decode(HttpPost($url, $data, $options), true);
     }
 
@@ -247,7 +249,7 @@ class Payment extends Controller
      *
      * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
      * @param String $merchantPaymentId The merchant payment id for transaction
-     * @return void
+     * @return array
      */
     private function endpointByPaymentType($paymentType, $merchantPaymentId)
     {
