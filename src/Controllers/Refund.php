@@ -24,18 +24,28 @@ class Refund extends Controller
      * @param RefundPaymentPayload $payload SDK payload object
      * @return mixed
      */
-    public function refundPayment($payload)
+    public function refundPayment($payload, $paymentType = 'web_cashier')
     {
         if (!($payload instanceof RefundPaymentPayload)) {
             throw new Exception("Payload not of type RefundPaymentPayload", 1);
         }
         $main = $this->MainInst;
-        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $options = $this->basePostOptions;
         $options['CURLOPT_TIMEOUT'] = 30;
         $data = $payload->serialize();
-        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
-        $endpoint = '/v2' . $main->GetEndpoint('REFUND');
+        switch ($paymentType) {
+            case 'pending':
+                $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
+                $endpoint = "/${version}" . $main->GetEndpoint('REQUEST_ORDER') .  $main->GetEndpoint('REFUND');
+                $url = $this->api_url . $main->GetEndpoint('REQUEST_ORDER')  .  $main->GetEndpoint('REFUND');
+                break;
+
+            default:
+                $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
+                $endpoint = '/v2' . $main->GetEndpoint('REFUND');
+                break;
+        }
+
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $mid = $this->main()->GetMid();
         if ($mid) {
