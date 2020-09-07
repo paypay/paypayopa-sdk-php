@@ -1,0 +1,30 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/v1/requestOrder"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "merchantPaymentId": "TESTMERCH_PAY_ID5f55c201d6359",
+                "userAuthorizationId": "SAME-USER-AUTH-ID-PROVIDED_BY_YOU",
+                "amount": {
+                    "amount": 12,
+                    "currency": "JPY"
+                },
+                "orderItems": [],
+                "expiryDate": 1599477346,
+                "requestedAt": 1599455745
+            }
+        }
+    }
+}

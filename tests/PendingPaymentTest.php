@@ -17,7 +17,7 @@ final class PendingPaymentTest extends TestBoilerplate
         $CPPPayload = new CreatePendingPaymentPayload();
         // Save Cart totals
         $amount = [
-            "amount" => 12,
+            "amount" => 8,
             "currency" => "JPY"
         ];
         $CPPPayload
@@ -44,7 +44,7 @@ final class PendingPaymentTest extends TestBoilerplate
         $data =  $this->data;
         $merchantPaymentId = $data['merchantPaymentId'];
         $this->assertTrue(isset($merchantPaymentId), 'Merchant Payment ID not set');
-        $paymentDetails = $client->code->getPaymentDetails($merchantPaymentId);
+        $paymentDetails = $client->payment->getPaymentDetails($merchantPaymentId,'pending');
         $this->assertEquals('SUCCESS', $paymentDetails['resultInfo']['code']);
         print_r('\n===================Pending Payment Details===================\n');
         var_dump($paymentDetails);
