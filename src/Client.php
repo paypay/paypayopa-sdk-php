@@ -10,6 +10,11 @@ use PayPay\OpenPaymentAPI\Controller\User;
 use PayPay\OpenPaymentAPI\Controller\Wallet;
 use PayPay\OpenPaymentAPI\Controller\Refund;
 use Exception;
+use GuzzleHttp\Client as GuzzleHttpClient;
+
+class ClientException extends Exception
+{
+}
 
 class Client
 {
@@ -37,6 +42,12 @@ class Client
      * @var array
      */
     private $versions;
+    /**
+     * Guzzle client to handle http calls
+     *
+     * @var GuzzleHttpClient
+     */
+    private $requestHandler;
     /**
      * Instance of code controller
      *
@@ -73,15 +84,16 @@ class Client
      * optional auth handler, and options      *
      * @param Array $auth API credentials
      * @param boolean $productionmode Sandbox environment flag
+     * @param GuzzleHttpClient|boolean $requestHandler
      */
-    public function __construct($auth = null, $productionmode = false)
+    public function __construct($auth = null, $productionmode = false, $requestHandler = false)
     {
         if (!isset($auth['API_KEY']) || !isset($auth['API_SECRET'])) {
             throw new Exception("Invalid auth credentials", 1);
         }
         $this->auth = $auth;
         $toStg = !$productionmode ? '-stg' : '';
-        $toStg = $productionmode == 'test'?'-test':$toStg;
+        $toStg = $productionmode == 'test' ? '-test' : $toStg;
         require("conf/config${toStg}.php");
         /** @phpstan-ignore-next-line */
         $this->config = $config;
@@ -89,7 +101,19 @@ class Client
         /** @phpstan-ignore-next-line */
         $this->endpoints = $endpoint;
         require("conf/apiVersions.php");
-        $this->versions=$versions;
+        /** @phpstan-ignore-next-line */
+        $this->versions = $versions;
+
+        if (!$requestHandler) {
+            $this->requestHandler = new GuzzleHttpClient(['base_uri' => $this->config["API_URL"]]);
+        } else {
+            if (gettype($requestHandler) === 'GuzzleHttpClient' || gettype($requestHandler) === 'GuzzleHttp/Client') {
+                /** @phpstan-ignore-next-line */
+                $this->requestHandler = $requestHandler;
+            } else {
+                throw new ClientException('Invalid request handler', 500);
+            }
+        }
         $this->code = new Code($this, $auth);
         $this->payment = new Payment($this, $auth);
         $this->refund = new Refund($this, $auth);
@@ -140,5 +164,15 @@ class Client
         } else {
             return false;
         }
+    }
+
+    /**
+     * get client request handler for controller
+     *
+     * @return GuzzleHttpClient
+     */
+    public function http()
+    {
+        return $this->requestHandler;
     }
 }
