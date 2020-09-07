@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "POST",
-        "url": "/v2/payments"
+        "urlPath": "/v2/payments"
     },
     "response": {
         "status": 201,
