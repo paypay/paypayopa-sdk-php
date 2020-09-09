@@ -1,5 +1,6 @@
 # Paypay SDK - PHP
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4d981c534bab4f839b5492962f7f0a58)](https://app.codacy.com/gh/paypay/paypayopa-sdk-php?utm_source=github.com&utm_medium=referral&utm_content=paypay/paypayopa-sdk-php&utm_campaign=Badge_Grade_Dashboard)
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Packagist Version](https://img.shields.io/packagist/v/paypayopa/php-sdk)](https://packagist.org/packages/paypayopa/php-sdk)
 [![Build Status](https://travis-ci.org/paypay/paypayopa-sdk-php.svg?branch=master)](https://travis-ci.org/paypay/paypayopa-sdk-php)
