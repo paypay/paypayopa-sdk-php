@@ -1,4 +1,5 @@
 <?php
+
 namespace PayPay\OpenPaymentAPI\Controller;
 
 use PayPay\OpenPaymentAPI\Client;
@@ -54,16 +55,20 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = HttpDelete($url, [], $options);
-        /** @phpstan-ignore-next-line */
-        return json_decode($response, true);
+        $response = $this->main()->http()->delete(
+            $url,
+            [
+                'headers' => $options["HEADERS"]
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 
     /**
      * Create a ACCOUNT LINK QR and display it to the user
      *
      * @param AccountLinkPayload $payload
-     * @return void
+     * @return mixed
      */
     public function createAccountLinkQrCode($payload)
     {
@@ -76,11 +81,19 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-                
+
         $options['CURLOPT_TIMEOUT'] = 10;
         if ($data) {
-            /** @phpstan-ignore-next-line */
-            return json_decode(HttpPost($url, $data, $options), true);
+            $response = $this->main()->http()->post(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'timeout' => $options['CURLOPT_TIMEOUT']
+                ]
+            );
+
+            return json_decode($response->getBody(), true);
         }
     }
     /**
@@ -92,13 +105,8 @@ class User extends Controller
     public function decodeUserAuth($encodedString)
     {
         $decoded = [];
-        $verified = false;
         $key = base64_decode($this->auth['API_SECRET']);
-      
-            $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
-            $verified = true;
-        
-       
+        $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
         return $decoded;
     }
     /**
@@ -119,9 +127,14 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = HttpGet($url, ['userAuthorizationId' => $userAuthorizationId], $options);
-        /** @phpstan-ignore-next-line */
-        return json_decode($response, true);
+        $response = $this->main()->http()->get(
+            $url,
+            [
+                'headers' => $options["HEADERS"],
+                'query' =>  ['userAuthorizationId' => $userAuthorizationId]
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -142,8 +155,13 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = HttpGet($url, ['userAuthorizationId' => $userAuthorizationId], $options);
-        /** @phpstan-ignore-next-line */
-        return json_decode($response, true);
+        $response = $this->main()->http()->get(
+            $url,
+            [
+                'headers' => $options["HEADERS"],
+                'query' =>  ['userAuthorizationId' => $userAuthorizationId]
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 }

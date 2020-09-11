@@ -37,7 +37,7 @@ class Payment extends Controller
     public function createPayment($payload, $agreeSimilarTransaction = false)
     {
         if (!($payload instanceof CreatePaymentPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentPayload", 500,[]);
+            throw new ModelException("Payload not of type CreatePaymentPayload", 500, []);
         }
         $data = $payload->serialize();
 
@@ -51,11 +51,29 @@ class Payment extends Controller
         $options['CURLOPT_TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
             $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
-            /** @phpstan-ignore-next-line */
-            return json_decode($response, true);
+
+            $response = $this->main()->http()->post(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'query' => ['agreeSimilarTransaction' => true],
+                    'timeout' => $options['CURLOPT_TIMEOUT']
+                ]
+            );
+
+            return json_decode($response->getBody(), true);
         } else {
-            /** @phpstan-ignore-next-line */
-            return json_decode(HttpPost($url, $data, $options), true);
+            $response = $this->main()->http()->post(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'timeout' => $options['CURLOPT_TIMEOUT']
+                ]
+            );
+
+            return json_decode($response->getBody(), true);
         }
     }
     /**
@@ -67,20 +85,29 @@ class Payment extends Controller
     public function createContinuousPayment($payload)
     {
         if (!($payload instanceof CreateContinuousPaymentPayload)) {
-            throw new ModelException("Payload not of type CreateContinuousPaymentPayload", 500,[]);
+            throw new ModelException("Payload not of type CreateContinuousPaymentPayload", 500, []);
         }
         $data = $payload->serialize();
         $version = $this->main()->GetEndpointVersion('SUBSCRIPTION');
         $url = $this->api_url . $this->main()->GetEndpoint('SUBSCRIPTION');
         $url = str_replace('v2', $version, $url);
-        $endpoint = '/'.$version . $this->main()->GetEndpoint('SUBSCRIPTION');
+        $endpoint = '/' . $version . $this->main()->GetEndpoint('SUBSCRIPTION');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $mid = $this->main()->GetMid();
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['CURLOPT_TIMEOUT'] = 30;
-        return json_decode(HttpPost($url, $data, $options), true);
+        $response = $this->main()->http()->post(
+            $url,
+            [
+                'headers' => $options["HEADERS"],
+                'json' => $data,
+                'timeout' => $options['CURLOPT_TIMEOUT']
+            ]
+        );
+
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -99,8 +126,13 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpGet($url, [], $options), true);
+        $response = $this->main()->http()->get(
+            $url,
+            [
+                'headers' => $options["HEADERS"]
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -123,8 +155,13 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
 
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpDelete($url, [], $options), true);
+        $response = $this->main()->http()->delete(
+            $url,
+            [
+                'headers' => $options["HEADERS"]
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -134,10 +171,10 @@ class Payment extends Controller
      * @param boolean $agreeSimilarTransaction If set to true, payment duplication check will be bypassed
      * @return mixed
      */
-    public function createPaymentAuth($payload, $agreeSimilarTransaction=false)
+    public function createPaymentAuth($payload, $agreeSimilarTransaction = false)
     {
         if (!($payload instanceof CreatePaymentAuthPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentAuthPayload", 1,[]);
+            throw new ModelException("Payload not of type CreatePaymentAuthPayload", 1, []);
         }
         $data = $payload->serialize();
 
@@ -151,11 +188,28 @@ class Payment extends Controller
         $options['CURLOPT_TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
             $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
-            /** @phpstan-ignore-next-line */
-            return json_decode($response, true);
+            $response = $this->main()->http()->post(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'timeout' => $options['CURLOPT_TIMEOUT'],
+                    'query' => ['agreeSimilarTransaction' => true]
+                ]
+            );
+
+            return json_decode($response->getBody(), true);
         } else {
-            /** @phpstan-ignore-next-line */
-            return json_decode(HttpPost($url, $data, $options), true);
+            $response = $this->main()->http()->post(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'timeout' => $options['CURLOPT_TIMEOUT']
+                ]
+            );
+
+            return json_decode($response->getBody(), true);
         }
     }
 
@@ -182,8 +236,16 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['CURLOPT_TIMEOUT'] = 30;
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        $response = $this->main()->http()->post(
+            $url,
+            [
+                'headers' => $options["HEADERS"],
+                'json' => $data,
+                'timeout' => $options['CURLOPT_TIMEOUT']
+            ]
+        );
+
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -210,7 +272,15 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['CURLOPT_TIMEOUT'] = 30;
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        $response = $this->main()->http()->post(
+            $url,
+            [
+                'headers' => $options["HEADERS"],
+                'json' => $data,
+                'timeout' => $options['CURLOPT_TIMEOUT']
+            ]
+        );
+
+        return json_decode($response->getBody(), true);
     }
 }

@@ -48,7 +48,12 @@ class Wallet extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpGet($url, $data, $options), true);
+        $response = $this->main()->http()->get(
+            $url,
+            [
+                'headers' => $options["HEADERS"]
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 }
