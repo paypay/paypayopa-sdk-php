@@ -43,12 +43,10 @@ class Controller
         $this->MainInst = $MainInstance;
         $this->api_url = $this->MainInst->getConfig('API_URL');
         $this->auth = $auth;
-        $AuthStr = HttpBasicAuthStr($this->auth['API_KEY'], $this->auth['API_SECRET']);
         $this->basePostOptions = [
             'CURLOPT_TIMEOUT' => 15,
             'HEADERS' => [
                 'Content-Type' => 'application/json',
-                'Authorization' => $AuthStr
             ]
         ];
     }
@@ -90,6 +88,13 @@ class Controller
     {
         return $this->MainInst;
     }
+    /**
+     * Checks type of payload against empty payload object
+     *
+     * @param mixed $payload Request data payload object
+     * @param mixed $type Empty payload object
+     * @return void
+     */
     protected function payloadTypeCheck($payload,$type){
         if (!(get_class($payload) === get_class($type))) {
             throw new ClientControllerException("Payload not of type ".gettype($type), 500);

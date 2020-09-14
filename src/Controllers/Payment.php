@@ -36,9 +36,7 @@ class Payment extends Controller
      */
     public function createPayment($payload, $agreeSimilarTransaction = false)
     {
-        if (!($payload instanceof CreatePaymentPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentPayload", 500, []);
-        }
+        $this->payloadTypeCheck($payload, new CreatePaymentPayload());
         $data = $payload->serialize();
 
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT');
@@ -50,8 +48,6 @@ class Payment extends Controller
         }
         $options['CURLOPT_TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
-
             $response = $this->main()->http()->post(
                 $url,
                 [
@@ -173,9 +169,7 @@ class Payment extends Controller
      */
     public function createPaymentAuth($payload, $agreeSimilarTransaction = false)
     {
-        if (!($payload instanceof CreatePaymentAuthPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentAuthPayload", 1, []);
-        }
+        $this->payloadTypeCheck($payload, new CreatePaymentAuthPayload());
         $data = $payload->serialize();
 
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
@@ -187,7 +181,6 @@ class Payment extends Controller
         }
         $options['CURLOPT_TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
             $response = $this->main()->http()->post(
                 $url,
                 [
