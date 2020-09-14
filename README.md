@@ -9,6 +9,7 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-php.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-php?ref=badge_shield)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=paypay_paypayopa-sdk-php&metric=alert_status)](https://sonarcloud.io/dashboard?id=paypay_paypayopa-sdk-php)
 [![Packagist Downloads](https://img.shields.io/packagist/dm/paypayopa/php-sdk)](https://packagist.org/packages/paypayopa/php-sdk)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4d981c534bab4f839b5492962f7f0a58)](https://app.codacy.com/gh/paypay/paypayopa-sdk-php?utm_source=github.com&utm_medium=referral&utm_content=paypay/paypayopa-sdk-php&utm_campaign=Badge_Grade_Dashboard)
 
 PHP Class for interacting with the Paypay API
 This is the quickest way to integrate PayPay payment services, primarily meant for merchants who wish to perform interactions with the Paypay API programatically.
