@@ -2,8 +2,10 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
+use Exception;
 use PayPay\OpenPaymentAPI\Client;
 
+class ClientControllerException extends Exception{}
 class Controller
 {
     /**
@@ -87,5 +89,10 @@ class Controller
     protected function main()
     {
         return $this->MainInst;
+    }
+    protected function payloadTypeCheck($payload,$type){
+        if (!(get_class($payload) === get_class($type))) {
+            throw new ClientControllerException("Payload not of type ".gettype($type), 500);
+        }
     }
 }

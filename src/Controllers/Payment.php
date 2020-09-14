@@ -223,9 +223,7 @@ class Payment extends Controller
      */
     public function capturePaymentAuth($payload)
     {
-        if (!($payload instanceof CapturePaymentAuthPayload)) {
-            throw new Exception("Payload not of type CapturePaymentAuthPayload", 1);
-        }
+        $this->payloadTypeCheck($payload,new CapturePaymentAuthPayload());
         $main = $this->MainInst;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/capture";
@@ -259,9 +257,7 @@ class Payment extends Controller
      */
     public function revertAuth($payload)
     {
-        if (!($payload instanceof RevertAuthPayload)) {
-            throw new Exception("Payload not of type RevertAuthPayload", 1);
-        }
+        $this->payloadTypeCheck($payload,new RevertAuthPayload());
         $main = $this->MainInst;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/preauthorize/revert";

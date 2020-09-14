@@ -107,8 +107,7 @@ class Client
         if (!$requestHandler) {
             $this->requestHandler = new GuzzleHttpClient(['base_uri' => $this->config["API_URL"]]);
         } else {
-            if (gettype($requestHandler) === 'GuzzleHttpClient' || gettype($requestHandler) === 'GuzzleHttp/Client') {
-                /** @phpstan-ignore-next-line */
+            if ($requestHandler instanceof GuzzleHttpClient) {
                 $this->requestHandler = $requestHandler;
             } else {
                 throw new ClientException('Invalid request handler', 500);
