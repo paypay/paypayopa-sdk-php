@@ -48,9 +48,8 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
 
             $response = $this->main()->http()->post(
                 $url,
@@ -58,7 +57,7 @@ class Payment extends Controller
                     'headers' => $options["HEADERS"],
                     'json' => $data,
                     'query' => ['agreeSimilarTransaction' => true],
-                    'timeout' => $options['CURLOPT_TIMEOUT']
+                    'timeout' => $options['TIMEOUT']
                 ]
             );
 
@@ -69,7 +68,7 @@ class Payment extends Controller
                 [
                     'headers' => $options["HEADERS"],
                     'json' => $data,
-                    'timeout' => $options['CURLOPT_TIMEOUT']
+                    'timeout' => $options['TIMEOUT']
                 ]
             );
 
@@ -97,13 +96,13 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
         $response = $this->main()->http()->post(
             $url,
             [
                 'headers' => $options["HEADERS"],
                 'json' => $data,
-                'timeout' => $options['CURLOPT_TIMEOUT']
+                'timeout' => $options['TIMEOUT']
             ]
         );
 
@@ -185,15 +184,14 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
             $response = $this->main()->http()->post(
                 $url,
                 [
                     'headers' => $options["HEADERS"],
                     'json' => $data,
-                    'timeout' => $options['CURLOPT_TIMEOUT'],
+                    'timeout' => $options['TIMEOUT'],
                     'query' => ['agreeSimilarTransaction' => true]
                 ]
             );
@@ -205,7 +203,7 @@ class Payment extends Controller
                 [
                     'headers' => $options["HEADERS"],
                     'json' => $data,
-                    'timeout' => $options['CURLOPT_TIMEOUT']
+                    'timeout' => $options['TIMEOUT']
                 ]
             );
 
@@ -235,13 +233,13 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
         $response = $this->main()->http()->post(
             $url,
             [
                 'headers' => $options["HEADERS"],
                 'json' => $data,
-                'timeout' => $options['CURLOPT_TIMEOUT']
+                'timeout' => $options['TIMEOUT']
             ]
         );
 
@@ -271,13 +269,13 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
         $response = $this->main()->http()->post(
             $url,
             [
                 'headers' => $options["HEADERS"],
                 'json' => $data,
-                'timeout' => $options['CURLOPT_TIMEOUT']
+                'timeout' => $options['TIMEOUT']
             ]
         );
 

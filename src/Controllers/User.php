@@ -82,14 +82,14 @@ class User extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
 
-        $options['CURLOPT_TIMEOUT'] = 10;
+        $options['TIMEOUT'] = 10;
         if ($data) {
             $response = $this->main()->http()->post(
                 $url,
                 [
                     'headers' => $options["HEADERS"],
                     'json' => $data,
-                    'timeout' => $options['CURLOPT_TIMEOUT']
+                    'timeout' => $options['TIMEOUT']
                 ]
             );
 
