@@ -1,5 +1,4 @@
 <?php
-
 namespace PayPay\OpenPaymentAPI\Controller;
 
 use PayPay\OpenPaymentAPI\Client;
@@ -110,14 +109,7 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = $this->main()->http()->get(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'query' =>  ['userAuthorizationId' => $userAuthorizationId]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doAuthCall($url,$options,$userAuthorizationId);
     }
 
     /**
@@ -138,6 +130,17 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
+        return $this->doAuthCall($url,$options,$userAuthorizationId);
+    }
+    /**
+     * Generic HTTP call function
+     *
+     * @param string $url
+     * @param array $options
+     * @param string $userAuthorizationId
+     * @return array
+     */
+    private function doAuthCall($url,$options,$userAuthorizationId){
         $response = $this->main()->http()->get(
             $url,
             [
