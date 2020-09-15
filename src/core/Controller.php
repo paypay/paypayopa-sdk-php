@@ -97,7 +97,7 @@ class Controller
      */
     protected function payloadTypeCheck($payload,$type){
         if (get_class($payload) !== get_class($type)) {
-            throw new ClientControllerException("Payload not of type ".gettype($type), 500);
+            throw new ClientControllerException("Payload not of type ".get_class($type), 500);
         }
     }
     /**

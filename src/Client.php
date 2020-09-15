@@ -89,7 +89,7 @@ class Client
     public function __construct($auth = null, $productionmode = false, $requestHandler = false)
     {
         if (!isset($auth['API_KEY']) || !isset($auth['API_SECRET'])) {
-            throw new Exception("Invalid auth credentials", 1);
+            throw new ClientException("Invalid auth credentials", 1);
         }
         $this->auth = $auth;
         $toStg = !$productionmode ? '-stg' : '';
