@@ -55,13 +55,7 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = $this->main()->http()->delete(
-            $url,
-            [
-                'headers' => $options["HEADERS"]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doCall('delete',$url,[],$options);
     }
 
     /**
@@ -84,16 +78,7 @@ class User extends Controller
 
         $options['TIMEOUT'] = 10;
         if ($data) {
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doCall('post',$url,$data,$options);
         }
     }
     /**
@@ -106,8 +91,7 @@ class User extends Controller
     {
         $decoded = [];
         $key = base64_decode($this->auth['API_SECRET']);
-        $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
-        return $decoded;
+        return (array) JWT::decode($encodedString, $key, array('HS256'));
     }
     /**
      * Get the authorization status of a user

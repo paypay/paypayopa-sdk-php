@@ -48,12 +48,6 @@ class Wallet extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = $this->main()->http()->get(
-            $url,
-            [
-                'headers' => $options["HEADERS"]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doCall('get',$url,[],$options);
     }
 }

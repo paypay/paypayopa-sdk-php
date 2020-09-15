@@ -96,8 +96,41 @@ class Controller
      * @return void
      */
     protected function payloadTypeCheck($payload,$type){
-        if (!(get_class($payload) === get_class($type))) {
+        if ((get_class($payload) !== get_class($type))) {
             throw new ClientControllerException("Payload not of type ".gettype($type), 500);
         }
+    }
+    /**
+     * Generic HTTP calls
+     *
+     * @param string $callType HTTP method
+     * @param string $url URL
+     * @param array $data payload data array
+     * @param array $options call options
+     * @return array
+     */
+    protected function doCall($callType,$url,$data,$options){
+        $request=$this->main()->http();
+        $response = null;
+        if ($callType == 'post') {
+            $response = $request->$callType(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'timeout' => $options['TIMEOUT']
+                ]
+            );
+        }
+        if ($callType == 'get' || $callType == 'delete') {
+            $response = $request->$callType(
+                $url,
+                [
+                    'headers' => $options["HEADERS"]
+                ]
+            );
+        }
+        return json_decode($response->getBody(), true);
+
     }
 }

@@ -60,16 +60,7 @@ class Payment extends Controller
 
             return json_decode($response->getBody(), true);
         } else {
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doCall('post',$url,$data,$options);
         }
     }
     /**
@@ -94,16 +85,8 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['TIMEOUT'] = 30;
-        $response = $this->main()->http()->post(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'json' => $data,
-                'timeout' => $options['TIMEOUT']
-            ]
-        );
-
-        return json_decode($response->getBody(), true);
+        return $this->doCall('post',$url,$data,$options);
+        
     }
 
     /**
@@ -122,13 +105,7 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = $this->main()->http()->get(
-            $url,
-            [
-                'headers' => $options["HEADERS"]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doCall('get',$url,[],$options);
     }
 
     /**
@@ -151,13 +128,7 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
 
-        $response = $this->main()->http()->delete(
-            $url,
-            [
-                'headers' => $options["HEADERS"]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doCall('delete',$url,[],$options);
     }
 
     /**
@@ -193,16 +164,7 @@ class Payment extends Controller
 
             return json_decode($response->getBody(), true);
         } else {
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doCall('post',$url,$data,$options);
         }
     }
 

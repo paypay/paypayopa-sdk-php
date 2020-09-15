@@ -41,16 +41,7 @@ class Code extends Controller
         $options['TIMEOUT'] = 30;
 
         if ($data) {
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doCall('post',$url,$data,$options);
         }
     }
     /**
@@ -69,13 +60,7 @@ class Code extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = $this->main()->http()->get(
-            $url,
-            [
-                'headers' => $options["HEADERS"]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doCall('get',$url,[],$options);
     }
 
 
@@ -94,12 +79,6 @@ class Code extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $url = $this->api_url . $this->main()->GetEndpoint('CODE') . "/$codeId";
-        $response = $this->main()->http()->delete(
-            $url,
-            [
-                'headers' => $options["HEADERS"]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doCall('delete',$url,[],$options);
     }
 }
