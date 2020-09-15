@@ -32,7 +32,6 @@ class Refund extends Controller
         $main = $this->MainInst;
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $options = $this->basePostOptions;
-        $options['CURLOPT_TIMEOUT'] = 30;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $endpoint = '/v2' . $main->GetEndpoint('REFUND');
@@ -41,17 +40,8 @@ class Refund extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
-        $response = $this->main()->http()->post(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'json' => $data,
-                'timeout' => $options['CURLOPT_TIMEOUT']
-            ]
-        );
-
-        return json_decode($response->getBody(), true);
+        $options['TIMEOUT'] = 30;
+        return $this->doCall('post',$url,$data,$options);
     }
 
     /**

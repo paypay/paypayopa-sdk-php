@@ -189,16 +189,7 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['TIMEOUT'] = 30;
-        $response = $this->main()->http()->post(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'json' => $data,
-                'timeout' => $options['TIMEOUT']
-            ]
-        );
-
-        return json_decode($response->getBody(), true);
+        return $this->doCall('post',$url,$data,$options);
     }
 
     /**
@@ -223,15 +214,6 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['TIMEOUT'] = 30;
-        $response = $this->main()->http()->post(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'json' => $data,
-                'timeout' => $options['TIMEOUT']
-            ]
-        );
-
-        return json_decode($response->getBody(), true);
+        return $this->doCall('post',$url,$data,$options);
     }
 }
