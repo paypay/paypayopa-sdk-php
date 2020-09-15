@@ -31,7 +31,6 @@ class Refund extends Controller
         }
         $main = $this->MainInst;
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
-        $options = $this->basePostOptions;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $endpoint = '/v2' . $main->GetEndpoint('REFUND');
