@@ -48,17 +48,7 @@ class Payment extends Controller
         }
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'query' => ['agreeSimilarTransaction' => true],
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doSimilarTransactionCall($url,$options,$data);
         } else {
             return $this->doCall('post',$url,$data,$options);
         }
@@ -152,17 +142,7 @@ class Payment extends Controller
         }
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT'],
-                    'query' => ['agreeSimilarTransaction' => true]
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doSimilarTransactionCall($url,$options,$data);
         } else {
             return $this->doCall('post',$url,$data,$options);
         }
@@ -215,5 +195,25 @@ class Payment extends Controller
         }
         $options['TIMEOUT'] = 30;
         return $this->doCall('post',$url,$data,$options);
+    }
+    /**
+     * Generic HTTP call for similar transaction
+     *
+     * @param string $url
+     * @param array $options
+     * @param array $data
+     * @return array
+     */
+    private function doSimilarTransactionCall($url,$options,$data){
+        $response = $this->main()->http()->post(
+            $url,
+            [
+                'headers' => $options["HEADERS"],
+                'json' => $data,
+                'query' => ['agreeSimilarTransaction' => true],
+                'timeout' => $options['TIMEOUT']
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 }

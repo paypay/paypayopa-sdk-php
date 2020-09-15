@@ -53,5 +53,4 @@ final class PaymentTest extends TestBoilerplate
         $this->Create();
         $this->Cancel();
     }
-    
 }
