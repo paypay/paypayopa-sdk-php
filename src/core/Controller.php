@@ -46,7 +46,7 @@ class Controller
         $this->basePostOptions = [
             'CURLOPT_TIMEOUT' => 15,
             'HEADERS' => [
-                'Content-Type' => 'application/json',
+                'Content-Type' => 'application/json'
             ]
         ];
     }
