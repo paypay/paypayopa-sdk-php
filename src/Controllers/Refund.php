@@ -27,7 +27,7 @@ class Refund extends Controller
     public function refundPayment($payload)
     {
         if (!($payload instanceof RefundPaymentPayload)) {
-            throw new Exception("Payload not of type RefundPaymentPayload", 1);
+            throw new ClientControllerException("Payload not of type RefundPaymentPayload", 1);
         }
         $main = $this->MainInst;
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');

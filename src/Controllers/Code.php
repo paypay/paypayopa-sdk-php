@@ -28,7 +28,7 @@ class Code extends Controller
     public function createQRCode($payload)
     {
         if (!($payload instanceof CreateQrCodePayload)) {
-            throw new Exception("Payload not of type CreateQrCodePayload", 1);
+            throw new ClientControllerException("Payload not of type CreateQrCodePayload", 1);
         }
         $url = $this->api_url . $this->main()->GetEndpoint('CODE');
         $data = $payload->serialize();
