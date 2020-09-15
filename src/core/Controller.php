@@ -41,12 +41,10 @@ class Controller
         $this->MainInst = $MainInstance;
         $this->api_url = $this->MainInst->getConfig('API_URL');
         $this->auth = $auth;
-        $AuthStr = HttpBasicAuthStr($this->auth['API_KEY'], $this->auth['API_SECRET']);
         $this->basePostOptions = [
             'CURLOPT_TIMEOUT' => 15,
             'HEADERS' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => $AuthStr
+                'Content-Type' => 'application/json'
             ]
         ];
     }
