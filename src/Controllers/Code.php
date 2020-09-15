@@ -38,7 +38,7 @@ class Code extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
 
         if ($data) {
             $response = $this->main()->http()->post(
@@ -46,7 +46,7 @@ class Code extends Controller
                 [
                     'headers' => $options["HEADERS"],
                     'json' => $data,
-                    'timeout' => $options['CURLOPT_TIMEOUT']
+                    'timeout' => $options['TIMEOUT']
                 ]
             );
 
