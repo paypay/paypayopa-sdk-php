@@ -38,10 +38,20 @@ class Code extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
-        if($data)
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        $options['TIMEOUT'] = 30;
+
+        if ($data) {
+            $response = $this->main()->http()->post(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'timeout' => $options['TIMEOUT']
+                ]
+            );
+
+            return json_decode($response->getBody(), true);
+        }
     }
     /**
      * Fetches Payment details
@@ -59,8 +69,13 @@ class Code extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpGet($url, [], $options), true);
+        $response = $this->main()->http()->get(
+            $url,
+            [
+                'headers' => $options["HEADERS"]
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 
 
@@ -78,14 +93,13 @@ class Code extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        /** @phpstan-ignore-next-line */
-        return json_decode(
-            HttpDelete(
-                $this->api_url . $this->main()->GetEndpoint('CODE') . "/$codeId",
-                [],
-                $options
-            ),
-            true
+        $url = $this->api_url . $this->main()->GetEndpoint('CODE') . "/$codeId";
+        $response = $this->main()->http()->delete(
+            $url,
+            [
+                'headers' => $options["HEADERS"]
+            ]
         );
+        return json_decode($response->getBody(), true);
     }
 }

@@ -20,7 +20,7 @@ class PreAuthTest extends TestBoilerplate
         $resp = $this->client->payment->createPaymentAuth($CPApayload, true);
         var_dump($resp);
         $this->assertTrue(isset($resp['resultInfo']));
-        $this->assertEquals('SUCCESS', $resp['resultInfo']['code'], $resp['resultInfo']['message'] . ':' . $resp['transit'][4]);
+        $this->assertEquals('SUCCESS', $resp['resultInfo']['code'], $resp['resultInfo']['message'] );
         $this->data = $resp['data'];
     }
     /**
@@ -66,7 +66,7 @@ class PreAuthTest extends TestBoilerplate
         $RAPayload->setMerchantRevertId(uniqid('TESTMERCH_REV_ID'))->setPaymentId($paymentId)->setRequestedAt();
         $resp = $this->client->payment->revertAuth($RAPayload);
         $resultInfo = $resp['resultInfo'];
-        $this->assertEquals('SUCCESS', $resultInfo['code'],$resultInfo['code'].":".$resp["transit"][4]);
+        $this->assertEquals('SUCCESS', $resultInfo['code'],$resultInfo['code']);
     }
     /**
      * tests Capture

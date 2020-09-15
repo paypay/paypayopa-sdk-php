@@ -32,7 +32,7 @@ class Refund extends Controller
         $main = $this->MainInst;
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $options = $this->basePostOptions;
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $endpoint = '/v2' . $main->GetEndpoint('REFUND');
@@ -41,9 +41,17 @@ class Refund extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        $options['TIMEOUT'] = 30;
+        $response = $this->main()->http()->post(
+            $url,
+            [
+                'headers' => $options["HEADERS"],
+                'json' => $data,
+                'timeout' => $options['TIMEOUT']
+            ]
+        );
+
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -61,7 +69,12 @@ class Refund extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpGet($url, [], $options), true);
+        $response = $this->main()->http()->get(
+            $url,
+            [
+                'headers' => $options["HEADERS"]
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 }
