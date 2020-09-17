@@ -20,8 +20,7 @@ composer.phar
 /app/phpunit.xml
 /phpunit.xml
 
-# Build data
-/build/
+
 
 # End of https://www.toptal.com/developers/gitignore/api/composer,phpunit
 
