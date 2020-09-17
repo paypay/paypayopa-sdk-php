@@ -89,7 +89,7 @@ class Client
     public function __construct($auth = null, $productionmode = false, $requestHandler = false)
     {
         if (!isset($auth['API_KEY']) || !isset($auth['API_SECRET'])) {
-            throw new Exception("Invalid auth credentials", 1);
+            throw new ClientException("Invalid auth credentials", 1);
         }
         $this->auth = $auth;
         $toStg = !$productionmode ? '-stg' : '';
@@ -107,8 +107,7 @@ class Client
         if (!$requestHandler) {
             $this->requestHandler = new GuzzleHttpClient(['base_uri' => $this->config["API_URL"]]);
         } else {
-            if (gettype($requestHandler) === 'GuzzleHttpClient' || gettype($requestHandler) === 'GuzzleHttp/Client') {
-                /** @phpstan-ignore-next-line */
+            if ($requestHandler instanceof GuzzleHttpClient) {
                 $this->requestHandler = $requestHandler;
             } else {
                 throw new ClientException('Invalid request handler', 500);

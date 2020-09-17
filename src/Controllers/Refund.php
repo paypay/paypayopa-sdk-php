@@ -27,12 +27,10 @@ class Refund extends Controller
     public function refundPayment($payload)
     {
         if (!($payload instanceof RefundPaymentPayload)) {
-            throw new Exception("Payload not of type RefundPaymentPayload", 1);
+            throw new ClientControllerException("Payload not of type RefundPaymentPayload", 1);
         }
         $main = $this->MainInst;
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
-        $options = $this->basePostOptions;
-        $options['TIMEOUT'] = 30;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $endpoint = '/v2' . $main->GetEndpoint('REFUND');
@@ -42,16 +40,7 @@ class Refund extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['TIMEOUT'] = 30;
-        $response = $this->main()->http()->post(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'json' => $data,
-                'timeout' => $options['TIMEOUT']
-            ]
-        );
-
-        return json_decode($response->getBody(), true);
+        return $this->doCall('post',$url,$data,$options);
     }
 
     /**
@@ -69,12 +58,6 @@ class Refund extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = $this->main()->http()->get(
-            $url,
-            [
-                'headers' => $options["HEADERS"]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doCall('get',$url,[],$options);
     }
 }

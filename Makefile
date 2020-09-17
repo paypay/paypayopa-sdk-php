@@ -13,3 +13,9 @@ run_testlist:
 	vendor/bin/phpunit --testdox --debug tests/RefundTest.php
 	vendor/bin/phpunit --testdox --debug tests/UserTest.php
 	vendor/bin/phpunit --testdox --debug tests/WalletTest.php
+run_staging:
+	clear
+	vendor/bin/phpunit --testdox --debug tests/QrTest.php
+	vendor/bin/phpunit --testdox --debug tests/PaymentTest.php
+	vendor/bin/phpunit --testdox --debug tests/UserTest.php
+	vendor/bin/phpunit --testdox --debug tests/WalletTest.php

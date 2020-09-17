@@ -36,9 +36,7 @@ class Payment extends Controller
      */
     public function createPayment($payload, $agreeSimilarTransaction = false)
     {
-        if (!($payload instanceof CreatePaymentPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentPayload", 500, []);
-        }
+        $this->payloadTypeCheck($payload, new CreatePaymentPayload());
         $data = $payload->serialize();
 
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT');
@@ -50,29 +48,9 @@ class Payment extends Controller
         }
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'query' => ['agreeSimilarTransaction' => true],
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doSimilarTransactionCall($url,$options,$data);
         } else {
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doCall('post',$url,$data,$options);
         }
     }
     /**
@@ -97,16 +75,8 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['TIMEOUT'] = 30;
-        $response = $this->main()->http()->post(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'json' => $data,
-                'timeout' => $options['TIMEOUT']
-            ]
-        );
-
-        return json_decode($response->getBody(), true);
+        return $this->doCall('post',$url,$data,$options);
+        
     }
 
     /**
@@ -125,13 +95,7 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = $this->main()->http()->get(
-            $url,
-            [
-                'headers' => $options["HEADERS"]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doCall('get',$url,[],$options);
     }
 
     /**
@@ -154,13 +118,7 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
 
-        $response = $this->main()->http()->delete(
-            $url,
-            [
-                'headers' => $options["HEADERS"]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+        return $this->doCall('delete',$url,[],$options);
     }
 
     /**
@@ -172,9 +130,7 @@ class Payment extends Controller
      */
     public function createPaymentAuth($payload, $agreeSimilarTransaction = false)
     {
-        if (!($payload instanceof CreatePaymentAuthPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentAuthPayload", 1, []);
-        }
+        $this->payloadTypeCheck($payload, new CreatePaymentAuthPayload());
         $data = $payload->serialize();
 
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
@@ -186,28 +142,9 @@ class Payment extends Controller
         }
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT'],
-                    'query' => ['agreeSimilarTransaction' => true]
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doSimilarTransactionCall($url,$options,$data);
         } else {
-            $response = $this->main()->http()->post(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
-
-            return json_decode($response->getBody(), true);
+            return $this->doCall('post',$url,$data,$options);
         }
     }
 
@@ -221,9 +158,7 @@ class Payment extends Controller
      */
     public function capturePaymentAuth($payload)
     {
-        if (!($payload instanceof CapturePaymentAuthPayload)) {
-            throw new Exception("Payload not of type CapturePaymentAuthPayload", 1);
-        }
+        $this->payloadTypeCheck($payload,new CapturePaymentAuthPayload());
         $main = $this->MainInst;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/capture";
@@ -234,16 +169,7 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['TIMEOUT'] = 30;
-        $response = $this->main()->http()->post(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'json' => $data,
-                'timeout' => $options['TIMEOUT']
-            ]
-        );
-
-        return json_decode($response->getBody(), true);
+        return $this->doCall('post',$url,$data,$options);
     }
 
     /**
@@ -257,9 +183,7 @@ class Payment extends Controller
      */
     public function revertAuth($payload)
     {
-        if (!($payload instanceof RevertAuthPayload)) {
-            throw new Exception("Payload not of type RevertAuthPayload", 1);
-        }
+        $this->payloadTypeCheck($payload,new RevertAuthPayload());
         $main = $this->MainInst;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/preauthorize/revert";
@@ -270,15 +194,26 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $options['TIMEOUT'] = 30;
+        return $this->doCall('post',$url,$data,$options);
+    }
+    /**
+     * Generic HTTP call for similar transaction
+     *
+     * @param string $url
+     * @param array $options
+     * @param array $data
+     * @return array
+     */
+    private function doSimilarTransactionCall($url,$options,$data){
         $response = $this->main()->http()->post(
             $url,
             [
                 'headers' => $options["HEADERS"],
                 'json' => $data,
+                'query' => ['agreeSimilarTransaction' => true],
                 'timeout' => $options['TIMEOUT']
             ]
         );
-
         return json_decode($response->getBody(), true);
     }
 }

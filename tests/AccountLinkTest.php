@@ -34,7 +34,7 @@ class AccountLinkTest extends TestBoilerplate
         $data = $this->data;
         // var_dump($data);
         $this->assertTrue(isset($data));
-        $this->assertEquals('SUCCESS',$data['resultInfo']['code'],$data['resultInfo']['message'].':'.$data['transit'][4]);
+        $this->assertEquals('SUCCESS',$data['resultInfo']['code'],$data['resultInfo']['message'].':');
     }
     function testDecode(){
         $uaresponse  = $this->config['uaresponse'];
