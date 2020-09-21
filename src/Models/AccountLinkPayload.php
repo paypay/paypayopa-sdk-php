@@ -137,7 +137,7 @@ class AccountLinkPayload extends Model
 
     /**
      * Set the value of redirectType
-     * @param string $redirectType
+     * @param string $redirectType "APP_DEEP_LINK" or "WEB_LINK"
      *
      * @return  self
      */
