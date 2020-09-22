@@ -8,6 +8,8 @@ use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
 use PayPay\OpenPaymentAPI\Models\CreateQrCodePayload;
 use PayPay\OpenPaymentAPI\Models\OrderItem;
+use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
+use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 
 class PayloadsTest extends TestBoilerplate
 {
@@ -190,6 +192,49 @@ class PayloadsTest extends TestBoilerplate
         $test->getQuantity();
         $test->getProductId();
         $test->getUnitPrice();
+    }
+    /**
+     * Refund Payload test
+     *
+     * @return void
+     */
+    public function testRefundPaymentPayload()
+    {
+        $test=new RefundPaymentPayload();
+        $test->setMerchantRefundId("UNIQ_REFUND_ID");
+        $test->setPaymentId("PAYPAY_PAYMENT_ID");
+        $test->setAmount(['amount' => 20, 'currency' => 'JPY']);
+        $test->setRequestedAt();
+        $test->setReason("REASON_DESCRIPTION");
+
+        $this->assertIsArray($test->serialize());
+
+        $test->getMerchantRefundId();
+        $test->getPaymentId();
+        $test->getAmount();
+        $test->getRequestedAt();
+        $test->getReason();
+    }
+    /**
+     * Revert Payload
+     *
+     * @return void
+     */
+    public function testRevertAuthPayload()
+    {
+        $test=new RevertAuthPayload();
+        $test->setMerchantRevertId("UNIQ_REVERT_ID");
+        $test->setPaymentId("PAYPAY_PAYMENT_ID");
+        $test->setRequestedAt();
+        $test->setReason("REASON_DESCRIPTION");
+
+        $this->assertIsArray($test->serialize());
+
+        $test->getMerchantRevertId();
+        $test->getPaymentId();
+        $test->getRequestedAt();
+        $test->getReason();
+
     }
 
     
