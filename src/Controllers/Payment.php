@@ -6,7 +6,6 @@ use \Firebase\JWT\JWT;
 use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
 use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
-use PayPay\OpenPaymentAPI\Models\UserAuthUrlInfo;
 use Exception;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;

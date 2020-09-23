@@ -73,6 +73,7 @@ class BasePaymentInfo extends Model
 
         return $this;
     }
+    
     /**
      * Set the value of orderItems
      * @param array $orderItems
@@ -221,5 +222,15 @@ class BasePaymentInfo extends Model
         $this->merchantPaymentId = $merchantPaymentId;
 
         return $this;
+    }
+
+    /**
+     * Get order Items
+     *
+     * @return  array
+     */ 
+    public function getOrderItems()
+    {
+        return $this->orderItems;
     }
 }

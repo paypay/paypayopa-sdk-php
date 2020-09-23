@@ -1,0 +1,22 @@
+{
+    "request": {
+        "method": "POST",
+        "urlPath": "/v1/qr/sessions"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "linkQRCodeURL": "https://PayPayAuthURL.com"
+            }
+        }
+    }
+}

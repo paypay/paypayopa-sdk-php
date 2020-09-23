@@ -19,10 +19,6 @@ class User extends Controller
      * @param Client $MainInstance Instance of invoking client class
      * @param Array $auth API credentials
      */
-    public function __construct($MainInstance, $auth)
-    {
-        parent::__construct($MainInstance, $auth);
-    }
 
 
     /**
