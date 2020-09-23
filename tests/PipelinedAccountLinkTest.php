@@ -32,7 +32,6 @@ class AccountLinkTest extends TestBoilerplate
     {
         $this->Create();
         $data = $this->data;
-        // var_dump($data);
         $this->assertTrue(isset($data));
         $this->assertEquals('SUCCESS',$data['resultInfo']['code'],$data['resultInfo']['message'].':');
     }
