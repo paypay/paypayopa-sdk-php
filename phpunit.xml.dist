@@ -10,11 +10,14 @@
         <log type="coverage-php" target="./build/cov/clover.xml"/>
     </logging>
     <testsuites>
-        <testsuite name="QR Code">
-            <file> tests/QrTest.php</file>
+        <testsuite name="Core Classes">
+            <file> tests/CoreClassesTest.php</file>
         </testsuite>
         <testsuite name="Payloads">
             <file> tests/PayloadsTest.php</file>
+        </testsuite>
+        <testsuite name="QR Code">
+            <file> tests/QrTest.php</file>
         </testsuite>
         <testsuite name="Payments">
             <file> tests/PaymentTest.php</file>
