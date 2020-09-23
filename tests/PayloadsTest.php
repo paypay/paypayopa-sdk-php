@@ -7,6 +7,7 @@ use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
 use PayPay\OpenPaymentAPI\Models\CreateQrCodePayload;
+use PayPay\OpenPaymentAPI\Models\ModelException;
 use PayPay\OpenPaymentAPI\Models\OrderItem;
 use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
@@ -117,7 +118,6 @@ class PayloadsTest extends TestBoilerplate
         $test->setRequestedAt();
         $this->assertIsArray($test->serialize());
         $test->getProductType();
-
     }
 
     /**
@@ -186,7 +186,7 @@ class PayloadsTest extends TestBoilerplate
         $test->setUnitPrice(['amount' => 20, 'currency' => 'JPY']);
 
         $this->assertIsArray($test->serialize());
-        
+
         $test->getName();
         $test->getCategory();
         $test->getQuantity();
@@ -200,7 +200,7 @@ class PayloadsTest extends TestBoilerplate
      */
     public function testRefundPaymentPayload()
     {
-        $test=new RefundPaymentPayload();
+        $test = new RefundPaymentPayload();
         $test->setMerchantRefundId("UNIQ_REFUND_ID");
         $test->setPaymentId("PAYPAY_PAYMENT_ID");
         $test->setAmount(['amount' => 20, 'currency' => 'JPY']);
@@ -222,7 +222,7 @@ class PayloadsTest extends TestBoilerplate
      */
     public function testRevertAuthPayload()
     {
-        $test=new RevertAuthPayload();
+        $test = new RevertAuthPayload();
         $test->setMerchantRevertId("UNIQ_REVERT_ID");
         $test->setPaymentId("PAYPAY_PAYMENT_ID");
         $test->setRequestedAt();
@@ -234,8 +234,42 @@ class PayloadsTest extends TestBoilerplate
         $test->getPaymentId();
         $test->getRequestedAt();
         $test->getReason();
-
     }
 
-    
+    public function testModelFailures()
+    {
+        $test = new CapturePaymentAuthPayload();
+        //Empty property string
+        $test->setMerchantPaymentId("");
+        $test->setAmount(['amount' => 20, 'currency' => 'JPY']);
+        $test->setMerchantCaptureId("UNIQUE_MERCHANTPAYMENT_ID");
+        $test->setRequestedAt();
+        $test->setOrderDescription("WALAWALABINGBONG");
+        try {
+            $test->validate();
+        } catch (ModelException $e) {
+            $this->assertStringContainsString("cannot be empty", $e->getMessage());
+        } finally {
+            try {
+                // Exceeed max string length
+                $test->setMerchantPaymentId(GetRand(69));
+            } catch (ModelException $e) {
+                $this->assertStringContainsString("exceeds maximum size of  characters", $e->getMessage());
+            }
+        }
+    }
+    public function testMultiFieldFailure()
+    {
+        $test = new CapturePaymentAuthPayload();
+        //Empty property string
+        $test->setMerchantPaymentId(5);
+        $test->setMerchantCaptureId("UNIQUE_MERCHANTPAYMENT_ID");
+        $test->setRequestedAt();
+        $test->setOrderDescription(2);
+        try {
+            $test->validate();
+        } catch (ModelException $e) {
+            $this->assertNotEmpty($e->fields);
+        }
+    }
 }

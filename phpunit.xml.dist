@@ -26,6 +26,7 @@
             <file> tests/RefundTest.php</file>
         </testsuite>
         <testsuite name="User">
+            <file>tests/PipelinedAccountLinkTest.php</file>
             <file> tests/UserTest.php</file>
             <file> tests/WalletTest.php </file>
         </testsuite>
