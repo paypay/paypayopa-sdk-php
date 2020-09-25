@@ -70,9 +70,8 @@ class PayloadsTest extends TestBoilerplate
         $test->setUserAuthorizationId("TEST_AUTH_ID");
         $test->setAmount(['amount' => 20, 'currency' => 'JPY']);
         $test->setRequestedAt();
-        $dt = new DateTime();
-        $dt->add(new DateInterval('PT1H'));
-        $test->setExpiresAt($dt);
+        
+        $test->setExpiresAt($this->HourFromNow());
 
         $this->assertIsArray($test->serialize());
         $collector[] = $test->getMerchantPaymentId();
@@ -119,6 +118,24 @@ class PayloadsTest extends TestBoilerplate
         $this->assertIsArray($test->serialize());
         $test->getProductType();
     }
+    private function HourFromNow()
+    {
+        $dt = new DateTime();
+        $dt->add(new DateInterval('PT1H'));
+        return $dt;
+    }
+    public function testCreatePendingPaymentPayload()
+    {
+
+        $test = new CreatePendingPaymentPayload();
+        $test->setExpiryDate($this->HourFromNow());
+        $test->setMerchantPaymentId("TEST_MERCHANT_PAYMENT_ID");
+        $test->setUserAuthorizationId("TEST_AUTH_ID");
+        $test->setAmount(['amount' => 20, 'currency' => 'JPY']);
+        $test->setRequestedAt();
+        $this->assertIsArray($test->serialize());
+        $test->getExpiryDate();
+    }
 
     /**
      * Checking payloads method chaining
@@ -148,9 +165,8 @@ class PayloadsTest extends TestBoilerplate
             ->setRedirectUrl("https://merchant.domain/test/callback")
             ->setUserAgent("UC Browser")
             ->setIsAuthorization(false);
-        $dt = new DateTime();
-        $dt->add(new DateInterval('PT1H'));
-        $test->setAuthorizationExpiry($dt);
+        
+        $test->setAuthorizationExpiry($this->HourFromNow());
 
         $this->assertIsArray($test->serialize());
 

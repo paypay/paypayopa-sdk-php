@@ -1,8 +1,8 @@
 <?php
 
-use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
+use PayPay\OpenPaymentAPI\Models\BasePaymentPayload;
 
-class CreatePendingPaymentPayload extends CreatePaymentPayload
+class CreatePendingPaymentPayload extends BasePaymentPayload
 {
     protected $expiryDate;
     /**
