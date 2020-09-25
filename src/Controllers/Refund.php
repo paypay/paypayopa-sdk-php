@@ -28,11 +28,10 @@ class Refund extends Controller
     public function refundPayment($payload, $paymentType = 'web_cashier')
     {
         if (!($payload instanceof RefundPaymentPayload)) {
-            throw new Exception("Payload not of type RefundPaymentPayload", 1);
+            throw new ClientControllerException("Payload not of type RefundPaymentPayload", 1);
         }
         $main = $this->MainInst;
-        $options = $this->basePostOptions;
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $data = $payload->serialize();
         switch ($paymentType) {
             case 'pending':
@@ -52,9 +51,8 @@ class Refund extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        $options['TIMEOUT'] = 30;
+        return $this->doCall('post',$url,$data,$options);
     }
 
     /**
@@ -72,7 +70,6 @@ class Refund extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpGet($url, [], $options), true);
+        return $this->doCall('get',$url,[],$options);
     }
 }

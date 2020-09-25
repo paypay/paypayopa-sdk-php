@@ -19,10 +19,6 @@ class User extends Controller
      * @param Client $MainInstance Instance of invoking client class
      * @param Array $auth API credentials
      */
-    public function __construct($MainInstance, $auth)
-    {
-        parent::__construct($MainInstance, $auth);
-    }
 
 
     /**
@@ -54,16 +50,14 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = HttpDelete($url, [], $options);
-        /** @phpstan-ignore-next-line */
-        return json_decode($response, true);
+        return $this->doCall('delete',$url,[],$options);
     }
 
     /**
      * Create a ACCOUNT LINK QR and display it to the user
      *
      * @param AccountLinkPayload $payload
-     * @return void
+     * @return mixed
      */
     public function createAccountLinkQrCode($payload)
     {
@@ -76,11 +70,10 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-                
-        $options['CURLOPT_TIMEOUT'] = 10;
+
+        $options['TIMEOUT'] = 10;
         if ($data) {
-            /** @phpstan-ignore-next-line */
-            return json_decode(HttpPost($url, $data, $options), true);
+            return $this->doCall('post',$url,$data,$options);
         }
     }
     /**
@@ -91,15 +84,9 @@ class User extends Controller
      */
     public function decodeUserAuth($encodedString)
     {
-        $decoded = [];
-        $verified = false;
         $key = base64_decode($this->auth['API_SECRET']);
-      
-            $decoded = (array) JWT::decode($encodedString, $key, array('HS256'));
-            $verified = true;
-        
-       
-        return $decoded;
+        $jwt = new JWT();
+        return (array) $jwt->decode($encodedString, $key, array('HS256'));
     }
     /**
      * Get the authorization status of a user
@@ -119,9 +106,7 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = HttpGet($url, ['userAuthorizationId' => $userAuthorizationId], $options);
-        /** @phpstan-ignore-next-line */
-        return json_decode($response, true);
+        return $this->doAuthCall($url,$options,$userAuthorizationId);
     }
 
     /**
@@ -142,8 +127,24 @@ class User extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = HttpGet($url, ['userAuthorizationId' => $userAuthorizationId], $options);
-        /** @phpstan-ignore-next-line */
-        return json_decode($response, true);
+        return $this->doAuthCall($url,$options,$userAuthorizationId);
+    }
+    /**
+     * Generic HTTP call function
+     *
+     * @param string $url
+     * @param array $options
+     * @param string $userAuthorizationId
+     * @return array
+     */
+    private function doAuthCall($url,$options,$userAuthorizationId){
+        $response = $this->main()->http()->get(
+            $url,
+            [
+                'headers' => $options["HEADERS"],
+                'query' =>  ['userAuthorizationId' => $userAuthorizationId]
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
 }

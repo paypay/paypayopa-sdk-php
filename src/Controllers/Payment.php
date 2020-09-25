@@ -7,7 +7,6 @@ use \Firebase\JWT\JWT;
 use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
 use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
-use PayPay\OpenPaymentAPI\Models\UserAuthUrlInfo;
 use Exception;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
@@ -37,9 +36,7 @@ class Payment extends Controller
      */
     public function createPayment($payload, $agreeSimilarTransaction = false)
     {
-        if (!($payload instanceof CreatePaymentPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentPayload", 500, []);
-        }
+        $this->payloadTypeCheck($payload, new CreatePaymentPayload());
         $data = $payload->serialize();
 
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT');
@@ -49,14 +46,11 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
-            /** @phpstan-ignore-next-line */
-            return json_decode($response, true);
+            return $this->doSimilarTransactionCall($url,$options,$data);
         } else {
-            /** @phpstan-ignore-next-line */
-            return json_decode(HttpPost($url, $data, $options), true);
+            return $this->doCall('post',$url,$data,$options);
         }
     }
     /**
@@ -80,9 +74,9 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        $options['TIMEOUT'] = 30;
+        return $this->doCall('post',$url,$data,$options);
+        
     }
     /**
      * Create a direct debit payment and start the money transfer.
@@ -105,9 +99,9 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
         /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        return $this->doCall('post',$url,$data,$options);
     }
 
     /**
@@ -127,8 +121,7 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpGet($url, [], $options), true);
+        return $this->doCall('get',$url,[],$options);
     }
 
     /**
@@ -153,8 +146,7 @@ class Payment extends Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
 
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpDelete($url, [], $options), true);
+        return $this->doCall('delete',$url,[],$options);
     }
 
     /**
@@ -166,9 +158,7 @@ class Payment extends Controller
      */
     public function createPaymentAuth($payload, $agreeSimilarTransaction = false)
     {
-        if (!($payload instanceof CreatePaymentAuthPayload)) {
-            throw new ModelException("Payload not of type CreatePaymentAuthPayload", 1, []);
-        }
+        $this->payloadTypeCheck($payload, new CreatePaymentAuthPayload());
         $data = $payload->serialize();
 
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
@@ -178,14 +168,11 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
+        $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            $response = HttpRequest('POST', $url, ['agreeSimilarTransaction' => true], $data, $options);
-            /** @phpstan-ignore-next-line */
-            return json_decode($response, true);
+            return $this->doSimilarTransactionCall($url,$options,$data);
         } else {
-            /** @phpstan-ignore-next-line */
-            return json_decode(HttpPost($url, $data, $options), true);
+            return $this->doCall('post',$url,$data,$options);
         }
     }
 
@@ -199,9 +186,7 @@ class Payment extends Controller
      */
     public function capturePaymentAuth($payload)
     {
-        if (!($payload instanceof CapturePaymentAuthPayload)) {
-            throw new Exception("Payload not of type CapturePaymentAuthPayload", 1);
-        }
+        $this->payloadTypeCheck($payload,new CapturePaymentAuthPayload());
         $main = $this->MainInst;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/capture";
@@ -211,9 +196,8 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        $options['TIMEOUT'] = 30;
+        return $this->doCall('post',$url,$data,$options);
     }
 
     /**
@@ -227,9 +211,7 @@ class Payment extends Controller
      */
     public function revertAuth($payload)
     {
-        if (!($payload instanceof RevertAuthPayload)) {
-            throw new Exception("Payload not of type RevertAuthPayload", 1);
-        }
+        $this->payloadTypeCheck($payload,new RevertAuthPayload());
         $main = $this->MainInst;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/preauthorize/revert";
@@ -239,9 +221,28 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        $options['TIMEOUT'] = 30;
+        return $this->doCall('post',$url,$data,$options);
+    }
+    /**
+     * Generic HTTP call for similar transaction
+     *
+     * @param string $url
+     * @param array $options
+     * @param array $data
+     * @return array
+     */
+    private function doSimilarTransactionCall($url,$options,$data){
+        $response = $this->main()->http()->post(
+            $url,
+            [
+                'headers' => $options["HEADERS"],
+                'json' => $data,
+                'query' => ['agreeSimilarTransaction' => true],
+                'timeout' => $options['TIMEOUT']
+            ]
+        );
+        return json_decode($response->getBody(), true);
     }
     // Class helper
     /**

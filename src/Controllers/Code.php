@@ -28,7 +28,7 @@ class Code extends Controller
     public function createQRCode($payload)
     {
         if (!($payload instanceof CreateQrCodePayload)) {
-            throw new Exception("Payload not of type CreateQrCodePayload", 1);
+            throw new ClientControllerException("Payload not of type CreateQrCodePayload", 1);
         }
         $url = $this->api_url . $this->main()->GetEndpoint('CODE');
         $data = $payload->serialize();
@@ -38,10 +38,11 @@ class Code extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $options['CURLOPT_TIMEOUT'] = 30;
-        if($data)
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpPost($url, $data, $options), true);
+        $options['TIMEOUT'] = 30;
+
+        if ($data) {
+            return $this->doCall('post',$url,$data,$options);
+        }
     }
     /**
      * Fetches Payment details
@@ -59,8 +60,7 @@ class Code extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        /** @phpstan-ignore-next-line */
-        return json_decode(HttpGet($url, [], $options), true);
+        return $this->doCall('get',$url,[],$options);
     }
 
 
@@ -78,14 +78,7 @@ class Code extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        /** @phpstan-ignore-next-line */
-        return json_decode(
-            HttpDelete(
-                $this->api_url . $this->main()->GetEndpoint('CODE') . "/$codeId",
-                [],
-                $options
-            ),
-            true
-        );
+        $url = $this->api_url . $this->main()->GetEndpoint('CODE') . "/$codeId";
+        return $this->doCall('delete',$url,[],$options);
     }
 }

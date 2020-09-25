@@ -38,8 +38,8 @@ class OrderItem extends Model
     protected $unitPrice;
     public function __construct()
     {
-        $this->_memberize('name', 'string', true);
-        $this->_memberize('quantity', 'integer', true);
+        $this->_memberize('name', 'string', 150);
+        $this->_memberize('quantity', 'integer');
     }
 
 

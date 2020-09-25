@@ -2,8 +2,10 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
+use Exception;
 use PayPay\OpenPaymentAPI\Client;
 
+class ClientControllerException extends Exception{}
 class Controller
 {
     /**
@@ -41,12 +43,10 @@ class Controller
         $this->MainInst = $MainInstance;
         $this->api_url = $this->MainInst->getConfig('API_URL');
         $this->auth = $auth;
-        $AuthStr = HttpBasicAuthStr($this->auth['API_KEY'], $this->auth['API_SECRET']);
         $this->basePostOptions = [
             'CURLOPT_TIMEOUT' => 15,
             'HEADERS' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => $AuthStr
+                'Content-Type' => 'application/json'
             ]
         ];
     }
@@ -87,5 +87,50 @@ class Controller
     protected function main()
     {
         return $this->MainInst;
+    }
+    /**
+     * Checks type of payload against empty payload object
+     *
+     * @param mixed $payload Request data payload object
+     * @param mixed $type Empty payload object
+     * @return void
+     */
+    protected function payloadTypeCheck($payload,$type){
+        if (get_class($payload) !== get_class($type)) {
+            throw new ClientControllerException("Payload not of type ".get_class($type), 500);
+        }
+    }
+    /**
+     * Generic HTTP calls
+     *
+     * @param string $callType HTTP method
+     * @param string $url URL
+     * @param array $data payload data array
+     * @param array $options call options
+     * @return array
+     */
+    protected function doCall($callType,$url,$data,$options){
+        $request=$this->main()->http();
+        $response = null;
+        if ($callType == 'post') {
+            $response = $request->$callType(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'timeout' => $options['TIMEOUT']
+                ]
+            );
+        }
+        if ($callType == 'get' || $callType == 'delete') {
+            $response = $request->$callType(
+                $url,
+                [
+                    'headers' => $options["HEADERS"]
+                ]
+            );
+        }
+        return json_decode($response->getBody(), true);
+
     }
 }
