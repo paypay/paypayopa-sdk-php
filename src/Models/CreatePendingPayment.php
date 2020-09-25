@@ -5,6 +5,14 @@ use PayPay\OpenPaymentAPI\Models\BasePaymentPayload;
 class CreatePendingPaymentPayload extends BasePaymentPayload
 {
     protected $expiryDate;
+    public function __construct()
+    {
+        $this->_memberize('merchantPaymentId', 'string', 64);
+        $this->_memberize('userAuthorizationId', 'string', 64);
+        $this->_memberize('amount', 'array');
+        $this->_memberize('requestedAt', 'integer');
+    }
+
     /**
      * Get the value of expiryDate
      * @return integer
