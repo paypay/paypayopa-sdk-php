@@ -38,11 +38,9 @@ class Payment extends Controller
     {
         $this->payloadTypeCheck($payload, new CreatePaymentPayload());
         $data = $payload->serialize();
-
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT');
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
             return $this->doSimilarTransactionCall($url,$options,$data);
@@ -67,7 +65,6 @@ class Payment extends Controller
         $url = str_replace('v2', $version, $url);
         $endpoint = '/' . $version . $this->main()->GetEndpoint('SUBSCRIPTION');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        
         $options['TIMEOUT'] = 30;
         return $this->doCall('post',$url,$data,$options);
         
@@ -89,7 +86,6 @@ class Payment extends Controller
         $url = str_replace('v2', $version, $url);
         $endpoint = '/' . $version . $this->main()->GetEndpoint('REQUEST_ORDER');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        
         $options['TIMEOUT'] = 30;
         /** @phpstan-ignore-next-line */
         return $this->doCall('post',$url,$data,$options);
@@ -106,9 +102,7 @@ class Payment extends Controller
     {
         $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
         $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
-
         $options = $this->HmacCallOpts('GET', $endpoint);
-        
         return $this->doCall('get',$url,[],$options);
     }
 
@@ -129,8 +123,6 @@ class Payment extends Controller
         $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
         $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
         $options = $this->HmacCallOpts('DELETE', $endpoint);
-        
-
         return $this->doCall('delete',$url,[],$options);
     }
 
@@ -145,11 +137,9 @@ class Payment extends Controller
     {
         $this->payloadTypeCheck($payload, new CreatePaymentAuthPayload());
         $data = $payload->serialize();
-
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
             return $this->doSimilarTransactionCall($url,$options,$data);
@@ -174,7 +164,6 @@ class Payment extends Controller
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/capture";
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/capture";
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        
         $options['TIMEOUT'] = 30;
         return $this->doCall('post',$url,$data,$options);
     }
@@ -196,7 +185,6 @@ class Payment extends Controller
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/preauthorize/revert";
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/preauthorize/revert";
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        
         $options['TIMEOUT'] = 30;
         return $this->doCall('post',$url,$data,$options);
     }
