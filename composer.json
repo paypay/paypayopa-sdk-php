@@ -40,7 +40,7 @@
         "php": ">=7.0.0",
         "atoum/atoum": "^3.4",
         "firebase/php-jwt": "^5.2",
-        "guzzlehttp/guzzle": "^6.0"
+        "guzzlehttp/guzzle": "^6.0 || ^7.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
