@@ -34,10 +34,7 @@ class Code extends Controller
         $data = $payload->serialize();
         $endpoint = '/v2' . $this->main()->GetEndpoint('CODE');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         $options['TIMEOUT'] = 30;
 
         if ($data) {
@@ -56,10 +53,7 @@ class Code extends Controller
         $endpoint = '/v2' . $this->main()->GetEndpoint('CODE') . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
         $url = $this->api_url . $main->GetEndpoint('CODE') . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
         $options = $this->HmacCallOpts('GET', $endpoint);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         return $this->doCall('get',$url,[],$options);
     }
 
@@ -74,10 +68,7 @@ class Code extends Controller
     {
         $endpoint = '/v2' . $this->main()->GetEndpoint('CODE') . "/$codeId";
         $options = $this->HmacCallOpts('DELETE', $endpoint);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         $url = $this->api_url . $this->main()->GetEndpoint('CODE') . "/$codeId";
         return $this->doCall('delete',$url,[],$options);
     }

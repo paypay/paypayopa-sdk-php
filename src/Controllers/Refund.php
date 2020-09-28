@@ -48,10 +48,7 @@ class Refund extends Controller
         }
 
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         $options['TIMEOUT'] = 30;
         return $this->doCall('post',$url,$data,$options);
     }
@@ -67,10 +64,7 @@ class Refund extends Controller
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND') . "/$merchantRefundId";
         $endpoint = '/v2' . $main->GetEndpoint('REFUND') . "/$merchantRefundId";
         $options = $this->HmacCallOpts('GET', $endpoint);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         return $this->doCall('get',$url,[],$options);
     }
 }
