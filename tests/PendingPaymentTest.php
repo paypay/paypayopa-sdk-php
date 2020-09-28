@@ -17,9 +17,10 @@ final class PendingPaymentTest extends TestBoilerplate
         $CPPPayload = new CreatePendingPaymentPayload();
         // Save Cart totals
         $amount = [
-            "amount" => 8,
+            "amount" => rand(5,20),
             "currency" => "JPY"
         ];
+        
         $CPPPayload
             ->setMerchantPaymentId(uniqid('TESTMERCH_PAY_ID'))
             ->setRequestedAt()
@@ -44,8 +45,10 @@ final class PendingPaymentTest extends TestBoilerplate
         $data =  $this->data;
         $merchantPaymentId = $data['merchantPaymentId'];
         $this->assertTrue(isset($merchantPaymentId), 'Merchant Payment ID not set');
-        $paymentDetails = $client->payment->getPaymentDetails($merchantPaymentId,'pending');
+        $paymentDetails = $client->payment->getPaymentDetails($merchantPaymentId, 'pending');
+        $this->data=$paymentDetails["data"];
         $this->assertEquals('SUCCESS', $paymentDetails['resultInfo']['code']);
+        
         print_r('\n===================Pending Payment Details===================\n');
         var_dump($paymentDetails);
     }
@@ -87,7 +90,7 @@ final class PendingPaymentTest extends TestBoilerplate
         $refundId = uniqid('TESTREFUND');
         // Save Cart totals
         $amount = [
-            "amount" => 1,
+            "amount" => 2,
             "currency" => "JPY"
         ];
         $RPPayload = new RefundPaymentPayload();
@@ -96,7 +99,7 @@ final class PendingPaymentTest extends TestBoilerplate
             ->setPaymentId($paymentId)
             ->setAmount($amount)
             ->setRequestedAt();
-        $resp = $this->client->refund->refundPayment($RPPayload,'pending');
+        $resp = $this->client->refund->refundPayment($RPPayload, 'pending');
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals("SUCCESS", $resultInfo['code']);
         $this->data = $resp['data'];
@@ -112,5 +115,12 @@ final class PendingPaymentTest extends TestBoilerplate
         $resp = $this->client->refund->getRefundDetails($merchantRefundId);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
+    }
+    public function testRefund()
+    {
+        $this->Create(true);
+        $this->Details();
+        $this->refund();
+        $this->refundDetails();
     }
 }

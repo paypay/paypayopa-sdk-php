@@ -15,19 +15,21 @@
                 "codeId": "08100001"
             },
             "data": {
-                "merchantPaymentId": "TESTMERCH_PAY_ID5f55ce359d249",
-                "userAuthorizationId": "SAME-USER-AUTH-ID-PROVIDED_BY_YOU",
+                "merchantPaymentId": "MERCHANT_PAYMENT_IDENTIFIER",
+                "userAuthorizationId": "USER_AUTHORIZATION",
                 "amount": {
-                    "amount": 8,
+                    "amount": 15,
                     "currency": "JPY"
                 },
                 "orderItems": [],
-                "metadata": {
-                    "client_id": "jlfhgsldfjlgsdfg"
+                "status": "COMPLETED",
+                "requestedAt": 1601281573,
+                "refunds": {
+                    "data": []
                 },
-                "status": "CREATED",
-                "requestedAt": 1599458869,
-                "expiryDate": 1599480470
+                "expiryDate": 1601303174,
+                "paymentId": "PAYPAY_PAYMENT_IDENTIFIER",
+                "acceptedAt": 1601281610
             }
         }
     }
