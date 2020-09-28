@@ -3,7 +3,7 @@
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
 
-require_once('TestBoilerplate.php');
+require_once 'TestBoilerplate.php' ;
 final class PendingPaymentTest extends TestBoilerplate
 {
     /**
@@ -49,8 +49,7 @@ final class PendingPaymentTest extends TestBoilerplate
         $this->data=$paymentDetails["data"];
         $this->assertEquals('SUCCESS', $paymentDetails['resultInfo']['code']);
         
-        print_r('\n===================Pending Payment Details===================\n');
-        var_dump($paymentDetails);
+        echo('\n===================Pending Payment Details===================\n');
     }
     /**
      * Cancel pending payment
