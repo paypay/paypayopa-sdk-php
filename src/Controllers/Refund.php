@@ -38,6 +38,7 @@ class Refund extends Controller
                 $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
                 $endpoint = "/${version}" . $main->GetEndpoint('REQUEST_ORDER') .  $main->GetEndpoint('REFUND');
                 $url = $this->api_url . $main->GetEndpoint('REQUEST_ORDER')  .  $main->GetEndpoint('REFUND');
+                $url = str_replace('v2', $version, $url);
                 break;
 
             default:
