@@ -46,10 +46,7 @@ class User extends Controller
         $url = $this->api_url . $this->main()->GetEndpoint('USER_AUTH') . "/$userAuthorizationId";
         $endpoint = 'v2' . $this->main()->GetEndpoint('USER_AUTH') . "/$userAuthorizationId";
         $options = $this->HmacCallOpts('DELETE', $endpoint);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         return $this->doCall('delete',$url,[],$options);
     }
 
@@ -66,10 +63,7 @@ class User extends Controller
         $endpoint = '/v1' . $this->main()->GetEndpoint('SESSIONS');
         $data = $payload->serialize();
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
 
         $options['TIMEOUT'] = 10;
         if ($data) {
@@ -102,10 +96,7 @@ class User extends Controller
         $url = $this->api_url . $this->main()->GetEndpoint('USER_AUTH');
         $endpoint = '/v2' . $this->main()->GetEndpoint('USER_AUTH');
         $options = $this->HmacCallOpts('GET', $endpoint);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         return $this->doAuthCall($url,$options,$userAuthorizationId);
     }
 
@@ -123,10 +114,7 @@ class User extends Controller
         $url = $this->api_url . $this->main()->GetEndpoint('USER_PROFILE_SECURE');
         $endpoint = '/v2' . $this->main()->GetEndpoint('USER_PROFILE_SECURE');
         $options = $this->HmacCallOpts('GET', $endpoint);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         return $this->doAuthCall($url,$options,$userAuthorizationId);
     }
     /**

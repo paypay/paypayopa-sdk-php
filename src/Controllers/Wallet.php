@@ -44,10 +44,7 @@ class Wallet extends Controller
         $url = $this->api_url . $this->main()->GetEndpoint('WALLET_BALANCE');
         $endpoint = '/v2' . $this->main()->GetEndpoint('WALLET_BALANCE');
         $options = $this->HmacCallOpts('GET', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         return $this->doCall('get',$url,[],$options);
     }
 }

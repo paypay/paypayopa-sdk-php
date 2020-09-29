@@ -22,9 +22,10 @@ class Refund extends Controller
      * Refund a payment
      *
      * @param RefundPaymentPayload $payload SDK payload object
+     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
      * @return mixed
      */
-    public function refundPayment($payload)
+    public function refundPayment($payload, $paymentType = 'web_cashier')
     {
         if (!($payload instanceof RefundPaymentPayload)) {
             throw new ClientControllerException("Payload not of type RefundPaymentPayload", 1);
@@ -32,13 +33,22 @@ class Refund extends Controller
         $main = $this->MainInst;
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $data = $payload->serialize();
-        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
-        $endpoint = '/v2' . $main->GetEndpoint('REFUND');
-        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
+        switch ($paymentType) {
+            case 'pending':
+                $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
+                $endpoint = "/${version}" . $main->GetEndpoint('REQUEST_ORDER') .  $main->GetEndpoint('REFUND');
+                $url = $this->api_url . $main->GetEndpoint('REQUEST_ORDER')  .  $main->GetEndpoint('REFUND');
+                $url = str_replace('v2', $version, $url);
+                break;
+
+            default:
+                $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
+                $endpoint = '/v2' . $main->GetEndpoint('REFUND');
+                break;
         }
+
+        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        
         $options['TIMEOUT'] = 30;
         return $this->doCall('post',$url,$data,$options);
     }
@@ -54,10 +64,7 @@ class Refund extends Controller
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND') . "/$merchantRefundId";
         $endpoint = '/v2' . $main->GetEndpoint('REFUND') . "/$merchantRefundId";
         $options = $this->HmacCallOpts('GET', $endpoint);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
+        
         return $this->doCall('get',$url,[],$options);
     }
 }

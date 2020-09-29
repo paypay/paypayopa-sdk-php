@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "POST",
-        "urlPath": "/v2/payments"
+        "url": "/v1/requestOrder/refunds"
     },
     "response": {
         "status": 201,
@@ -15,17 +15,16 @@
                 "codeId": "08100001"
             },
             "data": {
-                "paymentId": "PAYPAY_TRANSACTION_ID",
-                "status": "COMPLETED",
-                "acceptedAt": 1598229745,
-                "merchantPaymentId":"YOUR_MERCHANT_PAYMENT_ID",
-                "userAuthorizationId": "YOUR-CUSTOMER_S-AUTHORIZATION-IDENTIFIER-HERE",
+                "status": "CREATED",
+                "acceptedAt": 1601280078,
+                "merchantRefundId": "TESTREFUNDID",
+                "paymentId": "PAYPAY-PAYMENTID",
                 "amount": {
-                    "amount": 1,
+                    "amount": 2,
                     "currency": "JPY"
                 },
-                "requestedAt": 1598229744,
-                "assumeMerchant": "YOUR_MERCHANT_IDENTIFIER"
+                "requestedAt": 1601280078,
+                "assumeMerchant": "YOURMERCHANTID"
             }
         }
     }

@@ -1,0 +1,36 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "^\\/v1\\/requestOrder\\/.*[0-9a-zA-Z].*$"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "merchantPaymentId": "MERCHANT_PAYMENT_IDENTIFIER",
+                "userAuthorizationId": "USER_AUTHORIZATION",
+                "amount": {
+                    "amount": 15,
+                    "currency": "JPY"
+                },
+                "orderItems": [],
+                "status": "COMPLETED",
+                "requestedAt": 1601281573,
+                "refunds": {
+                    "data": []
+                },
+                "expiryDate": 1601303174,
+                "paymentId": "PAYPAY_PAYMENT_IDENTIFIER",
+                "acceptedAt": 1601281610
+            }
+        }
+    }
+}

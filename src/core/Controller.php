@@ -111,6 +111,10 @@ class Controller
      */
     protected function doCall($callType,$url,$data,$options){
         $request=$this->main()->http();
+        $mid = $this->main()->GetMid();
+        if ($mid) {
+            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
+        }
         $response = null;
         if ($callType == 'post') {
             $response = $request->$callType(

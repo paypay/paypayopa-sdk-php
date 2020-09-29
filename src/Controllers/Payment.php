@@ -2,6 +2,7 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
+use CreatePendingPaymentPayload;
 use \Firebase\JWT\JWT;
 use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
@@ -37,19 +38,14 @@ class Payment extends Controller
     {
         $this->payloadTypeCheck($payload, new CreatePaymentPayload());
         $data = $payload->serialize();
-
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT');
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            return $this->doSimilarTransactionCall($url,$options,$data);
+            return $this->doSimilarTransactionCall($url, $options, $data);
         } else {
-            return $this->doCall('post',$url,$data,$options);
+            return $this->doCall('post', $url, $data, $options);
         }
     }
     /**
@@ -69,32 +65,41 @@ class Payment extends Controller
         $url = str_replace('v2', $version, $url);
         $endpoint = '/' . $version . $this->main()->GetEndpoint('SUBSCRIPTION');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
         $options['TIMEOUT'] = 30;
-        return $this->doCall('post',$url,$data,$options);
-        
+        return $this->doCall('post', $url, $data, $options);
+    }
+    /**
+     * Create a pending payment and initialize the money transfer.
+     *
+     * @param CreatePendingPaymentPayload $payload SDK payload object
+     * @return array
+     */
+    public function createPendingPayment($payload)
+    {
+        if (!($payload instanceof CreatePendingPaymentPayload)) {
+            throw new ModelException("Payload not of type CreatePendingPaymentPayload", 500, []);
+        }
+        $data = $payload->serialize();
+        $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
+        $options = $this->HmacCallOpts('POST', ('/' . $version . $this->main()->GetEndpoint('REQUEST_ORDER')), 'application/json;charset=UTF-8;', $data);
+        $options['TIMEOUT'] = 30;
+        /** @phpstan-ignore-next-line */
+        return $this->doCall('post', str_replace('v2', $version, ($this->api_url . $this->main()->GetEndpoint('REQUEST_ORDER'))), $data, $options);
     }
 
     /**
      * Fetches Payment details
      *
      * @param String $merchantPaymentId The unique payment transaction id provided by merchant
+     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
      * @return mixed
      */
-    public function getPaymentDetails($merchantPaymentId)
+    public function getPaymentDetails($merchantPaymentId, $paymentType = 'web_cashier')
     {
-        $main = $this->MainInst;
-        $endpoint = '/v2' . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
-        $url = $this->api_url . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+        $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
+        $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
         $options = $this->HmacCallOpts('GET', $endpoint);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
-        return $this->doCall('get',$url,[],$options);
+        return $this->doCall('get', $url, [], $options);
     }
 
     /**
@@ -105,19 +110,16 @@ class Payment extends Controller
      * Note: The Cancel API can be used until 00:14:59 AM the day after the Payment has happened.
      *       For 00:15 AM or later, please call the refund method to refund the payment.
      * @param String $merchantPaymentId The unique payment transaction id provided by merchant
+     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
      * @return mixed
      */
-    public function cancelPayment($merchantPaymentId)
+    public function cancelPayment($merchantPaymentId, $paymentType = 'web_cashier')
     {
-        $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
-        $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
-        $options = $this->HmacCallOpts('DELETE', $endpoint);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
 
-        return $this->doCall('delete',$url,[],$options);
+        $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
+        $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
+        $options = $this->HmacCallOpts('DELETE', $endpoint);
+        return $this->doCall('delete', $url, [], $options);
     }
 
     /**
@@ -131,19 +133,14 @@ class Payment extends Controller
     {
         $this->payloadTypeCheck($payload, new CreatePaymentAuthPayload());
         $data = $payload->serialize();
-
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            return $this->doSimilarTransactionCall($url,$options,$data);
+            return $this->doSimilarTransactionCall($url, $options, $data);
         } else {
-            return $this->doCall('post',$url,$data,$options);
+            return $this->doCall('post', $url, $data, $options);
         }
     }
 
@@ -157,18 +154,14 @@ class Payment extends Controller
      */
     public function capturePaymentAuth($payload)
     {
-        $this->payloadTypeCheck($payload,new CapturePaymentAuthPayload());
+        $this->payloadTypeCheck($payload, new CapturePaymentAuthPayload());
         $main = $this->MainInst;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/capture";
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/capture";
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
         $options['TIMEOUT'] = 30;
-        return $this->doCall('post',$url,$data,$options);
+        return $this->doCall('post', $url, $data, $options);
     }
 
     /**
@@ -182,18 +175,14 @@ class Payment extends Controller
      */
     public function revertAuth($payload)
     {
-        $this->payloadTypeCheck($payload,new RevertAuthPayload());
+        $this->payloadTypeCheck($payload, new RevertAuthPayload());
         $main = $this->MainInst;
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/preauthorize/revert";
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/preauthorize/revert";
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        $mid = $this->main()->GetMid();
-        if ($mid) {
-            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
-        }
         $options['TIMEOUT'] = 30;
-        return $this->doCall('post',$url,$data,$options);
+        return $this->doCall('post', $url, $data, $options);
     }
     /**
      * Generic HTTP call for similar transaction
@@ -203,7 +192,12 @@ class Payment extends Controller
      * @param array $data
      * @return array
      */
-    private function doSimilarTransactionCall($url,$options,$data){
+    private function doSimilarTransactionCall($url, $options, $data)
+    {
+        $mid = $this->main()->GetMid();
+        if ($mid) {
+            $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
+        }
         $response = $this->main()->http()->post(
             $url,
             [
@@ -214,5 +208,31 @@ class Payment extends Controller
             ]
         );
         return json_decode($response->getBody(), true);
+    }
+    // Class helper
+    /**
+     * Returns endpoint data by payment type for payment details and cancellation
+     *
+     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
+     * @param String $merchantPaymentId The merchant payment id for transaction
+     * @return array
+     */
+    private function endpointByPaymentType($paymentType, $merchantPaymentId)
+    {
+        $main = $this->main();
+        switch ($paymentType) {
+            case 'pending':
+                $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
+                $endpoint = "/${version}" . $main->GetEndpoint('REQUEST_ORDER') . "/$merchantPaymentId";
+                $url = $this->api_url . $main->GetEndpoint('REQUEST_ORDER') . "/$merchantPaymentId";
+                $url = str_replace('v2', $version, $url);
+                break;
+
+            default:
+                $endpoint = '/v2' . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+                $url = $this->api_url . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
+                break;
+        }
+        return ["endpoint" => $endpoint, "url" => $url];
     }
 }
