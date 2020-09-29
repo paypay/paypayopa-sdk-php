@@ -50,7 +50,7 @@ final class PendingPaymentTest extends TestBoilerplate
         $this->data=$paymentDetails["data"];
         $this->assertEquals('SUCCESS', $paymentDetails['resultInfo']['code']);
         
-        echo('\n===================Pending Payment Details===================\n');
+        echo'\n===================Pending Payment Details===================\n';
     }
     /**
      * Cancel pending payment
