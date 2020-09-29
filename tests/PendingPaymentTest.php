@@ -1,6 +1,7 @@
 <?php
 
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
+use PayPay\OpenPaymentAPI\Models\ModelException;
 use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
 
 require_once 'TestBoilerplate.php' ;
@@ -121,5 +122,14 @@ final class PendingPaymentTest extends TestBoilerplate
         $this->Details();
         $this->refund();
         $this->refundDetails();
+    }
+    public function testBadPayloadFailure()
+    {
+        try {
+            $this->client->payment->createPendingPayment(2);
+        } catch (ModelException $e) {
+            $this->assertStringContainsString("Payload not of type CreatePendingPaymentPayload",$e->getMessage());
+        }
+        
     }
 }

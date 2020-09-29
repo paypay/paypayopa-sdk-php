@@ -1,6 +1,7 @@
 <?php
 
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
+use PayPay\OpenPaymentAPI\Models\ModelException;
 
 require_once('TestBoilerplate.php');
 final class ContinuousPaymentTest extends TestBoilerplate
@@ -56,5 +57,14 @@ final class ContinuousPaymentTest extends TestBoilerplate
     {
         $this->Create();
         $this->Cancel();
+    }
+    public function testBadPayloadFailure()
+    {
+        try {
+            $this->client->payment->createContinuousPayment(2);
+        } catch (ModelException $e) {
+            $this->assertStringContainsString("Payload not of type CreateContinuousPaymentPayload",$e->getMessage());
+        }
+        
     }
 }

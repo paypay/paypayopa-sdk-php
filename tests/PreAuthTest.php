@@ -10,14 +10,14 @@ class PreAuthTest extends TestBoilerplate
 {
     
 
-    public function Create()
+    public function Create($similiar=true)
     {
         $CPApayload = new CreatePaymentAuthPayload();
         $CPApayload->setMerchantPaymentId(uniqid('TEST_PREAUTH'))
             ->setUserAuthorizationId($this->config['uaid'])
-            ->setAmount(['amount' => 20, 'currency' => 'JPY'])
+            ->setAmount(['amount' => $similiar?20:rand(5,17), 'currency' => 'JPY'])
             ->setRequestedAt();
-        $resp = $this->client->payment->createPaymentAuth($CPApayload, true);
+        $resp = $this->client->payment->createPaymentAuth($CPApayload, $similiar);
         var_dump($resp);
         $this->assertTrue(isset($resp['resultInfo']));
         $this->assertEquals('SUCCESS', $resp['resultInfo']['code'], $resp['resultInfo']['message'] );
@@ -85,7 +85,7 @@ class PreAuthTest extends TestBoilerplate
      */
     public function testPreauthRevert()
     {
-        $this->Create();
+        $this->Create(false);
         $this->RevertAuthorization();
     }
 }
