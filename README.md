@@ -25,6 +25,14 @@ Before integrating with the SDK, run through this checklist:
 * Sign up for a PayPay developer/merchant account
 * Generate the API keys from the Developer Panel. Use the sandbox API keys to test out the integration
 
+## Minimum required software requirements
+
+To use the Paypay OPA PHP SDK you need:
+- A server compute environment (local machines, docker containers, VPS or dedicated servers, cloud infrastructure etc. )
+- A web server to serve your API responses and html documents.
+- PHP version 7.x interpreter to execute your backend code.
+- Composer to manage your dependencies(recommended) or a release version from this repo to manually maintain your dependencies. 
+
 ## HMAC Signature Verification
 
 Signature verification is a mandatory step to ensure that the callback is sent by PayPay and the payment is received from an authentic source.
