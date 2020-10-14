@@ -1,4 +1,4 @@
 <?php
 $config = [
-    "API_URL" => 'http://api.paypay.ne.jp/v2',
+    "API_URL" => 'https://api.paypay.ne.jp/v2',
 ];
