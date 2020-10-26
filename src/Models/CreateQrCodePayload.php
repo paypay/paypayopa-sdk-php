@@ -144,7 +144,7 @@ class CreateQrCodePayload extends BasePaymentInfo
             $this->redirectType = $redirectType;
             return $this;
         }else {
-            throw new Exception("Invalid redirection type", 500);
+            throw new ModelException("Invalid redirection type", 500,['redirectType']);
         }
     }
 

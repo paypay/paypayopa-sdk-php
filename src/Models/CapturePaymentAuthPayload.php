@@ -85,7 +85,7 @@ class CapturePaymentAuthPayload extends Model
     public function setAmount($amount)
     {
         if (!isset($amount['currency']) || !isset($amount['amount'])) {
-            throw new Exception("Invalid amount");
+            throw new ModelException("Invalid amount",400,['amount']);
         }
 
         $this->amount = $amount;

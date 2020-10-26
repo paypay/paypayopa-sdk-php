@@ -116,7 +116,7 @@ class Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $response = null;
-        if ($callType == 'post') {
+        if ($callType === 'post') {
             $response = $request->$callType(
                 $url,
                 [
@@ -126,7 +126,7 @@ class Controller
                 ]
             );
         }
-        if ($callType == 'get' || $callType == 'delete') {
+        if ($callType === 'get' || $callType === 'delete') {
             $response = $request->$callType(
                 $url,
                 [

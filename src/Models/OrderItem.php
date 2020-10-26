@@ -147,7 +147,7 @@ class OrderItem extends Model
     {
         $this->_memberize('unitPrice', 'array');
         if (!isset($unitPrice['currency']) || !isset($unitPrice['amount'])) {
-            throw new Exception("Invalid amount");
+            throw new ModelException("Invalid amount",400,['unitPrice']);
         }
         $this->unitPrice = $unitPrice;
         return $this;
