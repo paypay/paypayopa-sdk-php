@@ -5,7 +5,34 @@ namespace PayPay\OpenPaymentAPI\Controller;
 use Exception;
 use PayPay\OpenPaymentAPI\Client;
 
-class ClientControllerException extends Exception{}
+class ClientControllerException extends Exception
+{
+    private $resultInfo = false;
+    public function __construct($resultInfo, $code = 500, $documentationUrl = false)
+    {
+        $this->documentationUrl = $documentationUrl;
+
+        if (gettype($resultInfo) === 'array') {
+            parent::__construct($resultInfo['message'], $code);
+            $this->resultInfo= $resultInfo;
+        }
+        if ($resultInfo instanceof String) {
+            // If string message error
+            parent::__construct($resultInfo, $code);
+        }
+    }
+    function getResolutionInfo($apiId = 25)
+    {
+        if (!$this->documentationUrl) {
+            return "https://github.com/paypay/paypayopa-sdk-php/issues/new/choose";
+        }
+        $resultInfo = $this->resultInfo;
+        $documentationUrl = $this->documentationUrl;
+        $code = $resultInfo["code"];
+        $codeId = $resultInfo["codeId"];
+        return "${documentationUrl}?api-id=${apiId}&code=${code}&code-id=${codeId}";
+    }
+}
 class Controller
 {
     /**
@@ -95,9 +122,10 @@ class Controller
      * @param mixed $type Empty payload object
      * @return void
      */
-    protected function payloadTypeCheck($payload,$type){
+    protected function payloadTypeCheck($payload, $type)
+    {
         if (get_class($payload) !== get_class($type)) {
-            throw new ClientControllerException("Payload not of type ".get_class($type), 500);
+            throw new ClientControllerException("Payload not of type " . get_class($type), 500);
         }
     }
     /**
@@ -109,8 +137,9 @@ class Controller
      * @param array $options call options
      * @return array
      */
-    protected function doCall($callType,$url,$data,$options){
-        $request=$this->main()->http();
+    protected function doCall($callType, $url, $data, $options)
+    {
+        $request = $this->main()->http();
         $mid = $this->main()->GetMid();
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
@@ -134,7 +163,15 @@ class Controller
                 ]
             );
         }
-        return json_decode($response->getBody(), true);
-
+        $responseData = json_decode($response->getBody(), true);
+        $resultInfo = $responseData["resultInfo"];
+        if ($resultInfo['code'] !== "SUCCESS") {
+            throw new ClientControllerException(
+                $resultInfo, //PayPay API message
+                $response->getStatusCode(), // API response code
+                $this->main()->GetConfig('DOC_URL') // PayPay Resolve URL
+            );
+        }
+        return $responseData;
     }
 }

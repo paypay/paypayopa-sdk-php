@@ -133,6 +133,15 @@ class User extends Controller
                 'query' =>  ['userAuthorizationId' => $userAuthorizationId]
             ]
         );
-        return json_decode($response->getBody(), true);
+        $responseData = json_decode($response->getBody(), true);
+        $resultInfo = $responseData["resultInfo"];
+        if ($resultInfo['code'] !== "SUCCESS") {
+            throw new ClientControllerException(
+                $resultInfo,//PayPay API message
+                $response->getStatusCode(), // API response code
+                $this->main()->GetConfig('DOC_URL') // PayPay Resolve URL
+            );
+        }
+        return $responseData;
     }
 }
