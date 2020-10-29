@@ -3,6 +3,7 @@
 namespace PayPay\OpenPaymentAPI\Controller;
 
 use Exception;
+use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
 
 class ClientControllerException extends Exception
@@ -14,14 +15,14 @@ class ClientControllerException extends Exception
 
         if (gettype($resultInfo) === 'array') {
             parent::__construct($resultInfo['message'], $code);
-            $this->resultInfo= $resultInfo;
+            $this->resultInfo = $resultInfo;
         }
-        if ($resultInfo instanceof String) {
+        if (gettype($resultInfo) === 'string') {
             // If string message error
             parent::__construct($resultInfo, $code);
         }
     }
-    function getResolutionInfo($apiId = 25)
+    function getResolutionUrl($apiId = 25)
     {
         if (!$this->documentationUrl) {
             return "https://github.com/paypay/paypayopa-sdk-php/issues/new/choose";
@@ -145,33 +146,45 @@ class Controller
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $response = null;
-        if ($callType === 'post') {
-            $response = $request->$callType(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
+        try {
+            if ($callType === 'post') {
+                $response = $request->$callType(
+                    $url,
+                    [
+                        'headers' => $options["HEADERS"],
+                        'json' => $data,
+                        'timeout' => $options['TIMEOUT']
+                    ]
+                );
+            }
+            if ($callType === 'get' || $callType === 'delete') {
+                $response = $request->$callType(
+                    $url,
+                    [
+                        'headers' => $options["HEADERS"]
+                    ]
+                );
+            }
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+            }
+        } finally {
+            $responseData = json_decode($response->getBody(), true);
+            $resultInfo = $responseData["resultInfo"];
+            $this->parseResultInfo($resultInfo, $response->getStatusCode());
+            return $responseData;
         }
-        if ($callType === 'get' || $callType === 'delete') {
-            $response = $request->$callType(
-                $url,
-                [
-                    'headers' => $options["HEADERS"]
-                ]
-            );
-        }
-        $responseData = json_decode($response->getBody(), true);
-        $resultInfo = $responseData["resultInfo"];
-        if ($resultInfo['code'] !== "SUCCESS") {
+    }
+
+    protected function parseResultInfo($resultInfo, $statusCode)
+    {
+        if (strcmp($resultInfo['code'], "SUCCESS") !== 0 && strcmp($resultInfo['code'],"REQUEST_ACCEPTED")) {
             throw new ClientControllerException(
                 $resultInfo, //PayPay API message
-                $response->getStatusCode(), // API response code
+                $statusCode, // API response code
                 $this->main()->GetConfig('DOC_URL') // PayPay Resolve URL
             );
         }
-        return $responseData;
     }
 }

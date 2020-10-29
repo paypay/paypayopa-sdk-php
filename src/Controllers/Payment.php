@@ -8,6 +8,7 @@ use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
 use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 use Exception;
+use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
@@ -198,25 +199,27 @@ class Payment extends Controller
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = $this->main()->http()->post(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'json' => $data,
-                'query' => ['agreeSimilarTransaction' => true],
-                'timeout' => $options['TIMEOUT']
-            ]
-        );
-        $responseData = json_decode($response->getBody(), true);
-        $resultInfo = $responseData["resultInfo"];
-        if ($resultInfo['code'] !== "SUCCESS") {
-            throw new ClientControllerException(
-                $resultInfo,//PayPay API message
-                $response->getStatusCode(), // API response code
-                $this->main()->GetConfig('DOC_URL') // PayPay Resolve URL
+
+        try {
+            $response = $this->main()->http()->post(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'query' => ['agreeSimilarTransaction' => true],
+                    'timeout' => $options['TIMEOUT']
+                ]
             );
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+            }
+        } finally {
+            $responseData = json_decode($response->getBody(), true);
+            $resultInfo = $responseData["resultInfo"];
+            $this->parseResultInfo($resultInfo, $response->getStatusCode());
+            return $responseData;
         }
-        return $responseData;
     }
     // Class helper
     /**
