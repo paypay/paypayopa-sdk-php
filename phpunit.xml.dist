@@ -16,6 +16,9 @@
     <testsuite name="Payloads">
       <file> tests/PayloadsTest.php</file>
     </testsuite>
+    <testsuite name="Resolve">
+      <file> tests/ResolveTest.php</file>
+    </testsuite>
     <testsuite name="QR Code">
       <file> tests/QrTest.php</file>
     </testsuite>
