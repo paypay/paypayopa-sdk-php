@@ -33,7 +33,7 @@ class ClientControllerException extends Exception
         $code = $resultInfo["code"];
         $codeId = $resultInfo["codeId"];
         $apiName = $this->apiInfo["api_name"];
-        return "${documentationUrl}?api_name=${apiName}&code=${code}&code-id=${codeId}";
+        return "${documentationUrl}?api_name=${apiName}&code=${code}&code_id=${codeId}";
     }
 }
 class Controller
