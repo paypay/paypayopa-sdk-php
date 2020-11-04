@@ -7,7 +7,7 @@ final class ResolveTest extends TestBoilerplate
 {
     function testNonDocResolve(){
         try {
-            throw new ClientControllerException("duck");
+            throw new ClientControllerException(false,"duck");
         } catch (ClientControllerException $e) {
             $this->assertStringContainsString("https://github.com/paypay/paypayopa-sdk-php/issues/new/choose",$e->getResolutionUrl(),'Exception evaluates incorrectly');
         }
@@ -22,6 +22,7 @@ final class ResolveTest extends TestBoilerplate
 
             ];
             throw new ClientControllerException(
+                $this->client->GetApiMapping(25),
                 $resultInfo, //PayPay API message
                 500, // API response code
                 $this->client->GetConfig('DOC_URL') // PayPay Resolve URL

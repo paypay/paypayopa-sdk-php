@@ -28,17 +28,19 @@ class Refund extends Controller
     public function refundPayment($payload, $paymentType = 'web_cashier')
     {
         if (!($payload instanceof RefundPaymentPayload)) {
-            throw new ClientControllerException("Payload not of type RefundPaymentPayload", 1);
+            throw new ClientControllerException(false,"Payload not of type RefundPaymentPayload", 1);
         }
         $main = $this->MainInst;
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND');
         $data = $payload->serialize();
+        $code = 28;
         switch ($paymentType) {
             case 'pending':
                 $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
                 $endpoint = "/${version}" . $main->GetEndpoint('REQUEST_ORDER') .  $main->GetEndpoint('REFUND');
                 $url = $this->api_url . $main->GetEndpoint('REQUEST_ORDER')  .  $main->GetEndpoint('REFUND');
                 $url = str_replace('v2', $version, $url);
+                $code = 51;
                 break;
 
             default:
@@ -50,7 +52,7 @@ class Refund extends Controller
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         
         $options['TIMEOUT'] = 30;
-        return $this->doCall('post',$url,$data,$options);
+        return $this->doCall($code,$url,$data,$options);
     }
 
     /**
@@ -65,6 +67,6 @@ class Refund extends Controller
         $endpoint = '/v2' . $main->GetEndpoint('REFUND') . "/$merchantRefundId";
         $options = $this->HmacCallOpts('GET', $endpoint);
         
-        return $this->doCall('get',$url,[],$options);
+        return $this->doCall(29,$url,[],$options);
     }
 }

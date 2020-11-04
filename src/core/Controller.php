@@ -9,10 +9,11 @@ use PayPay\OpenPaymentAPI\Client;
 class ClientControllerException extends Exception
 {
     private $resultInfo = false;
-    public function __construct($resultInfo, $code = 500, $documentationUrl = false)
+    private $apiInfo = false;
+    public function __construct($apiInfo,$resultInfo, $code = 500, $documentationUrl = false)
     {
         $this->documentationUrl = $documentationUrl;
-
+        $this->apiInfo = $apiInfo;
         if (gettype($resultInfo) === 'array') {
             parent::__construct($resultInfo['message'], $code);
             $this->resultInfo = $resultInfo;
@@ -24,14 +25,15 @@ class ClientControllerException extends Exception
     }
     function getResolutionUrl($apiId = 25)
     {
-        if (!$this->documentationUrl) {
+        if (!$this->documentationUrl || !$this->apiInfo) {
             return "https://github.com/paypay/paypayopa-sdk-php/issues/new/choose";
         }
         $resultInfo = $this->resultInfo;
         $documentationUrl = $this->documentationUrl;
         $code = $resultInfo["code"];
         $codeId = $resultInfo["codeId"];
-        return "${documentationUrl}?api-id=${apiId}&code=${code}&code-id=${codeId}";
+        $apiName = $this->apiInfo["api_name"];
+        return "${documentationUrl}?api_name=${apiName}&code=${code}&code-id=${codeId}";
     }
 }
 class Controller
@@ -126,20 +128,27 @@ class Controller
     protected function payloadTypeCheck($payload, $type)
     {
         if (get_class($payload) !== get_class($type)) {
-            throw new ClientControllerException("Payload not of type " . get_class($type), 500);
+            throw new ClientControllerException(false,"Payload not of type " . get_class($type), 500);
         }
     }
     /**
      * Generic HTTP calls
      *
-     * @param string $callType HTTP method
+     * @param string $apiId Id of API being called
      * @param string $url URL
      * @param array $data payload data array
      * @param array $options call options
      * @return array
      */
-    protected function doCall($callType, $url, $data, $options)
+    protected function doCall($apiId, $url, $data, $options)
     {
+        if (gettype($apiId) === "integer") {
+            $apiInfo = $this->main()->GetApiMapping($apiId);
+            $callType = strtolower($apiInfo["method"]);
+        } else {
+            $apiInfo = false;
+            $callType = $apiId;
+        }
         $request = $this->main()->http();
         $mid = $this->main()->GetMid();
         if ($mid) {
@@ -172,15 +181,16 @@ class Controller
         } finally {
             $responseData = json_decode($response->getBody(), true);
             $resultInfo = $responseData["resultInfo"];
-            $this->parseResultInfo($resultInfo, $response->getStatusCode());
+            $this->parseResultInfo($apiInfo, $resultInfo, $response->getStatusCode());
             return $responseData;
         }
     }
 
-    protected function parseResultInfo($resultInfo, $statusCode)
+    protected function parseResultInfo($apiInfo, $resultInfo, $statusCode)
     {
-        if (strcmp($resultInfo['code'], "SUCCESS") !== 0 && strcmp($resultInfo['code'],"REQUEST_ACCEPTED")) {
+        if (strcmp($resultInfo['code'], "SUCCESS") !== 0 && strcmp($resultInfo['code'], "REQUEST_ACCEPTED")) {
             throw new ClientControllerException(
+                $apiInfo,
                 $resultInfo, //PayPay API message
                 $statusCode, // API response code
                 $this->main()->GetConfig('DOC_URL') // PayPay Resolve URL

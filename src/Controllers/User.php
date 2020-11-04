@@ -99,7 +99,7 @@ class User extends Controller
         $endpoint = '/v2' . $this->main()->GetEndpoint('USER_AUTH');
         $options = $this->HmacCallOpts('GET', $endpoint);
 
-        return $this->doAuthCall($url, $options, $userAuthorizationId);
+        return $this->doAuthCall(53,$url, $options, $userAuthorizationId);
     }
 
     /**
@@ -117,7 +117,7 @@ class User extends Controller
         $endpoint = '/v2' . $this->main()->GetEndpoint('USER_PROFILE_SECURE');
         $options = $this->HmacCallOpts('GET', $endpoint);
 
-        return $this->doAuthCall($url, $options, $userAuthorizationId);
+        return $this->doAuthCall(53,$url, $options, $userAuthorizationId);
     }
     /**
      * Generic HTTP call function
@@ -127,9 +127,10 @@ class User extends Controller
      * @param string $userAuthorizationId
      * @return array
      */
-    private function doAuthCall($url, $options, $userAuthorizationId)
+    private function doAuthCall($apiId,$url, $options, $userAuthorizationId)
     {
         try {
+            $apiInfo = $this->main()->GetApiMapping($apiId);
             $response = $this->main()->http()->get(
                 $url,
                 [
@@ -144,7 +145,7 @@ class User extends Controller
         } finally {
             $responseData = json_decode($response->getBody(), true);
             $resultInfo = $responseData["resultInfo"];
-            $this->parseResultInfo($resultInfo, $response->getStatusCode());
+            $this->parseResultInfo($apiInfo,$resultInfo, $response->getStatusCode());
             return $responseData;
         }
     }

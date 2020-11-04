@@ -100,6 +100,9 @@ class Client
         require('conf/endpoints.php');
         /** @phpstan-ignore-next-line */
         $this->endpoints = $endpoint;
+        require('conf/apiMappings.php');
+        /** @phpstan-ignore-next-line */
+        $this->apiMappings = $apiMappings;
         require("conf/apiVersions.php");
         /** @phpstan-ignore-next-line */
         $this->versions = $versions;
@@ -163,6 +166,25 @@ class Client
         } else {
             return false;
         }
+    }
+
+    /**
+     * Returns all endpoint details for proivided mapping
+     *
+     * @param int $apiId Id of api details to be retrieved
+     * @return void
+     */
+    public function GetApiMapping($apiId)
+    {
+        $apiId = "${apiId}";
+        return array_values(
+            array_filter(
+                $this->apiMappings,
+                function ($mapping) use ($apiId) {
+                    return $mapping['id'] == $apiId;
+                }
+            )
+        )[0];
     }
 
     /**
