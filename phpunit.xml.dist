@@ -33,6 +33,7 @@
       <file>tests/PipelinedAccountLinkTest.php</file>
       <file> tests/UserTest.php</file>
       <file> tests/WalletTest.php </file>
+      <file> tests/DecodeAccountLinkResponse.php </file>
     </testsuite>
     <testsuite name="Housekeeping">
       <file> tests/ZCleanupTest.php</file>
