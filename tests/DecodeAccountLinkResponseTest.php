@@ -13,7 +13,7 @@ class DecodeAccountLinkResponse extends TestBoilerplate
             var_dump($data);
         } catch (\Throwable $th) {
             $message = $th->getMessage();
-            $this->assertStringContainsString("Expired token",$message,"Some other error");
+            $this->assertStringNotContainsString("",$message,"Empty error");
         }
     }
 }
