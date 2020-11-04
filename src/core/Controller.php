@@ -23,7 +23,7 @@ class ClientControllerException extends Exception
             parent::__construct($resultInfo, $code);
         }
     }
-    function getResolutionUrl($apiId = 25)
+    function getResolutionUrl()
     {
         if (!$this->documentationUrl || !$this->apiInfo) {
             return "https://github.com/paypay/paypayopa-sdk-php/issues/new/choose";
