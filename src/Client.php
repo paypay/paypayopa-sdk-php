@@ -171,17 +171,16 @@ class Client
     /**
      * Returns all endpoint details for proivided mapping
      *
-     * @param int $apiId Id of api details to be retrieved
+     * @param string $apiName Id of api details to be retrieved
      * @return void
      */
-    public function GetApiMapping($apiId)
+    public function GetApiMapping($apiName)
     {
-        $apiId = "${apiId}";
         return array_values(
             array_filter(
                 $this->apiMappings,
-                function ($mapping) use ($apiId) {
-                    return $mapping['id'] == $apiId;
+                function ($mapping) use ($apiName) {
+                    return (strcmp($mapping['api_name'], $apiName) == 0);
                 }
             )
         )[0];

@@ -140,9 +140,9 @@ class Controller
      * @param array $options call options
      * @return array
      */
-    protected function doCall($apiId, $url, $data, $options)
+    protected function doCall($lookupApi,$apiId, $url, $data, $options)
     {
-        if (gettype($apiId) === "integer") {
+        if ($lookupApi) {
             $apiInfo = $this->main()->GetApiMapping($apiId);
             $callType = strtolower($apiInfo["method"]);
         } else {

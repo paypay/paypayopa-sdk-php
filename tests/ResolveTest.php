@@ -22,7 +22,7 @@ final class ResolveTest extends TestBoilerplate
 
             ];
             throw new ClientControllerException(
-                $this->client->GetApiMapping(25),
+                $this->client->GetApiMapping("v2_createPayment"),
                 $resultInfo, //PayPay API message
                 500, // API response code
                 $this->client->GetConfig('DOC_URL') // PayPay Resolve URL

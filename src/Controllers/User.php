@@ -49,7 +49,7 @@ class User extends Controller
         $endpoint = 'v2' . $this->main()->GetEndpoint('USER_AUTH') . "/$userAuthorizationId";
         $options = $this->HmacCallOpts('DELETE', $endpoint);
 
-        return $this->doCall('delete', $url, [], $options);
+        return $this->doCall(false, 'delete', $url, [], $options);
     }
 
     /**
@@ -69,7 +69,7 @@ class User extends Controller
 
         $options['TIMEOUT'] = 10;
         if ($data) {
-            return $this->doCall('post', $url, $data, $options);
+            return $this->doCall(false, 'post', $url, $data, $options);
         }
     }
     /**
@@ -99,7 +99,7 @@ class User extends Controller
         $endpoint = '/v2' . $this->main()->GetEndpoint('USER_AUTH');
         $options = $this->HmacCallOpts('GET', $endpoint);
 
-        return $this->doAuthCall(53,$url, $options, $userAuthorizationId);
+        return $this->doAuthCall("v2_fetchUserProfileForWebApp", $url, $options, $userAuthorizationId);
     }
 
     /**
@@ -117,7 +117,7 @@ class User extends Controller
         $endpoint = '/v2' . $this->main()->GetEndpoint('USER_PROFILE_SECURE');
         $options = $this->HmacCallOpts('GET', $endpoint);
 
-        return $this->doAuthCall(53,$url, $options, $userAuthorizationId);
+        return $this->doAuthCall("v2_fetchUserProfileForWebApp", $url, $options, $userAuthorizationId);
     }
     /**
      * Generic HTTP call function
@@ -127,7 +127,7 @@ class User extends Controller
      * @param string $userAuthorizationId
      * @return array
      */
-    private function doAuthCall($apiId,$url, $options, $userAuthorizationId)
+    private function doAuthCall($apiId, $url, $options, $userAuthorizationId)
     {
         try {
             $apiInfo = $this->main()->GetApiMapping($apiId);
@@ -145,7 +145,7 @@ class User extends Controller
         } finally {
             $responseData = json_decode($response->getBody(), true);
             $resultInfo = $responseData["resultInfo"];
-            $this->parseResultInfo($apiInfo,$resultInfo, $response->getStatusCode());
+            $this->parseResultInfo($apiInfo, $resultInfo, $response->getStatusCode());
             return $responseData;
         }
     }
