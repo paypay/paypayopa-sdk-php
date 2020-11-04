@@ -17,7 +17,7 @@ class CreatePaymentPayload extends BasePaymentPayload
     public function __construct()
     {
         $this->_memberize('merchantPaymentId', 'string', 64);
-        $this->_memberize('userAuthorizationId', 'string', 64);
+        $this->_memberize('userAuthorizationId', 'string', 0);
         $this->_memberize('amount', 'array');
         $this->_memberize('requestedAt', 'integer');
     }
@@ -45,6 +45,6 @@ class CreatePaymentPayload extends BasePaymentPayload
 
             return $this;
         }
-        throw new Exception("Invalid Direct Debit Product Type", 500);
+        throw new ModelException("Invalid Direct Debit Product Type", 400,['productType']);
     }
 }

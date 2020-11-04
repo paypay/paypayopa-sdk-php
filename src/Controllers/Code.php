@@ -28,17 +28,17 @@ class Code extends Controller
     public function createQRCode($payload)
     {
         if (!($payload instanceof CreateQrCodePayload)) {
-            throw new ClientControllerException("Payload not of type CreateQrCodePayload", 1);
+            throw new ClientControllerException(false, "Payload not of type CreateQrCodePayload", 1);
         }
         $url = $this->api_url . $this->main()->GetEndpoint('CODE');
         $data = $payload->serialize();
         $endpoint = '/v2' . $this->main()->GetEndpoint('CODE');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        
+
         $options['TIMEOUT'] = 30;
 
         if ($data) {
-            return $this->doCall('post',$url,$data,$options);
+            return $this->doCall(true, "v2_createDynamicQRCode", $url, $data, $options);
         }
     }
     /**
@@ -53,8 +53,8 @@ class Code extends Controller
         $endpoint = '/v2' . $this->main()->GetEndpoint('CODE') . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
         $url = $this->api_url . $main->GetEndpoint('CODE') . $main->GetEndpoint('PAYMENT') . "/$merchantPaymentId";
         $options = $this->HmacCallOpts('GET', $endpoint);
-        
-        return $this->doCall('get',$url,[],$options);
+
+        return $this->doCall(true, "v2_getQRPaymentDetails", $url, [], $options);
     }
 
 
@@ -68,8 +68,8 @@ class Code extends Controller
     {
         $endpoint = '/v2' . $this->main()->GetEndpoint('CODE') . "/$codeId";
         $options = $this->HmacCallOpts('DELETE', $endpoint);
-        
+
         $url = $this->api_url . $this->main()->GetEndpoint('CODE') . "/$codeId";
-        return $this->doCall('delete',$url,[],$options);
+        return $this->doCall(true, "v2_deleteDynamicQRCode", $url, [], $options);
     }
 }

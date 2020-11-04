@@ -3,9 +3,39 @@
 namespace PayPay\OpenPaymentAPI\Controller;
 
 use Exception;
+use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
 
-class ClientControllerException extends Exception{}
+class ClientControllerException extends Exception
+{
+    private $resultInfo = false;
+    private $apiInfo = false;
+    public function __construct($apiInfo,$resultInfo, $code = 500, $documentationUrl = false)
+    {
+        $this->documentationUrl = $documentationUrl;
+        $this->apiInfo = $apiInfo;
+        if (gettype($resultInfo) === 'array') {
+            parent::__construct($resultInfo['message'], $code);
+            $this->resultInfo = $resultInfo;
+        }
+        if (gettype($resultInfo) === 'string') {
+            // If string message error
+            parent::__construct($resultInfo, $code);
+        }
+    }
+    function getResolutionUrl()
+    {
+        if (!$this->documentationUrl || !$this->apiInfo) {
+            return "https://github.com/paypay/paypayopa-sdk-php/issues/new/choose";
+        }
+        $resultInfo = $this->resultInfo;
+        $documentationUrl = $this->documentationUrl;
+        $code = $resultInfo["code"];
+        $codeId = $resultInfo["codeId"];
+        $apiName = $this->apiInfo["api_name"];
+        return "${documentationUrl}?api_name=${apiName}&code=${code}&code_id=${codeId}";
+    }
+}
 class Controller
 {
     /**
@@ -95,46 +125,76 @@ class Controller
      * @param mixed $type Empty payload object
      * @return void
      */
-    protected function payloadTypeCheck($payload,$type){
+    protected function payloadTypeCheck($payload, $type)
+    {
         if (get_class($payload) !== get_class($type)) {
-            throw new ClientControllerException("Payload not of type ".get_class($type), 500);
+            throw new ClientControllerException(false,"Payload not of type " . get_class($type), 500);
         }
     }
     /**
      * Generic HTTP calls
      *
-     * @param string $callType HTTP method
+     * @param string $apiId Id of API being called
      * @param string $url URL
      * @param array $data payload data array
      * @param array $options call options
      * @return array
      */
-    protected function doCall($callType,$url,$data,$options){
-        $request=$this->main()->http();
+    protected function doCall($lookupApi,$apiId, $url, $data, $options)
+    {
+        if ($lookupApi) {
+            $apiInfo = $this->main()->GetApiMapping($apiId);
+            $callType = strtolower($apiInfo["method"]);
+        } else {
+            $apiInfo = false;
+            $callType = $apiId;
+        }
+        $request = $this->main()->http();
         $mid = $this->main()->GetMid();
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
         $response = null;
-        if ($callType == 'post') {
-            $response = $request->$callType(
-                $url,
-                [
-                    'headers' => $options["HEADERS"],
-                    'json' => $data,
-                    'timeout' => $options['TIMEOUT']
-                ]
-            );
+        try {
+            if ($callType === 'post') {
+                $response = $request->$callType(
+                    $url,
+                    [
+                        'headers' => $options["HEADERS"],
+                        'json' => $data,
+                        'timeout' => $options['TIMEOUT']
+                    ]
+                );
+            }
+            if ($callType === 'get' || $callType === 'delete') {
+                $response = $request->$callType(
+                    $url,
+                    [
+                        'headers' => $options["HEADERS"]
+                    ]
+                );
+            }
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+            }
+        } finally {
+            $responseData = json_decode($response->getBody(), true);
+            $resultInfo = $responseData["resultInfo"];
+            $this->parseResultInfo($apiInfo, $resultInfo, $response->getStatusCode());
+            return $responseData;
         }
-        if ($callType == 'get' || $callType == 'delete') {
-            $response = $request->$callType(
-                $url,
-                [
-                    'headers' => $options["HEADERS"]
-                ]
-            );
-        }
-        return json_decode($response->getBody(), true);
+    }
 
+    protected function parseResultInfo($apiInfo, $resultInfo, $statusCode)
+    {
+        if (strcmp($resultInfo['code'], "SUCCESS") !== 0 && strcmp($resultInfo['code'], "REQUEST_ACCEPTED")) {
+            throw new ClientControllerException(
+                $apiInfo,
+                $resultInfo, //PayPay API message
+                $statusCode, // API response code
+                $this->main()->GetConfig('DOC_URL') // PayPay Resolve URL
+            );
+        }
     }
 }

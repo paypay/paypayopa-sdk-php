@@ -1,9 +1,11 @@
 <?php
+
 namespace PayPay\OpenPaymentAPI\Controller;
 
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
 use \Firebase\JWT\JWT;
+use GuzzleHttp\Exception\RequestException;
 
 class User extends Controller
 {
@@ -46,8 +48,8 @@ class User extends Controller
         $url = $this->api_url . $this->main()->GetEndpoint('USER_AUTH') . "/$userAuthorizationId";
         $endpoint = 'v2' . $this->main()->GetEndpoint('USER_AUTH') . "/$userAuthorizationId";
         $options = $this->HmacCallOpts('DELETE', $endpoint);
-        
-        return $this->doCall('delete',$url,[],$options);
+
+        return $this->doCall(false, 'delete', $url, [], $options);
     }
 
     /**
@@ -63,11 +65,11 @@ class User extends Controller
         $endpoint = '/v1' . $this->main()->GetEndpoint('SESSIONS');
         $data = $payload->serialize();
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
-        
+
 
         $options['TIMEOUT'] = 10;
         if ($data) {
-            return $this->doCall('post',$url,$data,$options);
+            return $this->doCall(false, 'post', $url, $data, $options);
         }
     }
     /**
@@ -96,8 +98,8 @@ class User extends Controller
         $url = $this->api_url . $this->main()->GetEndpoint('USER_AUTH');
         $endpoint = '/v2' . $this->main()->GetEndpoint('USER_AUTH');
         $options = $this->HmacCallOpts('GET', $endpoint);
-        
-        return $this->doAuthCall($url,$options,$userAuthorizationId);
+
+        return $this->doAuthCall("v2_fetchUserProfileForWebApp", $url, $options, $userAuthorizationId);
     }
 
     /**
@@ -114,8 +116,8 @@ class User extends Controller
         $url = $this->api_url . $this->main()->GetEndpoint('USER_PROFILE_SECURE');
         $endpoint = '/v2' . $this->main()->GetEndpoint('USER_PROFILE_SECURE');
         $options = $this->HmacCallOpts('GET', $endpoint);
-        
-        return $this->doAuthCall($url,$options,$userAuthorizationId);
+
+        return $this->doAuthCall("v2_fetchUserProfileForWebApp", $url, $options, $userAuthorizationId);
     }
     /**
      * Generic HTTP call function
@@ -125,14 +127,26 @@ class User extends Controller
      * @param string $userAuthorizationId
      * @return array
      */
-    private function doAuthCall($url,$options,$userAuthorizationId){
-        $response = $this->main()->http()->get(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'query' =>  ['userAuthorizationId' => $userAuthorizationId]
-            ]
-        );
-        return json_decode($response->getBody(), true);
+    private function doAuthCall($apiId, $url, $options, $userAuthorizationId)
+    {
+        try {
+            $apiInfo = $this->main()->GetApiMapping($apiId);
+            $response = $this->main()->http()->get(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'query' =>  ['userAuthorizationId' => $userAuthorizationId]
+                ]
+            );
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+            }
+        } finally {
+            $responseData = json_decode($response->getBody(), true);
+            $resultInfo = $responseData["resultInfo"];
+            $this->parseResultInfo($apiInfo, $resultInfo, $response->getStatusCode());
+            return $responseData;
+        }
     }
 }

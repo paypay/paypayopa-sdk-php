@@ -8,6 +8,7 @@ use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
 use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 use Exception;
+use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
@@ -43,9 +44,9 @@ class Payment extends Controller
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            return $this->doSimilarTransactionCall($url, $options, $data);
+            return $this->doSimilarTransactionCall("v2_createPayment", $url, $options, $data);
         } else {
-            return $this->doCall('post', $url, $data, $options);
+            return $this->doCall(true, "v2_createPayment", $url, $data, $options);
         }
     }
     /**
@@ -66,7 +67,7 @@ class Payment extends Controller
         $endpoint = '/' . $version . $this->main()->GetEndpoint('SUBSCRIPTION');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $options['TIMEOUT'] = 30;
-        return $this->doCall('post', $url, $data, $options);
+        return $this->doCall(true, "v1_createSubscriptionPayment", $url, $data, $options);
     }
     /**
      * Create a pending payment and initialize the money transfer.
@@ -84,7 +85,7 @@ class Payment extends Controller
         $options = $this->HmacCallOpts('POST', ('/' . $version . $this->main()->GetEndpoint('REQUEST_ORDER')), 'application/json;charset=UTF-8;', $data);
         $options['TIMEOUT'] = 30;
         /** @phpstan-ignore-next-line */
-        return $this->doCall('post', str_replace('v2', $version, ($this->api_url . $this->main()->GetEndpoint('REQUEST_ORDER'))), $data, $options);
+        return $this->doCall(true, "v1_createRequestOrder", str_replace('v2', $version, ($this->api_url . $this->main()->GetEndpoint('REQUEST_ORDER'))), $data, $options);
     }
 
     /**
@@ -99,7 +100,7 @@ class Payment extends Controller
         $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
         $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
         $options = $this->HmacCallOpts('GET', $endpoint);
-        return $this->doCall('get', $url, [], $options);
+        return $this->doCall(true, "v2_getPaymentDetail", $url, [], $options);
     }
 
     /**
@@ -119,7 +120,7 @@ class Payment extends Controller
         $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
         $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
         $options = $this->HmacCallOpts('DELETE', $endpoint);
-        return $this->doCall('delete', $url, [], $options);
+        return $this->doCall(true, "v2_cancelPayment", $url, [], $options);
     }
 
     /**
@@ -138,9 +139,9 @@ class Payment extends Controller
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
-            return $this->doSimilarTransactionCall($url, $options, $data);
+            return $this->doSimilarTransactionCall("v2_createOrderAndAuthorize", $url, $options, $data);
         } else {
-            return $this->doCall('post', $url, $data, $options);
+            return $this->doCall(true, "v2_createOrderAndAuthorize", $url, $data, $options);
         }
     }
 
@@ -161,7 +162,7 @@ class Payment extends Controller
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/capture";
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $options['TIMEOUT'] = 30;
-        return $this->doCall('post', $url, $data, $options);
+        return $this->doCall(true, "v2_captureAuthorizedOrder", $url, $data, $options);
     }
 
     /**
@@ -182,7 +183,7 @@ class Payment extends Controller
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/preauthorize/revert";
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $options['TIMEOUT'] = 30;
-        return $this->doCall('post', $url, $data, $options);
+        return $this->doCall(true, "v2_revertAuthorizedOrder", $url, $data, $options);
     }
     /**
      * Generic HTTP call for similar transaction
@@ -192,22 +193,34 @@ class Payment extends Controller
      * @param array $data
      * @return array
      */
-    private function doSimilarTransactionCall($url, $options, $data)
+    private function doSimilarTransactionCall($apiId, $url, $options, $data)
     {
+        $apiInfo = $this->main()->GetApiMapping($apiId);
         $mid = $this->main()->GetMid();
         if ($mid) {
             $options["HEADERS"]['X-ASSUME-MERCHANT'] = $mid;
         }
-        $response = $this->main()->http()->post(
-            $url,
-            [
-                'headers' => $options["HEADERS"],
-                'json' => $data,
-                'query' => ['agreeSimilarTransaction' => true],
-                'timeout' => $options['TIMEOUT']
-            ]
-        );
-        return json_decode($response->getBody(), true);
+
+        try {
+            $response = $this->main()->http()->post(
+                $url,
+                [
+                    'headers' => $options["HEADERS"],
+                    'json' => $data,
+                    'query' => ['agreeSimilarTransaction' => true],
+                    'timeout' => $options['TIMEOUT']
+                ]
+            );
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+            }
+        } finally {
+            $responseData = json_decode($response->getBody(), true);
+            $resultInfo = $responseData["resultInfo"];
+            $this->parseResultInfo($apiInfo, $resultInfo, $response->getStatusCode());
+            return $responseData;
+        }
     }
     // Class helper
     /**

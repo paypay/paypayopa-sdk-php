@@ -38,13 +38,13 @@ class Wallet extends Controller
             if ($productType === "VIRTUAL_BONUS_INVESTMENT" || $productType === "PAY_LATER_REPAYMENT") {
                 $data['productType'] = $productType;
             } else {
-                throw new ClientControllerException("Invalid Direct Debit Product Type", 500);
+                throw new ClientControllerException(false, "Invalid Direct Debit Product Type", 500);
             }
         }
         $url = $this->api_url . $this->main()->GetEndpoint('WALLET_BALANCE');
         $endpoint = '/v2' . $this->main()->GetEndpoint('WALLET_BALANCE');
         $options = $this->HmacCallOpts('GET', $endpoint, 'application/json;charset=UTF-8;', $data);
-        
-        return $this->doCall('get',$url,[],$options);
+
+        return $this->doCall(true, "v2_checkWalletBalance", $url, [], $options);
     }
 }

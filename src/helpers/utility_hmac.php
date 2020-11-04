@@ -41,7 +41,7 @@ function PayPayEncryptHeader($apiKey, $apiSecret, $method, $resource, $contentTy
 
     $requestTimeStamp = time();
     $nonce = GetRand(16); //Fixed value for sample
-    $bodyHash = $contentType == 'empty' ? $contentType : "";
+    $bodyHash = $contentType === 'empty' ? $contentType : "";
     if ($contentType != 'empty') {
         // Read requestBody
         $requestBody = str_replace("\n", '', json_encode($payload));// @phpstan-ignore-line
