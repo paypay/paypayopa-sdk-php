@@ -100,9 +100,11 @@ class Client
         require('conf/endpoints.php');
         /** @phpstan-ignore-next-line */
         $this->endpoints = $endpoint;
-        require('conf/apiMappings.php');
-        /** @phpstan-ignore-next-line */
-        $this->apiMappings = $apiMappings;
+        
+        $jsonData = file_get_contents(__DIR__.'/conf/apiMappings.json');
+        $array = json_decode($jsonData, true);
+        $this->apiMappings = $array;        
+        
         require("conf/apiVersions.php");
         /** @phpstan-ignore-next-line */
         $this->versions = $versions;
