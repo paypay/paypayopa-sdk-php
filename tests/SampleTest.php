@@ -9,7 +9,7 @@ class SampleTest extends TestBoilerplate {
      */
     function testJsonData(){
       $mapping = $this->client->GetApiMapping('v3_getWalletBalance');
-      $this->assertEquals($mapping['method'], 'GET');        
+      $this->assertEquals('GET', $mapping['method']);        
     }
 
 }
