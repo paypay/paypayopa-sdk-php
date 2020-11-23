@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a8aae8de1931d17ed7cf89365a38735",
+    "content-hash": "1f09eb9fc14baaf4d41e5c167ec01054",
     "packages": [
         {
             "name": "atoum/atoum",
-            "version": "3.4.2",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "e90606b89e62c5c18c5d02596078edf55f35b3c3"
+                "reference": "56e9c55cab42086c2eb6bd30fcf1e242f9c51f52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/e90606b89e62c5c18c5d02596078edf55f35b3c3",
-                "reference": "e90606b89e62c5c18c5d02596078edf55f35b3c3",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/56e9c55cab42086c2eb6bd30fcf1e242f9c51f52",
+                "reference": "56e9c55cab42086c2eb6bd30fcf1e242f9c51f52",
                 "shasum": ""
             },
             "require": {
@@ -25,7 +25,7 @@
                 "ext-json": "*",
                 "ext-tokenizer": "*",
                 "ext-xml": "*",
-                "php": "^5.6.0 || ^7.0.0 <7.5.0"
+                "php": "^7.2 || ^8.0"
             },
             "replace": {
                 "mageekguy/atoum": "*"
@@ -44,7 +44,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.x-dev"
+                    "dev-master": "4.x-dev"
                 }
             },
             "autoload": {
@@ -87,7 +87,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2020-03-04T10:29:09+00:00"
+            "time": "2020-11-21T17:23:11+00:00"
         },
         {
             "name": "firebase/php-jwt",
