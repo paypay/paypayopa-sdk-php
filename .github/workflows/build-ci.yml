@@ -8,7 +8,7 @@ jobs:
       CC_TEST_REPORTER_ID: 148ea266f96a637c1f5f85179aab3ba533a5a64d0dfccab0ab7ce703f44fd80b
     strategy:
       matrix:
-        php-version: [7.3]
+        php-version: [7.2, 7.3, 7.4]
     steps:
       - uses: actions/checkout@v2
         with:
