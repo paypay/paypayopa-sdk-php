@@ -1,5 +1,4 @@
 run_mock:
-	clear
 	cd mock && java -jar wiremock.jar --verbose &
 	sleep 7
 	vendor/bin/phpunit --coverage-clover build/logs/clover.xml --testdox --debug -c phpunit.xml.dist 
@@ -20,8 +19,9 @@ run_staging:
 	vendor/bin/phpunit --testdox --debug tests/UserTest.php
 	vendor/bin/phpunit --testdox --debug tests/WalletTest.php
 run_coverage:
-	clear
 	cd mock && java -jar wiremock.jar --verbose &
 	sleep 7
 	vendor/bin/phpunit --coverage-clover build/logs/clover.xml --testdox --debug -c phpunit.xml.dist 
 	vendor/bin/php-coveralls -v
+coverall_upload:
+	vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
