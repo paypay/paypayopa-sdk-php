@@ -43,9 +43,9 @@
         "guzzlehttp/guzzle": "^6.0 || ^7.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "php-coveralls/php-coveralls": "^2.2",
-        "phpstan/phpstan": "^0.12.33",
+        "friendsofphp/php-cs-fixer": "^2.17.2",
+        "php-coveralls/php-coveralls": "^2.4.1",
+        "phpstan/phpstan": "^0.12.62",
         "phpunit/phpunit": "^9"
     },
     "scripts": {
