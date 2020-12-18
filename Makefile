@@ -1,7 +1,7 @@
 run_mock:
 	cd mock && java -jar wiremock.jar --verbose &
 	sleep 7
-	vendor/bin/phpunit --coverage-clover build/logs/clover.xml --testdox --debug -c phpunit.xml.dist 
+	XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover build/logs/clover.xml --testdox --debug -c phpunit.xml.dist
 run_tests:
 	clear
 	vendor/bin/phpunit --coverage-clover build/logs/clover.xml --testdox --debug -c phpunit.xml.dist 
