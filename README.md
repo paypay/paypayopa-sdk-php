@@ -131,7 +131,7 @@ $data = $response['data'];
 
 ``` php
 /*
-.....initialize SDK
+....initialize SDK
 */
 
 $response =  $client->code->deleteQRCode('ID_OF_CODE');
