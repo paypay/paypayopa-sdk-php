@@ -2,7 +2,7 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use CreatePendingPaymentPayload;
+use PayPay\OpenPaymentAPI\Models\CreatePendingPaymentPayload;
 use \Firebase\JWT\JWT;
 use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;

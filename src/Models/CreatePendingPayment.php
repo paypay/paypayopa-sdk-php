@@ -1,6 +1,6 @@
 <?php
 
-use PayPay\OpenPaymentAPI\Models\BasePaymentPayload;
+namespace PayPay\OpenPaymentAPI\Models;
 
 class CreatePendingPaymentPayload extends BasePaymentPayload
 {
