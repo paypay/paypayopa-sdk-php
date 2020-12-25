@@ -9,12 +9,7 @@ use PayPay\OpenPaymentAPI\Controller\Payment;
 use PayPay\OpenPaymentAPI\Controller\User;
 use PayPay\OpenPaymentAPI\Controller\Wallet;
 use PayPay\OpenPaymentAPI\Controller\Refund;
-use Exception;
 use GuzzleHttp\Client as GuzzleHttpClient;
-
-class ClientException extends Exception
-{
-}
 
 class Client
 {
