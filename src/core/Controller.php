@@ -5,6 +5,8 @@ namespace PayPay\OpenPaymentAPI\Controller;
 use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
 
+use function PayPay\OpenPaymentAPI\Helpers\PayPayEncryptHeader;
+
 class Controller
 {
     /**

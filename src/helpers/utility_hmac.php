@@ -1,5 +1,7 @@
 <?php
 
+namespace PayPay\OpenPaymentAPI\Helpers;
+
 /**
  * Random string generator
  *

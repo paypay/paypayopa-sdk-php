@@ -2,6 +2,8 @@
 
 namespace PayPay\OpenPaymentAPI\Models;
 
+use function PayPay\OpenPaymentAPI\Helpers\GetRand;
+
 class AccountLinkPayload extends Model
 {
     /**

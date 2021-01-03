@@ -13,6 +13,8 @@ use PayPay\OpenPaymentAPI\Models\OrderItem;
 use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 
+use function PayPay\OpenPaymentAPI\Helpers\GetRand;
+
 class PayloadsTest extends TestBoilerplate
 {
     /**
