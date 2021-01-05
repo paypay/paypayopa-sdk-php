@@ -1,6 +1,7 @@
 <?php
 
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
+use PayPay\OpenPaymentAPI\Models\CreatePendingPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\ModelException;
 use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
 

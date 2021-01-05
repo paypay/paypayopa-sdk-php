@@ -18,9 +18,16 @@
         }
     ],
     "autoload": {
+        "classmap": [
+            "src/core/"
+        ],
         "psr-4": {
-            "PayPay\\OpenPaymentAPI\\": "/src/"
-        }
+            "PayPay\\OpenPaymentAPI\\": "src/",
+            "PayPay\\OpenPaymentAPI\\Controller\\": "src/Controllers/"
+        },
+        "files": [
+            "src/helpers/utility_hmac.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

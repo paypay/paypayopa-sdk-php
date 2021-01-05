@@ -2,19 +2,12 @@
 
 namespace PayPay\OpenPaymentAPI;
 
-require_once('loader.php');
-
 use PayPay\OpenPaymentAPI\Controller\Code;
 use PayPay\OpenPaymentAPI\Controller\Payment;
 use PayPay\OpenPaymentAPI\Controller\User;
 use PayPay\OpenPaymentAPI\Controller\Wallet;
 use PayPay\OpenPaymentAPI\Controller\Refund;
-use Exception;
 use GuzzleHttp\Client as GuzzleHttpClient;
-
-class ClientException extends Exception
-{
-}
 
 class Client
 {
@@ -100,11 +93,11 @@ class Client
         require('conf/endpoints.php');
         /** @phpstan-ignore-next-line */
         $this->endpoints = $endpoint;
-        
+
         $jsonData = file_get_contents(__DIR__.'/conf/apiMappings.json');
         $array = json_decode($jsonData, true);
-        $this->apiMappings = $array;        
-        
+        $this->apiMappings = $array;
+
         require("conf/apiVersions.php");
         /** @phpstan-ignore-next-line */
         $this->versions = $versions;
