@@ -30,6 +30,12 @@ class Client
      */
     private $endpoints;
     /**
+     * api mappings
+     *
+     * @var array
+     */
+    private $apiMappings;
+    /**
      * api endpoint versions
      *
      * @var array
@@ -74,9 +80,9 @@ class Client
 
     /**
      * Initialize a Client object with session,
-     * optional auth handler, and options      *
-     * @param array $auth API credentials
-     * @param boolean $productionmode Sandbox environment flag
+     * optional auth handler, and options
+     * @param array|null $auth API credentials
+     * @param boolean|string $productionmode Sandbox environment flag
      * @param GuzzleHttpClient|boolean $requestHandler
      * @throws ClientException
      */
@@ -88,20 +94,10 @@ class Client
         $this->auth = $auth;
         $toStg = !$productionmode ? '-stg' : '';
         $toStg = $productionmode === 'test' ? '-test' : $toStg;
-        require("conf/config${toStg}.php");
-        /** @phpstan-ignore-next-line */
-        $this->config = $config;
-        require('conf/endpoints.php');
-        /** @phpstan-ignore-next-line */
-        $this->endpoints = $endpoint;
-
-        $jsonData = file_get_contents(__DIR__.'/conf/apiMappings.json');
-        $array = json_decode($jsonData, true);
-        $this->apiMappings = $array;
-
-        require("conf/apiVersions.php");
-        /** @phpstan-ignore-next-line */
-        $this->versions = $versions;
+        $this->config = require(__DIR__ . "/conf/config${toStg}.php");
+        $this->endpoints = require(__DIR__ . '/conf/endpoints.php');
+        $this->apiMappings = require(__DIR__ . '/conf/apiMappings.php');
+        $this->versions = require(__DIR__ . '/conf/apiVersions.php');
 
         if (!$requestHandler) {
             $this->requestHandler = new GuzzleHttpClient(['base_uri' => $this->config["API_URL"]]);

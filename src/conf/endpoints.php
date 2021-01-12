@@ -1,5 +1,5 @@
 <?php
-$endpoint = [
+return [
     'CODE'                  =>     '/codes',
     'PAYMENT'               =>     '/payments',
     'PAYMENT_PREAUTH'       =>     '/payments/preauthorize',
