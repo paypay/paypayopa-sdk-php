@@ -2,7 +2,6 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use Exception;
 use PayPay\OpenPaymentAPI\Client;
 
 class Wallet extends Controller

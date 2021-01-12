@@ -2,7 +2,6 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use Exception;
 use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
 

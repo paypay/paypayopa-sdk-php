@@ -3,7 +3,6 @@
 namespace PayPay\OpenPaymentAPI\Models;
 
 use DateTime;
-use Exception;
 
 class CreateQrCodePayload extends BasePaymentInfo
 {

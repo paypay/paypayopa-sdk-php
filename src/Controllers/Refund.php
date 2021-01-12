@@ -2,10 +2,9 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
+use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\ModelException;
 use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
-use Exception;
-use PayPay\OpenPaymentAPI\Client;
 
 class Refund extends Controller
 {

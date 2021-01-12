@@ -2,11 +2,10 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
+use Firebase\JWT\JWT;
 use GuzzleHttp\Exception\GuzzleException;
-use PayPay\OpenPaymentAPI\Client;
-use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
-use \Firebase\JWT\JWT;
 use GuzzleHttp\Exception\RequestException;
+use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
 use PayPay\OpenPaymentAPI\Models\ModelException;
 
 class User extends Controller

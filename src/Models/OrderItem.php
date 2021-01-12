@@ -2,8 +2,6 @@
 
 namespace PayPay\OpenPaymentAPI\Models;
 
-use Exception;
-
 class OrderItem extends Model
 {
     /**

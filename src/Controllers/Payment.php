@@ -3,17 +3,15 @@
 namespace PayPay\OpenPaymentAPI\Controller;
 
 use GuzzleHttp\Exception\GuzzleException;
-use PayPay\OpenPaymentAPI\Models\CreatePendingPaymentPayload;
-use \Firebase\JWT\JWT;
-use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
-use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
-use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
-use Exception;
 use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
+use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
+use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
+use PayPay\OpenPaymentAPI\Models\CreatePendingPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\ModelException;
+use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 
 class Payment extends Controller
 {

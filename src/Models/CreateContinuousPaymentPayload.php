@@ -2,9 +2,6 @@
 
 namespace PayPay\OpenPaymentAPI\Models;
 
-use DateTime;
-use Exception;
-
 class CreateContinuousPaymentPayload extends BasePaymentPayload
 {
     public function __construct()

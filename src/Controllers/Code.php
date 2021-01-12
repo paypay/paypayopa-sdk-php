@@ -2,7 +2,6 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use Exception;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\CreateQrCodePayload;
 use PayPay\OpenPaymentAPI\Models\ModelException;

@@ -2,12 +2,12 @@
 
 namespace PayPay\OpenPaymentAPI;
 
+use GuzzleHttp\Client as GuzzleHttpClient;
 use PayPay\OpenPaymentAPI\Controller\Code;
 use PayPay\OpenPaymentAPI\Controller\Payment;
+use PayPay\OpenPaymentAPI\Controller\Refund;
 use PayPay\OpenPaymentAPI\Controller\User;
 use PayPay\OpenPaymentAPI\Controller\Wallet;
-use PayPay\OpenPaymentAPI\Controller\Refund;
-use GuzzleHttp\Client as GuzzleHttpClient;
 
 class Client
 {
