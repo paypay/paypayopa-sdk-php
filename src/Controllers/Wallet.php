@@ -11,7 +11,7 @@ class Wallet extends Controller
      * Initializes Code class to manage creation and deletion of data for QR Code generation
      *
      * @param Client $MainInstance Instance of invoking client class
-     * @param Array $auth API credentials
+     * @param array $auth API credentials
      */
     public function __construct($MainInstance, $auth)
     {
@@ -26,6 +26,7 @@ class Wallet extends Controller
      * @param string $currency
      * @param string|boolean $productType
      * @return array
+     * @throws ClientControllerException
      */
     public function checkWalletBalance($userAuthorizationId, $amount, $currency, $productType = false)
     {

@@ -24,7 +24,7 @@ class CreatePaymentPayload extends BasePaymentPayload
 
     /**
      * Get the value of productType
-  
+     *
      * @return string
      */
     public function getProductType()
@@ -36,6 +36,7 @@ class CreatePaymentPayload extends BasePaymentPayload
      * Set the value of productType
      * @param string $productType
      * @return  self
+     * @throws ModelException
      */
     public function setProductType($productType)
     {

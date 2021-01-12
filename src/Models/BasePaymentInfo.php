@@ -78,6 +78,7 @@ class BasePaymentInfo extends Model
      * Set the value of orderItems
      * @param array $orderItems
      * @return  self
+     * @throws ModelException
      */
     public function setOrderItems($orderItems)
     {
@@ -168,7 +169,7 @@ class BasePaymentInfo extends Model
 
     /**
      * Set the value of requestedAt. Takes current server time automatically if no value is passed.
-     * @param DateTime|boolean $requestedAt
+     * @param \DateTime|boolean $requestedAt
      * @return  self
      */
     public function setRequestedAt($requestedAt = false)
@@ -191,6 +192,7 @@ class BasePaymentInfo extends Model
      * Set the value of amount
      * @param array $amount
      * @return  self
+     * @throws ModelException
      */
     public function setAmount($amount)
     {

@@ -136,6 +136,7 @@ class CreateQrCodePayload extends BasePaymentInfo
      * Set the value of redirectType
      *  @param string $redirectType
      * @return  self
+     * @throws ModelException
      */
     public function setRedirectType($redirectType)
     {

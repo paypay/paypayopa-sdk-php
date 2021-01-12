@@ -2,10 +2,12 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
+use GuzzleHttp\Exception\GuzzleException;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
 use \Firebase\JWT\JWT;
 use GuzzleHttp\Exception\RequestException;
+use PayPay\OpenPaymentAPI\Models\ModelException;
 
 class User extends Controller
 {
@@ -15,13 +17,6 @@ class User extends Controller
      * @var string
      */
     private $userAuthorizationId;
-    /**
-     * Initializes Code class to manage creation and deletion of data for QR Code generation
-     *
-     * @param Client $MainInstance Instance of invoking client class
-     * @param Array $auth API credentials
-     */
-
 
     /**
      * Sets user authorization for this controller
@@ -38,7 +33,8 @@ class User extends Controller
      * Unlink a user from the client
      *
      * @param string|boolean $userAuthorizationId User authorization id. Leave empty if already set.
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
      */
     public function unlinkUser($userAuthorizationId = false)
     {
@@ -56,7 +52,9 @@ class User extends Controller
      * Create a ACCOUNT LINK QR and display it to the user
      *
      * @param AccountLinkPayload $payload
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws ModelException
      */
     public function createAccountLinkQrCode($payload)
     {
@@ -88,7 +86,9 @@ class User extends Controller
      * Get the authorization status of a user
      *
      * @param string $userAuthorizationId
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws GuzzleException
      */
     public function getUserAuthorizationStatus($userAuthorizationId)
     {
@@ -106,7 +106,9 @@ class User extends Controller
      * Get the masked phone number of the user
      *
      * @param string $userAuthorizationId
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws GuzzleException
      */
     public function getMaskedUserProfile($userAuthorizationId)
     {
@@ -122,10 +124,13 @@ class User extends Controller
     /**
      * Generic HTTP call function
      *
+     * @param string $apiId
      * @param string $url
      * @param array $options
      * @param string $userAuthorizationId
      * @return array
+     * @throws ClientControllerException
+     * @throws GuzzleException
      */
     private function doAuthCall($apiId, $url, $options, $userAuthorizationId)
     {

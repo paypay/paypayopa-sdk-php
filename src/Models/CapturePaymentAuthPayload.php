@@ -81,6 +81,7 @@ class CapturePaymentAuthPayload extends Model
      * Set the value of amount
      * @param array $amount
      * @return  self
+     * @throws ModelException
      */
     public function setAmount($amount)
     {

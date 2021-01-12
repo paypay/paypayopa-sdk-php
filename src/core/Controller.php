@@ -2,6 +2,7 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
+use Exception;
 use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
 
@@ -37,7 +38,7 @@ class Controller
      * Initializes Code class to manage creation and deletion of data for QR Code generation
      *
      * @param Client $MainInstance Instance of invoking client class
-     * @param Array $auth API credentials
+     * @param array $auth API credentials
      */
     public function __construct($MainInstance, $auth)
     {
@@ -58,7 +59,7 @@ class Controller
      * @param string $PaypayEndpoint
      * @param string $ContentType
      * @param array $RequestData
-     * @return array  
+     * @return array
      */
     protected function HmacCallOpts($HttpMethod, $PaypayEndpoint, $ContentType = 'empty', $RequestData = null)
     {
@@ -95,6 +96,7 @@ class Controller
      * @param mixed $payload Request data payload object
      * @param mixed $type Empty payload object
      * @return void
+     * @throws ClientControllerException
      */
     protected function payloadTypeCheck($payload, $type)
     {
@@ -110,6 +112,7 @@ class Controller
      * @param array $data payload data array
      * @param array $options call options
      * @return array
+     * @throws ClientControllerException
      */
     protected function doCall($lookupApi,$apiId, $url, $data, $options)
     {
@@ -157,6 +160,12 @@ class Controller
         }
     }
 
+    /**
+     * @param $apiInfo
+     * @param $resultInfo
+     * @param $statusCode
+     * @throws ClientControllerException
+     */
     protected function parseResultInfo($apiInfo, $resultInfo, $statusCode)
     {
         if (strcmp($resultInfo['code'], "SUCCESS") !== 0 && strcmp($resultInfo['code'], "REQUEST_ACCEPTED")) {

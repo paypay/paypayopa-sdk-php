@@ -75,9 +75,10 @@ class Client
     /**
      * Initialize a Client object with session,
      * optional auth handler, and options      *
-     * @param Array $auth API credentials
+     * @param array $auth API credentials
      * @param boolean $productionmode Sandbox environment flag
      * @param GuzzleHttpClient|boolean $requestHandler
+     * @throws ClientException
      */
     public function __construct($auth = null, $productionmode = false, $requestHandler = false)
     {
@@ -167,7 +168,7 @@ class Client
      * Returns all endpoint details for proivided mapping
      *
      * @param string $apiName Id of api details to be retrieved
-     * @return void
+     * @return array
      */
     public function GetApiMapping($apiName)
     {

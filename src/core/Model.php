@@ -2,8 +2,6 @@
 
 namespace PayPay\OpenPaymentAPI\Models;
 
-use mageekguy\atoum\asserters\integer;
-
 class Model
 {
     /**
@@ -27,6 +25,7 @@ class Model
      *
      * @param boolean $throwErrors
      * @return boolean
+     * @throws ModelException
      */
     public function validate($throwErrors = true)
     {
@@ -58,6 +57,7 @@ class Model
      * Undocumented function
      *
      * @return array
+     * @throws ModelException
      */
     public function serialize()
     {

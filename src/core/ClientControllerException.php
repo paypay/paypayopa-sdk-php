@@ -8,6 +8,13 @@ class ClientControllerException extends Exception
 {
     private $resultInfo = false;
     private $apiInfo = false;
+
+    /**
+     * @param string|bool $apiInfo
+     * @param array|string $resultInfo
+     * @param int $code
+     * @param string|bool $documentationUrl
+     */
     public function __construct($apiInfo,$resultInfo, $code = 500, $documentationUrl = false)
     {
         $this->documentationUrl = $documentationUrl;
@@ -21,6 +28,10 @@ class ClientControllerException extends Exception
             parent::__construct($resultInfo, $code);
         }
     }
+
+    /**
+     * @return string
+     */
     function getResolutionUrl()
     {
         if (!$this->documentationUrl || !$this->apiInfo) {

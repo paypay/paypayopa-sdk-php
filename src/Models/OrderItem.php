@@ -142,6 +142,7 @@ class OrderItem extends Model
      * Set the value of unitPrice
      * @param array $unitPrice
      * @return  self
+     * @throws ModelException
      */
     public function setUnitPrice($unitPrice)
     {
