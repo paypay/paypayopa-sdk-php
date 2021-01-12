@@ -61,7 +61,7 @@ class PayloadsTest extends TestBoilerplate
     }
 
     /**
-     * Create payment auth payload 
+     * Create payment auth payload
      *
      * @return void
      */
@@ -110,7 +110,6 @@ class PayloadsTest extends TestBoilerplate
 
     public function testCreatePaymentPayload()
     {
-
         $test = new CreatePaymentPayload();
 
         $test->setProductType("VIRTUAL_BONUS_INVESTMENT");
@@ -129,7 +128,6 @@ class PayloadsTest extends TestBoilerplate
     }
     public function testCreatePendingPaymentPayload()
     {
-
         $test = new CreatePendingPaymentPayload();
         $test->setExpiryDate($this->HourFromNow());
         $test->setMerchantPaymentId("TEST_MERCHANT_PAYMENT_ID");

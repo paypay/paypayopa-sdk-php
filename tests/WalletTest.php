@@ -27,17 +27,16 @@ final class WalletTest extends TestBoilerplate
     }
     public function testWalletBalanceWProductType()
     {
-        $resp = $this->client->wallet->checkWalletBalance($this->config['uaid'], 1, 'JPY',"VIRTUAL_BONUS_INVESTMENT");
+        $resp = $this->client->wallet->checkWalletBalance($this->config['uaid'], 1, 'JPY', "VIRTUAL_BONUS_INVESTMENT");
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
     }
     public function testWalletBalanceWrongProduct()
     {
         try {
-            $resp = $this->client->wallet->checkWalletBalance($this->config['uaid'], 1, 'JPY',"SnakeOil");
+            $resp = $this->client->wallet->checkWalletBalance($this->config['uaid'], 1, 'JPY', "SnakeOil");
         } catch (ClientControllerException $e) {
-            $this->assertStringContainsString("Invalid Direct Debit Product Type",$e->getMessage());
+            $this->assertStringContainsString("Invalid Direct Debit Product Type", $e->getMessage());
         }
-        
     }
 }

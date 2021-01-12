@@ -39,11 +39,11 @@ class CapturePaymentAuthPayload extends Model
 
     public function __construct()
     {
-        $this->_memberize("merchantPaymentId", 'string',64);
+        $this->_memberize("merchantPaymentId", 'string', 64);
         $this->_memberize("amount", 'array');
-        $this->_memberize("merchantCaptureId", 'string',64);
+        $this->_memberize("merchantCaptureId", 'string', 64);
         $this->_memberize("requestedAt", 'integer');
-        $this->_memberize("orderDescription", 'string',255);
+        $this->_memberize("orderDescription", 'string', 255);
     }
 
     /**
@@ -85,7 +85,7 @@ class CapturePaymentAuthPayload extends Model
     public function setAmount($amount)
     {
         if (!isset($amount['currency']) || !isset($amount['amount'])) {
-            throw new ModelException("Invalid amount",400,['amount']);
+            throw new ModelException("Invalid amount", 400, ['amount']);
         }
 
         $this->amount = $amount;

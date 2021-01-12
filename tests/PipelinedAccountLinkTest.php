@@ -22,19 +22,17 @@ class AccountLinkTest extends TestBoilerplate
         print_r('AuthURL:');
         var_dump($resp);
         $this->data = $resp;
-    }    
+    }
     /**
-     * 
+     *
      *
      * @return void
      */
-    function testCreate()
+    public function testCreate()
     {
         $this->Create();
         $data = $this->data;
         $this->assertTrue(isset($data));
-        $this->assertEquals('SUCCESS',$data['resultInfo']['code'],$data['resultInfo']['message'].':');
+        $this->assertEquals('SUCCESS', $data['resultInfo']['code'], $data['resultInfo']['message'].':');
     }
-    
 }
-

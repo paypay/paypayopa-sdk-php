@@ -16,12 +16,12 @@ final class PaymentTest extends TestBoilerplate
         $CPPayload = new CreatePaymentPayload();
         // Save Cart totals
         $amount = [
-            "amount" => $similar?12:rand(5,10),
+            "amount" => $similar?12:rand(5, 10),
             "currency" => "JPY"
         ];
         $CPPayload->setMerchantPaymentId(uniqid('TESTMERCH_PAY_ID'))->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
         // Get data for QR code
-        $resp = $client->payment->createPayment($CPPayload,$similar);
+        $resp = $client->payment->createPayment($CPPayload, $similar);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
         $data = $resp['data'];

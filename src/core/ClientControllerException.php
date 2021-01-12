@@ -15,7 +15,7 @@ class ClientControllerException extends Exception
      * @param int $code
      * @param string|bool $documentationUrl
      */
-    public function __construct($apiInfo,$resultInfo, $code = 500, $documentationUrl = false)
+    public function __construct($apiInfo, $resultInfo, $code = 500, $documentationUrl = false)
     {
         $this->documentationUrl = $documentationUrl;
         $this->apiInfo = $apiInfo;
@@ -32,7 +32,7 @@ class ClientControllerException extends Exception
     /**
      * @return string
      */
-    function getResolutionUrl()
+    public function getResolutionUrl()
     {
         if (!$this->documentationUrl || !$this->apiInfo) {
             return "https://github.com/paypay/paypayopa-sdk-php/issues/new/choose";

@@ -39,8 +39,8 @@ class RefundPaymentPayload extends Model
 
     public function __construct()
     {
-        $this->_memberize('merchantRefundId', 'string',64);
-        $this->_memberize('paymentId', 'string',64);
+        $this->_memberize('merchantRefundId', 'string', 64);
+        $this->_memberize('paymentId', 'string', 64);
         $this->_memberize('amount', 'array');
         $this->_memberize('requestedAt', 'integer');
     }
@@ -104,7 +104,7 @@ class RefundPaymentPayload extends Model
     public function setAmount($amount)
     {
         if (!isset($amount['currency']) || !isset($amount['amount'])) {
-            throw new ModelException("Invalid amount",400,['amount']);
+            throw new ModelException("Invalid amount", 400, ['amount']);
         }
 
         $this->amount = $amount;
@@ -149,7 +149,7 @@ class RefundPaymentPayload extends Model
      */
     public function setReason($reason)
     {
-        $this->_memberize('reason', 'string',255);
+        $this->_memberize('reason', 'string', 255);
         $this->reason = $reason;
 
         return $this;

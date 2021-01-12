@@ -230,7 +230,7 @@ class BasePaymentInfo extends Model
      * Get order Items
      *
      * @return  array
-     */ 
+     */
     public function getOrderItems()
     {
         return $this->orderItems;

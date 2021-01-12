@@ -43,6 +43,6 @@ class CreatePaymentPayload extends BasePaymentPayload
 
             return $this;
         }
-        throw new ModelException("Invalid Direct Debit Product Type", 400,['productType']);
+        throw new ModelException("Invalid Direct Debit Product Type", 400, ['productType']);
     }
 }

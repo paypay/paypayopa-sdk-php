@@ -5,14 +5,16 @@ use PayPay\OpenPaymentAPI\Controller\ClientControllerException;
 require_once('TestBoilerplate.php');
 final class ResolveTest extends TestBoilerplate
 {
-    function testNonDocResolve(){
+    public function testNonDocResolve()
+    {
         try {
-            throw new ClientControllerException(false,"duck");
+            throw new ClientControllerException(false, "duck");
         } catch (ClientControllerException $e) {
-            $this->assertStringContainsString("https://github.com/paypay/paypayopa-sdk-php/issues/new/choose",$e->getResolutionUrl(),'Exception evaluates incorrectly');
+            $this->assertStringContainsString("https://github.com/paypay/paypayopa-sdk-php/issues/new/choose", $e->getResolutionUrl(), 'Exception evaluates incorrectly');
         }
     }
-    function testDocumentedResolve(){
+    public function testDocumentedResolve()
+    {
         try {
             $resultInfo =[
                 
@@ -28,8 +30,7 @@ final class ResolveTest extends TestBoilerplate
                 $this->client->GetConfig('DOC_URL') // PayPay Resolve URL
             );
         } catch (ClientControllerException $e) {
-            $this->assertStringContainsString($this->client->GetConfig('DOC_URL'),$e->getResolutionUrl(),'Exception evaluates incorrectly');
+            $this->assertStringContainsString($this->client->GetConfig('DOC_URL'), $e->getResolutionUrl(), 'Exception evaluates incorrectly');
         }
     }
-    
 }

@@ -54,7 +54,7 @@ class AccountLinkPayload extends Model
      * @var string
      */
     protected $userAgent;
- 
+
     public function __construct()
     {
         $this->_memberize("scopes", "array");
@@ -145,10 +145,11 @@ class AccountLinkPayload extends Model
      */
     public function setRedirectType($redirectType)
     {
-        if (!in_array($redirectType, ["APP_DEEP_LINK","WEB_LINK"])) 
+        if (!in_array($redirectType, ["APP_DEEP_LINK", "WEB_LINK"])) {
             throw new \Exception("Invalid redirect type", 500);
-        
-        
+        }
+
+
         $this->_memberize("redirectType", "string");
         $this->redirectType = $redirectType;
 
@@ -218,7 +219,7 @@ class AccountLinkPayload extends Model
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
-    
+
     /**
      * Get the value of deviceId
      * @return string
@@ -227,7 +228,7 @@ class AccountLinkPayload extends Model
     {
         return $this->deviceId;
     }
-    
+
     /**
      * Set the value of deviceId
      * @param string $deviceId

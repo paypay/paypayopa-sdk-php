@@ -33,10 +33,10 @@ class TestBoilerplate extends TestCase
         $this->client = new Client([
             /** @phpstan-ignore-next-line */
             'API_KEY' => $config['key'],
-            /** @phpstan-ignore-next-line */       
+            /** @phpstan-ignore-next-line */
             'API_SECRET' => $config['secret'],
-            /** @phpstan-ignore-next-line */ 
-            'MERCHANT_ID' => $config['mid'] 
+            /** @phpstan-ignore-next-line */
+            'MERCHANT_ID' => $config['mid']
         ], 'test');
         /** @phpstan-ignore-next-line */
         $this->config = $config;

@@ -100,7 +100,7 @@ class Controller
     protected function payloadTypeCheck($payload, $type)
     {
         if (get_class($payload) !== get_class($type)) {
-            throw new ClientControllerException(false,"Payload not of type " . get_class($type), 500);
+            throw new ClientControllerException(false, "Payload not of type " . get_class($type), 500);
         }
     }
     /**
@@ -113,7 +113,7 @@ class Controller
      * @return array
      * @throws ClientControllerException
      */
-    protected function doCall($lookupApi,$apiId, $url, $data, $options)
+    protected function doCall($lookupApi, $apiId, $url, $data, $options)
     {
         if ($lookupApi) {
             $apiInfo = $this->main()->GetApiMapping($apiId);

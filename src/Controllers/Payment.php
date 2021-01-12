@@ -124,7 +124,6 @@ class Payment extends Controller
      */
     public function cancelPayment($merchantPaymentId, $paymentType = 'web_cashier')
     {
-
         $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
         $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
         $options = $this->HmacCallOpts('DELETE', $endpoint);

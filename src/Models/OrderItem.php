@@ -78,7 +78,7 @@ class OrderItem extends Model
      */
     public function setCategory($category)
     {
-        $this->_memberize('category', 'string',255);
+        $this->_memberize('category', 'string', 255);
         $this->category = $category;
 
         return $this;
@@ -121,7 +121,7 @@ class OrderItem extends Model
      */
     public function setProductId($productId)
     {
-        $this->_memberize('productId', 'string',255);
+        $this->_memberize('productId', 'string', 255);
         $this->productId = $productId;
 
         return $this;
@@ -146,7 +146,7 @@ class OrderItem extends Model
     {
         $this->_memberize('unitPrice', 'array');
         if (!isset($unitPrice['currency']) || !isset($unitPrice['amount'])) {
-            throw new ModelException("Invalid amount",400,['unitPrice']);
+            throw new ModelException("Invalid amount", 400, ['unitPrice']);
         }
         $this->unitPrice = $unitPrice;
         return $this;

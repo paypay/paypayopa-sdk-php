@@ -23,7 +23,6 @@ class ZCleanupTest extends TestBoilerplate
         $response = curl_exec($curl);
 
         curl_close($curl);
-        $this->assertEquals(true,isset($response));
+        $this->assertEquals(true, isset($response));
     }
 }
-
