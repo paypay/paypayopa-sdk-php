@@ -113,7 +113,6 @@ final class PendingPaymentTest extends TestBoilerplate
     public function refundDetails()
     {
         $merchantRefundId = $this->data['merchantRefundId'];
-        ;
         $resp = $this->client->refund->getRefundDetails($merchantRefundId);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);

@@ -43,7 +43,6 @@ final class ContinuousPaymentTest extends TestBoilerplate
         $data =  $this->data;
         $merchantPaymentId = $data['merchantPaymentId'];
         $this->assertTrue(isset($merchantPaymentId), 'Merchant Payment ID not set');
-        ;
         $resp = $this->client->payment->cancelPayment($merchantPaymentId);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
