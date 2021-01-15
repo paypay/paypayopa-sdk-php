@@ -2,17 +2,16 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use PayPay\OpenPaymentAPI\Models\CreatePendingPaymentPayload;
-use \Firebase\JWT\JWT;
-use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
-use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
-use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
-use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
+use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
+use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
+use PayPay\OpenPaymentAPI\Models\CreatePendingPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\ModelException;
+use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 
 class Payment extends Controller
 {
@@ -21,7 +20,7 @@ class Payment extends Controller
      * Initializes Code class to manage creation and deletion of data for QR Code generation
      *
      * @param Client $MainInstance Instance of invoking client class
-     * @param Array $auth API credentials
+     * @param array $auth API credentials
      */
     public function __construct($MainInstance, $auth)
     {
@@ -33,7 +32,10 @@ class Payment extends Controller
      *
      * @param CreatePaymentPayload $payload SDK payload object
      * @param boolean $agreeSimilarTransaction (Optional) If the parameter is set to "true", the payment duplication check will be bypassed.
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws ModelException
+     * @throws GuzzleException
      */
     public function createPayment($payload, $agreeSimilarTransaction = false)
     {
@@ -53,7 +55,9 @@ class Payment extends Controller
      * Create a direct debit payment and start the money transfer.
      *
      * @param CreateContinuousPaymentPayload $payload SDK payload object
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws ModelException
      */
     public function createContinuousPayment($payload)
     {
@@ -74,6 +78,8 @@ class Payment extends Controller
      *
      * @param CreatePendingPaymentPayload $payload SDK payload object
      * @return array
+     * @throws ClientControllerException
+     * @throws ModelException
      */
     public function createPendingPayment($payload)
     {
@@ -91,9 +97,10 @@ class Payment extends Controller
     /**
      * Fetches Payment details
      *
-     * @param String $merchantPaymentId The unique payment transaction id provided by merchant
-     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
-     * @return mixed
+     * @param string $merchantPaymentId The unique payment transaction id provided by merchant
+     * @param string $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
+     * @return array
+     * @throws ClientControllerException
      */
     public function getPaymentDetails($merchantPaymentId, $paymentType = 'web_cashier')
     {
@@ -110,13 +117,13 @@ class Payment extends Controller
      * By calling this api, if accepted, the OPA will guarantee the money eventually goes back to user's account.
      * Note: The Cancel API can be used until 00:14:59 AM the day after the Payment has happened.
      *       For 00:15 AM or later, please call the refund method to refund the payment.
-     * @param String $merchantPaymentId The unique payment transaction id provided by merchant
-     * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
-     * @return mixed
+     * @param string $merchantPaymentId The unique payment transaction id provided by merchant
+     * @param string $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
+     * @return array
+     * @throws ClientControllerException
      */
     public function cancelPayment($merchantPaymentId, $paymentType = 'web_cashier')
     {
-
         $endpoint = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['endpoint'];
         $url = $this->endpointByPaymentType($paymentType, $merchantPaymentId)['url'];
         $options = $this->HmacCallOpts('DELETE', $endpoint);
@@ -128,7 +135,10 @@ class Payment extends Controller
      *
      * @param CreatePaymentAuthPayload $payload
      * @param boolean $agreeSimilarTransaction If set to true, payment duplication check will be bypassed
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws ModelException
+     * @throws GuzzleException
      */
     public function createPaymentAuth($payload, $agreeSimilarTransaction = false)
     {
@@ -151,7 +161,9 @@ class Payment extends Controller
      * for a payment
      *
      * @param CapturePaymentAuthPayload $payload SDK payload object
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws ModelException
      */
     public function capturePaymentAuth($payload)
     {
@@ -172,7 +184,9 @@ class Payment extends Controller
      * the order by the user.
      *
      * @param RevertAuthPayload $payload SDK payload object
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws ModelException
      */
     public function revertAuth($payload)
     {
@@ -188,10 +202,13 @@ class Payment extends Controller
     /**
      * Generic HTTP call for similar transaction
      *
+     * @param string $apiId
      * @param string $url
      * @param array $options
      * @param array $data
      * @return array
+     * @throws ClientControllerException
+     * @throws GuzzleException
      */
     private function doSimilarTransactionCall($apiId, $url, $options, $data)
     {

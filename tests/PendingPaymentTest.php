@@ -19,7 +19,7 @@ final class PendingPaymentTest extends TestBoilerplate
         $CPPPayload = new CreatePendingPaymentPayload();
         // Save Cart totals
         $amount = [
-            "amount" => rand(5,20),
+            "amount" => rand(5, 20),
             "currency" => "JPY"
         ];
         
@@ -112,7 +112,7 @@ final class PendingPaymentTest extends TestBoilerplate
      */
     public function refundDetails()
     {
-        $merchantRefundId = $this->data['merchantRefundId'];;
+        $merchantRefundId = $this->data['merchantRefundId'];
         $resp = $this->client->refund->getRefundDetails($merchantRefundId);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
@@ -129,8 +129,7 @@ final class PendingPaymentTest extends TestBoilerplate
         try {
             $this->client->payment->createPendingPayment(2);
         } catch (ModelException $e) {
-            $this->assertStringContainsString("Payload not of type CreatePendingPaymentPayload",$e->getMessage());
+            $this->assertStringContainsString("Payload not of type CreatePendingPaymentPayload", $e->getMessage());
         }
-        
     }
 }

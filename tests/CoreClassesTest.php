@@ -7,7 +7,7 @@ require_once('TestBoilerplate.php');
 
 class CoreClassesTest extends TestBoilerplate
 {
-    function testClientNoAuth()
+    public function testClientNoAuth()
     {
         try {
             $client = new Client();
@@ -15,7 +15,7 @@ class CoreClassesTest extends TestBoilerplate
             $this->assertStringContainsString('Invalid auth credentials', $e->getMessage());
         }
     }
-    function testClientBaExtNwClient()
+    public function testClientBaExtNwClient()
     {
         $config = [
             /** @phpstan-ignore-next-line */
@@ -25,7 +25,7 @@ class CoreClassesTest extends TestBoilerplate
             /** @phpstan-ignore-next-line */
             'MERCHANT_ID' => "MERCHANT_IDENTIFIER_STRING"
         ];
-            $client = new Client($config, false, new GuzzleHttp\Client());
+        $client = new Client($config, false, new GuzzleHttp\Client());
         
         $collector["URL"] = $client->GetConfig("API_URL");
         $collector["ENDPOINT"] = $client->GetEndpoint('SUBSCRIPTION');
@@ -35,7 +35,7 @@ class CoreClassesTest extends TestBoilerplate
             $this->assertNotNull($value, "${key} invalid");
         }
     }
-    function testClientBadNwClient()
+    public function testClientBadNwClient()
     {
         $config = [
             /** @phpstan-ignore-next-line */
@@ -48,11 +48,11 @@ class CoreClassesTest extends TestBoilerplate
         try {
             $client = new Client($config, false, 2);
         } catch (ClientException $e) {
-            $this->assertStringContainsString("Invalid request handler",$e->getMessage());
+            $this->assertStringContainsString("Invalid request handler", $e->getMessage());
         }
     }
 
-    function testClientStaging()
+    public function testClientStaging()
     {
         $config = [
             /** @phpstan-ignore-next-line */
@@ -71,7 +71,7 @@ class CoreClassesTest extends TestBoilerplate
             $this->assertNotNull($value, "${key} invalid");
         }
     }
-    function testClientProduction()
+    public function testClientProduction()
     {
         $config = [
             /** @phpstan-ignore-next-line */
@@ -90,7 +90,7 @@ class CoreClassesTest extends TestBoilerplate
             $this->assertNotNull($value, "${key} invalid");
         }
     }
-    function testClientTestMode()
+    public function testClientTestMode()
     {
         $config = [
             /** @phpstan-ignore-next-line */
@@ -109,7 +109,7 @@ class CoreClassesTest extends TestBoilerplate
             $this->assertNotNull($value, "${key} invalid");
         }
     }
-    function testClientNoMid()
+    public function testClientNoMid()
     {
         $config = [
             /** @phpstan-ignore-next-line */

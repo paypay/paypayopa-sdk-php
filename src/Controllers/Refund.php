@@ -2,9 +2,9 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
-use Exception;
 use PayPay\OpenPaymentAPI\Client;
+use PayPay\OpenPaymentAPI\Models\ModelException;
+use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
 
 class Refund extends Controller
 {
@@ -12,7 +12,7 @@ class Refund extends Controller
      * Initializes Code class to manage creation and deletion of data for QR Code generation
      *
      * @param Client $MainInstance Instance of invoking client class
-     * @param Array $auth API credentials
+     * @param array $auth API credentials
      */
     public function __construct($MainInstance, $auth)
     {
@@ -23,7 +23,9 @@ class Refund extends Controller
      *
      * @param RefundPaymentPayload $payload SDK payload object
      * @param String $paymentType Type of payment e.g. pending, continuous, direct_debit,web_cashier,dynamic_qr,app_invoke
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws ModelException
      */
     public function refundPayment($payload, $paymentType = 'web_cashier')
     {
@@ -58,7 +60,8 @@ class Refund extends Controller
     /**
      * Get refund details.
      * @param String $merchantRefundId The unique refund transaction id provided by merchant
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
      */
     public function getRefundDetails($merchantRefundId)
     {

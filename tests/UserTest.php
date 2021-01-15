@@ -3,11 +3,11 @@
 require_once('TestBoilerplate.php');
 final class UserTest extends TestBoilerplate
 {
-     /**
-      * Default user authorization id for testing
-      *
-      * @var string
-      */
+    /**
+     * Default user authorization id for testing
+     *
+     * @var string
+     */
     private $userAuthorizationId = "0ef0948e-314c-42e1-9312-03ce446fa5ef";
 
     public function __construct()

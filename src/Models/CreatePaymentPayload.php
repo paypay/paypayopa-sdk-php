@@ -2,9 +2,6 @@
 
 namespace PayPay\OpenPaymentAPI\Models;
 
-use DateTime;
-use Exception;
-
 class CreatePaymentPayload extends BasePaymentPayload
 {
 
@@ -24,7 +21,7 @@ class CreatePaymentPayload extends BasePaymentPayload
 
     /**
      * Get the value of productType
-  
+     *
      * @return string
      */
     public function getProductType()
@@ -36,6 +33,7 @@ class CreatePaymentPayload extends BasePaymentPayload
      * Set the value of productType
      * @param string $productType
      * @return  self
+     * @throws ModelException
      */
     public function setProductType($productType)
     {
@@ -45,6 +43,6 @@ class CreatePaymentPayload extends BasePaymentPayload
 
             return $this;
         }
-        throw new ModelException("Invalid Direct Debit Product Type", 400,['productType']);
+        throw new ModelException("Invalid Direct Debit Product Type", 400, ['productType']);
     }
 }

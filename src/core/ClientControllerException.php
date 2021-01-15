@@ -8,7 +8,14 @@ class ClientControllerException extends Exception
 {
     private $resultInfo = false;
     private $apiInfo = false;
-    public function __construct($apiInfo,$resultInfo, $code = 500, $documentationUrl = false)
+
+    /**
+     * @param string|bool $apiInfo
+     * @param array|string $resultInfo
+     * @param int $code
+     * @param string|bool $documentationUrl
+     */
+    public function __construct($apiInfo, $resultInfo, $code = 500, $documentationUrl = false)
     {
         $this->documentationUrl = $documentationUrl;
         $this->apiInfo = $apiInfo;
@@ -21,7 +28,11 @@ class ClientControllerException extends Exception
             parent::__construct($resultInfo, $code);
         }
     }
-    function getResolutionUrl()
+
+    /**
+     * @return string
+     */
+    public function getResolutionUrl()
     {
         if (!$this->documentationUrl || !$this->apiInfo) {
             return "https://github.com/paypay/paypayopa-sdk-php/issues/new/choose";

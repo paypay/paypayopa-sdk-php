@@ -3,7 +3,6 @@
 namespace PayPay\OpenPaymentAPI\Models;
 
 use Exception;
-use mageekguy\atoum\asserters\integer;
 
 class ModelException extends Exception
 {

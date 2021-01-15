@@ -8,19 +8,17 @@ require_once('TestBoilerplate.php');
 
 class PreAuthTest extends TestBoilerplate
 {
-    
-
     public function Create($similiar=true)
     {
         $CPApayload = new CreatePaymentAuthPayload();
         $CPApayload->setMerchantPaymentId(uniqid('TEST_PREAUTH'))
             ->setUserAuthorizationId($this->config['uaid'])
-            ->setAmount(['amount' => $similiar?20:rand(5,17), 'currency' => 'JPY'])
+            ->setAmount(['amount' => $similiar?20:rand(5, 17), 'currency' => 'JPY'])
             ->setRequestedAt();
         $resp = $this->client->payment->createPaymentAuth($CPApayload, $similiar);
         var_dump($resp);
         $this->assertTrue(isset($resp['resultInfo']));
-        $this->assertEquals('SUCCESS', $resp['resultInfo']['code'], $resp['resultInfo']['message'] );
+        $this->assertEquals('SUCCESS', $resp['resultInfo']['code'], $resp['resultInfo']['message']);
         $this->data = $resp['data'];
     }
     /**
@@ -66,7 +64,7 @@ class PreAuthTest extends TestBoilerplate
         $RAPayload->setMerchantRevertId(uniqid('TESTMERCH_REV_ID'))->setPaymentId($paymentId)->setRequestedAt();
         $resp = $this->client->payment->revertAuth($RAPayload);
         $resultInfo = $resp['resultInfo'];
-        $this->assertEquals('SUCCESS', $resultInfo['code'],$resultInfo['code']);
+        $this->assertEquals('SUCCESS', $resultInfo['code'], $resultInfo['code']);
     }
     /**
      * tests Capture

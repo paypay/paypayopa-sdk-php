@@ -2,9 +2,9 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use Exception;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\CreateQrCodePayload;
+use PayPay\OpenPaymentAPI\Models\ModelException;
 
 class Code extends Controller
 {
@@ -12,7 +12,7 @@ class Code extends Controller
      * Initializes Code class to manage creation and deletion of data for QR Code generation
      *
      * @param Client $MainInstance Instance of invoking client class
-     * @param Array $auth API credentials
+     * @param array $auth API credentials
      */
     public function __construct($MainInstance, $auth)
     {
@@ -23,7 +23,9 @@ class Code extends Controller
      * Create a QR Code to receive payments.
      *
      * @param CreateQrCodePayload $payload SDK payload object
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
+     * @throws ModelException
      */
     public function createQRCode($payload)
     {
@@ -45,7 +47,8 @@ class Code extends Controller
      * Fetches Payment details
      *
      * @param String $merchantPaymentId The unique payment transaction id provided by merchant
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
      */
     public function getPaymentDetails($merchantPaymentId)
     {
@@ -62,7 +65,8 @@ class Code extends Controller
      * Invalidates QR Code for payment
      *
      * @param String $codeId
-     * @return mixed
+     * @return array
+     * @throws ClientControllerException
      */
     public function deleteQRCode($codeId)
     {

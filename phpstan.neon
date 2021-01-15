@@ -1,9 +1,6 @@
 parameters:
     bootstrapFiles:
-        - src/loader.php
     excludes_analyse:
-        - src/Models/Payload.php
-        - src/loader.php  
     level: 8
     paths:
         - src

@@ -37,7 +37,7 @@ class Controller
      * Initializes Code class to manage creation and deletion of data for QR Code generation
      *
      * @param Client $MainInstance Instance of invoking client class
-     * @param Array $auth API credentials
+     * @param array $auth API credentials
      */
     public function __construct($MainInstance, $auth)
     {
@@ -58,7 +58,7 @@ class Controller
      * @param string $PaypayEndpoint
      * @param string $ContentType
      * @param array $RequestData
-     * @return array  
+     * @return array
      */
     protected function HmacCallOpts($HttpMethod, $PaypayEndpoint, $ContentType = 'empty', $RequestData = null)
     {
@@ -95,11 +95,12 @@ class Controller
      * @param mixed $payload Request data payload object
      * @param mixed $type Empty payload object
      * @return void
+     * @throws ClientControllerException
      */
     protected function payloadTypeCheck($payload, $type)
     {
         if (get_class($payload) !== get_class($type)) {
-            throw new ClientControllerException(false,"Payload not of type " . get_class($type), 500);
+            throw new ClientControllerException(false, "Payload not of type " . get_class($type), 500);
         }
     }
     /**
@@ -110,8 +111,9 @@ class Controller
      * @param array $data payload data array
      * @param array $options call options
      * @return array
+     * @throws ClientControllerException
      */
-    protected function doCall($lookupApi,$apiId, $url, $data, $options)
+    protected function doCall($lookupApi, $apiId, $url, $data, $options)
     {
         if ($lookupApi) {
             $apiInfo = $this->main()->GetApiMapping($apiId);
@@ -157,6 +159,12 @@ class Controller
         }
     }
 
+    /**
+     * @param $apiInfo
+     * @param $resultInfo
+     * @param $statusCode
+     * @throws ClientControllerException
+     */
     protected function parseResultInfo($apiInfo, $resultInfo, $statusCode)
     {
         if (strcmp($resultInfo['code'], "SUCCESS") !== 0 && strcmp($resultInfo['code'], "REQUEST_ACCEPTED")) {

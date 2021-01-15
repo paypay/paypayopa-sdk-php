@@ -42,7 +42,7 @@ final class ContinuousPaymentTest extends TestBoilerplate
     {
         $data =  $this->data;
         $merchantPaymentId = $data['merchantPaymentId'];
-        $this->assertTrue(isset($merchantPaymentId), 'Merchant Payment ID not set');;
+        $this->assertTrue(isset($merchantPaymentId), 'Merchant Payment ID not set');
         $resp = $this->client->payment->cancelPayment($merchantPaymentId);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
@@ -63,8 +63,7 @@ final class ContinuousPaymentTest extends TestBoilerplate
         try {
             $this->client->payment->createContinuousPayment(2);
         } catch (ModelException $e) {
-            $this->assertStringContainsString("Payload not of type CreateContinuousPaymentPayload",$e->getMessage());
+            $this->assertStringContainsString("Payload not of type CreateContinuousPaymentPayload", $e->getMessage());
         }
-        
     }
 }

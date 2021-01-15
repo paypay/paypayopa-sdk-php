@@ -2,8 +2,6 @@
 
 namespace PayPay\OpenPaymentAPI\Models;
 
-use mageekguy\atoum\asserters\integer;
-
 class Model
 {
     /**
@@ -27,6 +25,7 @@ class Model
      *
      * @param boolean $throwErrors
      * @return boolean
+     * @throws ModelException
      */
     public function validate($throwErrors = true)
     {
@@ -39,16 +38,16 @@ class Model
             }
             if ($memberInfo['type'] === 'string') {
                 if (strlen($member) < 1) {
-                    throw new ModelException("${memberName} cannot be empty", 1,[$memberName]);
+                    throw new ModelException("${memberName} cannot be empty", 1, [$memberName]);
                 }
                 if (isset($memberInfo['strlen']) && $memberInfo['strlen'] !== 0 && strlen($member) > $memberInfo['strlen']) {
-                    throw new ModelException("${memberName} exceeds maximum size of  characters", 1,[$memberName]);
+                    throw new ModelException("${memberName} exceeds maximum size of  characters", 1, [$memberName]);
                 }
             }
         }
         if (count($faults) > 0) {
             if ($throwErrors) {
-                throw new ModelException('Invalid fields: ' . implode(',', $faults), 403,$faults);
+                throw new ModelException('Invalid fields: ' . implode(',', $faults), 403, $faults);
             }
             return false;
         }
@@ -58,6 +57,7 @@ class Model
      * Undocumented function
      *
      * @return array
+     * @throws ModelException
      */
     public function serialize()
     {

@@ -3,7 +3,6 @@
 namespace PayPay\OpenPaymentAPI\Models;
 
 use DateTime;
-use Exception;
 
 class CreateQrCodePayload extends BasePaymentInfo
 {
@@ -40,7 +39,7 @@ class CreateQrCodePayload extends BasePaymentInfo
      */
     protected $userAgent;
     /**
-     * Authorization Flag 
+     * Authorization Flag
      *
      * @var boolean
      */
@@ -54,7 +53,7 @@ class CreateQrCodePayload extends BasePaymentInfo
 
     public function __construct()
     {
-        $this->_memberize('merchantPaymentId', 'string',64);
+        $this->_memberize('merchantPaymentId', 'string', 64);
         $this->_memberize('amount', 'array');
         $this->_memberize('codeType', 'string');
     }
@@ -96,7 +95,7 @@ class CreateQrCodePayload extends BasePaymentInfo
      */
     public function setStoreInfo($storeInfo)
     {
-        $this->_memberize('storeInfo', 'string',255);
+        $this->_memberize('storeInfo', 'string', 255);
         $this->storeInfo = $storeInfo;
         return $this;
     }
@@ -136,6 +135,7 @@ class CreateQrCodePayload extends BasePaymentInfo
      * Set the value of redirectType
      *  @param string $redirectType
      * @return  self
+     * @throws ModelException
      */
     public function setRedirectType($redirectType)
     {
@@ -143,8 +143,8 @@ class CreateQrCodePayload extends BasePaymentInfo
             $this->_memberize('redirectType', 'string');
             $this->redirectType = $redirectType;
             return $this;
-        }else {
-            throw new ModelException("Invalid redirection type", 500,['redirectType']);
+        } else {
+            throw new ModelException("Invalid redirection type", 500, ['redirectType']);
         }
     }
 

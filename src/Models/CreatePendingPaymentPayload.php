@@ -2,6 +2,8 @@
 
 namespace PayPay\OpenPaymentAPI\Models;
 
+use DateTime;
+
 class CreatePendingPaymentPayload extends BasePaymentPayload
 {
     protected $expiryDate;

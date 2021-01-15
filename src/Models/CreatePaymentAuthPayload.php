@@ -2,7 +2,6 @@
 namespace PayPay\OpenPaymentAPI\Models;
 
 use DateTime;
-use Exception;
 
 class CreatePaymentAuthPayload extends BasePaymentPayload
 {
@@ -19,9 +18,8 @@ class CreatePaymentAuthPayload extends BasePaymentPayload
     {
         $this->_memberize("merchantPaymentId", "string");
         $this->_memberize("userAuthorizationId", "string");
-        $this->_memberize("amount","array");
+        $this->_memberize("amount", "array");
         $this->_memberize("requestedAt", "integer");
-        
     }
 
    
@@ -29,7 +27,7 @@ class CreatePaymentAuthPayload extends BasePaymentPayload
     /**
      * Get the value of expiresAt
      * @return integer
-     */ 
+     */
     public function getExpiresAt()
     {
         return $this->expiresAt;
@@ -39,7 +37,7 @@ class CreatePaymentAuthPayload extends BasePaymentPayload
      * Set the value of expiresAtTakes current server time automatically if no value is passed.
      * @param DateTime|boolean $expiresAt
      * @return  self
-     */ 
+     */
     public function setExpiresAt($expiresAt)
     {
         $this->_memberize("expiresAt", "integer");
@@ -48,6 +46,4 @@ class CreatePaymentAuthPayload extends BasePaymentPayload
 
         return $this;
     }
-
-
 }

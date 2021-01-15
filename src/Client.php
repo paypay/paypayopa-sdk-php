@@ -2,12 +2,12 @@
 
 namespace PayPay\OpenPaymentAPI;
 
+use GuzzleHttp\Client as GuzzleHttpClient;
 use PayPay\OpenPaymentAPI\Controller\Code;
 use PayPay\OpenPaymentAPI\Controller\Payment;
+use PayPay\OpenPaymentAPI\Controller\Refund;
 use PayPay\OpenPaymentAPI\Controller\User;
 use PayPay\OpenPaymentAPI\Controller\Wallet;
-use PayPay\OpenPaymentAPI\Controller\Refund;
-use GuzzleHttp\Client as GuzzleHttpClient;
 
 class Client
 {
@@ -29,6 +29,12 @@ class Client
      * @var array
      */
     private $endpoints;
+    /**
+     * api mappings
+     *
+     * @var array
+     */
+    private $apiMappings;
     /**
      * api endpoint versions
      *
@@ -74,10 +80,11 @@ class Client
 
     /**
      * Initialize a Client object with session,
-     * optional auth handler, and options      *
-     * @param Array $auth API credentials
-     * @param boolean $productionmode Sandbox environment flag
+     * optional auth handler, and options
+     * @param array|null $auth API credentials
+     * @param boolean|string $productionmode Sandbox environment flag
      * @param GuzzleHttpClient|boolean $requestHandler
+     * @throws ClientException
      */
     public function __construct($auth = null, $productionmode = false, $requestHandler = false)
     {
@@ -87,20 +94,10 @@ class Client
         $this->auth = $auth;
         $toStg = !$productionmode ? '-stg' : '';
         $toStg = $productionmode === 'test' ? '-test' : $toStg;
-        require("conf/config${toStg}.php");
-        /** @phpstan-ignore-next-line */
-        $this->config = $config;
-        require('conf/endpoints.php');
-        /** @phpstan-ignore-next-line */
-        $this->endpoints = $endpoint;
-
-        $jsonData = file_get_contents(__DIR__.'/conf/apiMappings.json');
-        $array = json_decode($jsonData, true);
-        $this->apiMappings = $array;
-
-        require("conf/apiVersions.php");
-        /** @phpstan-ignore-next-line */
-        $this->versions = $versions;
+        $this->config = require(__DIR__ . "/conf/config${toStg}.php");
+        $this->endpoints = require(__DIR__ . '/conf/endpoints.php');
+        $this->apiMappings = require(__DIR__ . '/conf/apiMappings.php');
+        $this->versions = require(__DIR__ . '/conf/apiVersions.php');
 
         if (!$requestHandler) {
             $this->requestHandler = new GuzzleHttpClient(['base_uri' => $this->config["API_URL"]]);
@@ -167,7 +164,7 @@ class Client
      * Returns all endpoint details for proivided mapping
      *
      * @param string $apiName Id of api details to be retrieved
-     * @return void
+     * @return array
      */
     public function GetApiMapping($apiName)
     {
