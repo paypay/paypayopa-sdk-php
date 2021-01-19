@@ -25,10 +25,3 @@ run_coverage:
 	vendor/bin/php-coveralls -v
 coverall_upload:
 	vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
-run_testRefund:
-	clear
-	vendor/bin/phpunit --testdox --debug tests/RefundTest.php
-run_mock1:
-	cd mock && java -jar wiremock.jar --verbose &
-	sleep 7
-	XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover build/logs/clover.xml --testdox --debug -c phpunit.xml.dist
