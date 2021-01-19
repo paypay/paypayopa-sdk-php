@@ -38,11 +38,9 @@ class Refund extends Controller
         $code = "v2_createRefundPayment";
         switch ($paymentType) {
             case 'pending':
-                $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
-                $endpoint = "/${version}" . $main->GetEndpoint('REQUEST_ORDER') .  $main->GetEndpoint('REFUND');
-                $url = $this->api_url . $main->GetEndpoint('REQUEST_ORDER')  .  $main->GetEndpoint('REFUND');
-                $url = str_replace('v2', $version, $url);
-                $code = "v1_createRequestOrderRefund";
+                $version = 'v2';
+                $endpoint = "/${version}" .  $main->GetEndpoint('REFUND');
+                $url = $this->api_url  .  $main->GetEndpoint('REFUND');
                 break;
 
             default:
