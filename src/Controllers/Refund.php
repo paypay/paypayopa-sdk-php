@@ -27,7 +27,7 @@ class Refund extends Controller
      * @throws ClientControllerException
      * @throws ModelException
      */
-    public function refundPayment($payload, $paymentType = 'web_cashier')
+    public function refundPayment($payload)
     {
         if (!($payload instanceof RefundPaymentPayload)) {
             throw new ClientControllerException(false, "Payload not of type RefundPaymentPayload", 1);
