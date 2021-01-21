@@ -3,7 +3,7 @@ require_once('TestBoilerplate.php');
 
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
 
-class AccountLinkTest extends TestBoilerplate
+class AccountLinkTest extends BoilerplateTest
 {
     /**
      * Create Account Link
@@ -12,6 +12,7 @@ class AccountLinkTest extends TestBoilerplate
      */
     public function Create()
     {
+        $this->InitCheck();
         $client = $this->client;
         $payload = new AccountLinkPayload();
         $payload

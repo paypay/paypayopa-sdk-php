@@ -2,7 +2,7 @@
 
 require_once('TestBoilerplate.php');
 
-class ApiMappingTest extends TestBoilerplate
+class ApiMappingTest extends BoilerplateTest
 {
 
     /**

@@ -3,10 +3,11 @@ require_once('TestBoilerplate.php');
 
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
 
-class ZCleanupTest extends TestBoilerplate
+class ZCleanupTest extends BoilerplateTest
 {
     public function testShutdown_server()
     {
+        $this->InitCheck();
         $curl = curl_init();
 
         curl_setopt_array($curl, array(

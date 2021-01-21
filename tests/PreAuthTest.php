@@ -6,10 +6,11 @@ use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 
 require_once('TestBoilerplate.php');
 
-class PreAuthTest extends TestBoilerplate
+class PreAuthTest extends BoilerplateTest
 {
     public function Create($similiar=true)
     {
+        $this->InitCheck();
         $CPApayload = new CreatePaymentAuthPayload();
         $CPApayload->setMerchantPaymentId(uniqid('TEST_PREAUTH'))
             ->setUserAuthorizationId($this->config['uaid'])

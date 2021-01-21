@@ -15,7 +15,7 @@ use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 
 use function PayPay\OpenPaymentAPI\Helpers\GetRand;
 
-class PayloadsTest extends TestBoilerplate
+class PayloadsTest extends BoilerplateTest
 {
     /**
      * Account Link payload test
@@ -24,6 +24,7 @@ class PayloadsTest extends TestBoilerplate
      */
     public function testAccountLinkPayload()
     {
+        $this->InitCheck();
         $test = new AccountLinkPayload();
         $test->setScopes(["direct_debit", "preauth_capture_native", "continuous_payments"]);
         $test->setNonce();

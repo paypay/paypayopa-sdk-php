@@ -3,7 +3,7 @@
 use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
 
 require_once('TestBoilerplate.php');
-final class PaymentTest extends TestBoilerplate
+final class PaymentTest extends BoilerplateTest
 {
     /**
      * Create direct debit payment
@@ -12,6 +12,7 @@ final class PaymentTest extends TestBoilerplate
      */
     public function Create($similar=false)
     {
+        $this->InitCheck();
         $client = $this->client;
         $CPPayload = new CreatePaymentPayload();
         // Save Cart totals

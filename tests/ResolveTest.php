@@ -3,10 +3,11 @@
 use PayPay\OpenPaymentAPI\Controller\ClientControllerException;
 
 require_once('TestBoilerplate.php');
-final class ResolveTest extends TestBoilerplate
+final class ResolveTest extends BoilerplateTest
 {
     public function testNonDocResolve()
     {
+        $this->InitCheck();
         try {
             throw new ClientControllerException(false, "duck");
         } catch (ClientControllerException $e) {

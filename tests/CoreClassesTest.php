@@ -5,7 +5,7 @@ use PayPay\OpenPaymentAPI\ClientException;
 
 require_once('TestBoilerplate.php');
 
-class CoreClassesTest extends TestBoilerplate
+class CoreClassesTest extends BoilerplateTest
 {
     public function testClientNoAuth()
     {

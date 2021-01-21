@@ -4,7 +4,7 @@ use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\ModelException;
 
 require_once('TestBoilerplate.php');
-final class ContinuousPaymentTest extends TestBoilerplate
+final class ContinuousPaymentTest extends BoilerplateTest
 {
     /**
      * Create direct debit payment

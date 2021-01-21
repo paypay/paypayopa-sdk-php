@@ -6,7 +6,7 @@ require_once(__DIR__ . '/../src/Client.php');
 use PHPUnit\Framework\TestCase;
 use PayPay\OpenPaymentAPI\Client;
 
-class TestBoilerplate extends TestCase
+class BoilerplateTest extends TestCase
 {
     /**
      * Open API Client
