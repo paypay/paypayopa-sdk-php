@@ -60,6 +60,7 @@ final class RefundTest extends TestBoilerplate
         $RPPayload->setMerchantRefundId($refundId)->setPaymentId($paymentId)->setAmount($amount)->setRequestedAt();
         $resp = $this->client->refund->refundPayment($RPPayload);
         $resultInfo = $resp['resultInfo'];
+        var_dump($resp);
         $this->assertEquals("SUCCESS", $resultInfo['code']);
         $this->data=$resp['data'];
     }

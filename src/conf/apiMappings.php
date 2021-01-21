@@ -97,11 +97,6 @@ return [
         'method'   => 'POST',
     ],
     [
-        'api_name' => 'v1_createRequestOrderRefund',
-        'path'     => 'v1/requestOrder/refunds',
-        'method'   => 'POST',
-    ],
-    [
         'api_name' => 'v2_createUserAuthForWebApp',
         'path'     => 'v2/user/authorizations/applications',
         'method'   => 'POST',

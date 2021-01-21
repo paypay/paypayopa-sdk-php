@@ -17,6 +17,12 @@ class Payment extends Controller
 {
 
     /**
+     * HEADER
+     *
+     * @var string
+     */
+    public $headerConstant = 'application/json;charset=UTF-8;';
+    /**
      * Initializes Code class to manage creation and deletion of data for QR Code generation
      *
      * @param Client $MainInstance Instance of invoking client class
@@ -41,9 +47,10 @@ class Payment extends Controller
     {
         $this->payloadTypeCheck($payload, new CreatePaymentPayload());
         $data = $payload->serialize();
+        $header =  $this->headerConstant;
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT');
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT');
-        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $options = $this->HmacCallOpts('POST', $endpoint, $header, $data);
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
             return $this->doSimilarTransactionCall("v2_createPayment", $url, $options, $data);
@@ -69,7 +76,8 @@ class Payment extends Controller
         $url = $this->api_url . $this->main()->GetEndpoint('SUBSCRIPTION');
         $url = str_replace('v2', $version, $url);
         $endpoint = '/' . $version . $this->main()->GetEndpoint('SUBSCRIPTION');
-        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $header = $this->headerConstant;
+        $options = $this->HmacCallOpts('POST', $endpoint, $header, $data);
         $options['TIMEOUT'] = 30;
         return $this->doCall(true, "v1_createSubscriptionPayment", $url, $data, $options);
     }
@@ -88,7 +96,8 @@ class Payment extends Controller
         }
         $data = $payload->serialize();
         $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
-        $options = $this->HmacCallOpts('POST', ('/' . $version . $this->main()->GetEndpoint('REQUEST_ORDER')), 'application/json;charset=UTF-8;', $data);
+        $header = $this->headerConstant;
+        $options = $this->HmacCallOpts('POST', ('/' . $version . $this->main()->GetEndpoint('REQUEST_ORDER')), $header, $data);
         $options['TIMEOUT'] = 30;
         /** @phpstan-ignore-next-line */
         return $this->doCall(true, "v1_createRequestOrder", str_replace('v2', $version, ($this->api_url . $this->main()->GetEndpoint('REQUEST_ORDER'))), $data, $options);
@@ -146,7 +155,8 @@ class Payment extends Controller
         $data = $payload->serialize();
         $url = $this->api_url . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT_PREAUTH');
-        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $header = $this->headerConstant;
+        $options = $this->HmacCallOpts('POST', $endpoint, $header, $data);
         $options['TIMEOUT'] = 30;
         if ($agreeSimilarTransaction) {
             return $this->doSimilarTransactionCall("v2_createOrderAndAuthorize", $url, $options, $data);
@@ -172,7 +182,8 @@ class Payment extends Controller
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/capture";
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/capture";
-        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $header = $this->headerConstant;
+        $options = $this->HmacCallOpts('POST', $endpoint, $header, $data);
         $options['TIMEOUT'] = 30;
         return $this->doCall(true, "v2_captureAuthorizedOrder", $url, $data, $options);
     }
@@ -195,7 +206,8 @@ class Payment extends Controller
         $data = $payload->serialize();
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('PAYMENT') . "/preauthorize/revert";
         $endpoint = '/v2' . $this->main()->GetEndpoint('PAYMENT') . "/preauthorize/revert";
-        $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $header = $this->headerConstant;
+        $options = $this->HmacCallOpts('POST', $endpoint, $header, $data);
         $options['TIMEOUT'] = 30;
         return $this->doCall(true, "v2_revertAuthorizedOrder", $url, $data, $options);
     }

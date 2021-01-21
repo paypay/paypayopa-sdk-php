@@ -3,7 +3,7 @@ require_once('TestBoilerplate.php');
 
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
 
-class DecodeAccountLinkResponse extends TestBoilerplate
+class DecodeAccountLinkResponseTest extends TestBoilerplate
 {
     public function testDecode()
     {
