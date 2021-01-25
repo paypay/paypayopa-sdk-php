@@ -6,7 +6,7 @@ use PayPay\OpenPaymentAPI\Models\ModelException;
 use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
 
 require_once 'TestBoilerplate.php' ;
-final class PendingPaymentTest extends TestBoilerplate
+final class PendingPaymentTest extends BoilerplateTest
 {
     /**
      * Create pending payment
@@ -15,6 +15,7 @@ final class PendingPaymentTest extends TestBoilerplate
      */
     public function Create()
     {
+        $this->InitCheck();
         $client = $this->client;
         $CPPPayload = new CreatePendingPaymentPayload();
         // Save Cart totals

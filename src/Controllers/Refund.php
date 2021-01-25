@@ -27,7 +27,7 @@ class Refund extends Controller
      * @throws ClientControllerException
      * @throws ModelException
      */
-    public function refundPayment($payload)
+    public function refundPayment($payload, $paymentType = 'web_cashier')
     {
         if (!($payload instanceof RefundPaymentPayload)) {
             throw new ClientControllerException(false, "Payload not of type RefundPaymentPayload", 1);
@@ -37,7 +37,6 @@ class Refund extends Controller
         $data = $payload->serialize();
         $code = "v2_createRefundPayment";
         $endpoint = '/v2' . $main->GetEndpoint('REFUND');
-        $url = $this->api_url  .  $main->GetEndpoint('REFUND');
         $options = $this->HmacCallOpts('POST', $endpoint, 'application/json;charset=UTF-8;', $data);
         $options['TIMEOUT'] = 30;
         return $this->doCall(true, $code, $url, $data, $options);

@@ -3,17 +3,9 @@
 use PayPay\OpenPaymentAPI\Controller\ClientControllerException;
 
 require_once('TestBoilerplate.php');
-final class WalletTest extends TestBoilerplate
+final class WalletTest extends BoilerplateTest
 {
-    /**
-     * Initialization check
-     *
-     * @return void
-     */
-    public function testInit()
-    {
-        $this->InitCheck();
-    }
+    
     /**
      * Wallet balance test
      *
@@ -21,6 +13,7 @@ final class WalletTest extends TestBoilerplate
      */
     public function testWalletBalance()
     {
+        $this->InitCheck();
         $resp = $this->client->wallet->checkWalletBalance($this->config['uaid'], 1, 'JPY');
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);

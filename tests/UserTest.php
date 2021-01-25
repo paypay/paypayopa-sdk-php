@@ -1,7 +1,7 @@
 <?php
 
 require_once('TestBoilerplate.php');
-final class UserTest extends TestBoilerplate
+final class UserTest extends BoilerplateTest
 {
     /**
      * Default user authorization id for testing
@@ -18,15 +18,7 @@ final class UserTest extends TestBoilerplate
         $this->userAuthorizationId = $config['uaid'];
     }
 
-    /**
-     * Initialization check
-     *
-     * @return void
-     */
-    public function testInit()
-    {
-        $this->InitCheck();
-    }
+    
     /**
      * test for getUserAuthorizationStatus
      *
@@ -34,7 +26,7 @@ final class UserTest extends TestBoilerplate
      */
     public function testGetUserAuthorizationStatus()
     {
-        $this->testInit();
+        $this->InitCheck();
         $resp = $this->client->user->getUserAuthorizationStatus($this->userAuthorizationId);
         var_dump(json_encode($resp));
         $resultInfo = $resp['resultInfo'];

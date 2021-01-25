@@ -5,17 +5,9 @@ use PayPay\OpenPaymentAPI\Models\OrderItem;
 use PayPay\OpenPaymentAPI\Models\RefundPaymentPayload;
 
 require_once('TestBoilerplate.php');
-final class RefundTest extends TestBoilerplate
+final class RefundTest extends BoilerplateTest
 {
-    /**
-     * Initialization check
-     *
-     * @return void
-     */
-    public function testInit()
-    {
-        $this->InitCheck();
-    }
+    
     /**
      * Create And Fetch Payment
      *
@@ -23,6 +15,7 @@ final class RefundTest extends TestBoilerplate
      */
     public function CreateAndFetchPayment()
     {
+        $this->InitCheck();
         $client = $this->client;
         $CQCPayload = new CreateQrCodePayload();
         $OrderItems = [];
@@ -60,6 +53,7 @@ final class RefundTest extends TestBoilerplate
         $RPPayload->setMerchantRefundId($refundId)->setPaymentId($paymentId)->setAmount($amount)->setRequestedAt();
         $resp = $this->client->refund->refundPayment($RPPayload);
         $resultInfo = $resp['resultInfo'];
+        var_dump('refunded:::');
         var_dump($resp);
         $this->assertEquals("SUCCESS", $resultInfo['code']);
         $this->data=$resp['data'];
