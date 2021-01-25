@@ -42,7 +42,7 @@ final class RefundTest extends BoilerplateTest
     public function refund()
     {
         $data=$this->data;
-        $paymentId = '03539737867363827712'; // $data['paymentId'];
+        $paymentId = $data['paymentId'];
         $refundId = uniqid('TESTUSER');
         // Save Cart totals
         $amount = [
@@ -78,8 +78,8 @@ final class RefundTest extends BoilerplateTest
      */
     public function testRefundFlow()
     {
-        // $this->CreateAndFetchPayment();
+        $this->CreateAndFetchPayment();
         $this->refund();
-        // $this->refundDetails();
+        $this->refundDetails();
     }
 }
