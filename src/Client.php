@@ -8,6 +8,7 @@ use PayPay\OpenPaymentAPI\Controller\Payment;
 use PayPay\OpenPaymentAPI\Controller\Refund;
 use PayPay\OpenPaymentAPI\Controller\User;
 use PayPay\OpenPaymentAPI\Controller\Wallet;
+use PayPay\OpenPaymentAPI\Controller\CashBack;
 
 class Client
 {
@@ -77,6 +78,12 @@ class Client
      * @var Wallet
      */
     public $wallet;
+    /**
+     * CashBack Controller
+     *
+     * @var CashBack
+     */
+    public $cashback;
 
     /**
      * Initialize a Client object with session,
@@ -113,6 +120,7 @@ class Client
         $this->refund = new Refund($this, $auth);
         $this->user = new User($this, $auth);
         $this->wallet = new Wallet($this, $auth);
+        $this->cashback = new CashBack($this, $auth);
     }
 
     /**

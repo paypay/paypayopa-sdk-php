@@ -10,4 +10,5 @@ return [
     'USER_PROFILE_SECURE'   =>     '/user/profile/secure',
     'SESSIONS'              =>     '/qr/sessions',
     'REFUND'                =>     '/refunds',
+    'CASHBACK'                =>   '/cashback',
 ];
