@@ -27,6 +27,8 @@ final class CashbackTest extends BoilerplateTest
         var_dump($resp);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
+        $tempMerchatCashbackId = $merchatCashbackId;
+        $this->data = $tempMerchatCashbackId;
     }
 
     /**
@@ -36,7 +38,9 @@ final class CashbackTest extends BoilerplateTest
      */
     public function CheckCashBackDetails()
     {
-        $merchatCashbackId = uniqid('TESTUSER');
+        $data=$this->data;
+        $merchatCashbackId = $data;
+        // $merchatCashbackId = uniqid('TESTUSER');
         $resp = $this->client->cashback->getCashbackDetails($merchatCashbackId);
         var_dump('resp: ', $merchatCashbackId);
         var_dump($resp);
@@ -65,6 +69,8 @@ final class CashbackTest extends BoilerplateTest
         var_dump($resp);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
+        $detailData = $resultInfo['data'];
+        $this->data = $detailData;
     }
 
     /**
@@ -93,6 +99,6 @@ final class CashbackTest extends BoilerplateTest
         $this->GiveCashBack();
         $this->CheckCashBackDetails();
         $this->ReversalCashBack();
-        $this->CheckReversalCashBackDetails();
+        // $this->CheckReversalCashBackDetails();
     }
 }
