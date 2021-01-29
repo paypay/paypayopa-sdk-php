@@ -38,12 +38,8 @@ final class CashbackTest extends BoilerplateTest
      */
     public function CheckCashBackDetails()
     {
-        // $data=$this->data;
-        // $merchatCashbackId = $data;
-        $merchatCashbackId = "testXXXXXXXXXXXXXXX"; //uniqid('TESTUSER');
+        $merchatCashbackId = "testXXXXXXXXXXXXXXX";
         $resp = $this->client->cashback->getCashbackDetails($merchatCashbackId);
-        var_dump('resp: ', $merchatCashbackId);
-        var_dump($resp);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
     }
@@ -56,8 +52,8 @@ final class CashbackTest extends BoilerplateTest
     public function ReversalCashBack()
     {
         $client = $this->client;
-        $merchantCashbackReversalId = uniqid('TESTUSER');
-        $merchatCashbackId = uniqid('TESTUSER');
+        $merchantCashbackReversalId = "TESTXXXXXXXXX";
+        $merchatCashbackId = "TESTXXXXXXXXXXX";
         $amount = [
             "amount" => 1,
             "currency" => "JPY"
@@ -65,12 +61,8 @@ final class CashbackTest extends BoilerplateTest
         $CPPayload = new CashBackPayload();
         $CPPayload->setMerchantCashbackReversalId($merchantCashbackReversalId)->setMerchantCashbackId($merchatCashbackId)->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
         $resp = $client->cashback->reverseCashBack($CPPayload);
-        var_dump('resp: ', $merchatCashbackId, $merchantCashbackReversalId);
-        var_dump($resp);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
-        $detailData = $resultInfo['data'];
-        $this->data = $detailData;
     }
 
     /**
@@ -98,7 +90,7 @@ final class CashbackTest extends BoilerplateTest
     {
         $this->GiveCashBack();
         $this->CheckCashBackDetails();
-        // $this->ReversalCashBack();
+        $this->ReversalCashBack();
         // $this->CheckReversalCashBackDetails();
     }
 }
