@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "GET",
-        "urlPath": "/v2/cashback/testXXXXXXXXXXXXXXX"
+        "urlPath": "/v2/cashback/testXXXXXXXXXXXXXXX123"
     },
     "response": {
         "status": 201,

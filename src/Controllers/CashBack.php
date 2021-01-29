@@ -2,16 +2,8 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Client;
-use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
-use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
-use PayPay\OpenPaymentAPI\Models\CreatePaymentAuthPayload;
-use PayPay\OpenPaymentAPI\Models\CreatePaymentPayload;
-use PayPay\OpenPaymentAPI\Models\CreatePendingPaymentPayload;
 use PayPay\OpenPaymentAPI\Models\ModelException;
-use PayPay\OpenPaymentAPI\Models\RevertAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CashBackPayload;
 
 class CashBack extends Controller
@@ -53,7 +45,6 @@ class CashBack extends Controller
         $endpoint = '/v2' . $this->main()->GetEndpoint('CASHBACK');
         $options = $this->HmacCallOpts('POST', $endpoint, $header, $data);
         $options['TIMEOUT'] = 30;
-        var_dump('urll:', $url);
         return $this->doCall(true, "v2_createCashBackRequest", $url, $data, $options);
     }
 

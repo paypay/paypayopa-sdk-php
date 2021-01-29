@@ -14,17 +14,14 @@ final class CashbackTest extends BoilerplateTest
     {
         $this->InitCheck();
         $client = $this->client;
-        $merchatCashbackId = uniqid('TESTUSER');
+        $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
         $amount = [
             "amount" => 1,
             "currency" => "JPY"
         ];
         $CPPayload = new CashBackPayload();
         $CPPayload->setMerchantCashbackId($merchatCashbackId)->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
-        var_dump('resp 1: ', $merchatCashbackId);
         $resp = $client->cashback->giveCashback($CPPayload);
-        var_dump('resp: ', $merchatCashbackId);
-        var_dump($resp);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
         $tempMerchatCashbackId = $merchatCashbackId;
@@ -38,7 +35,7 @@ final class CashbackTest extends BoilerplateTest
      */
     public function CheckCashBackDetails()
     {
-        $merchatCashbackId = "testXXXXXXXXXXXXXXX";
+        $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
         $resp = $this->client->cashback->getCashbackDetails($merchatCashbackId);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
@@ -52,8 +49,8 @@ final class CashbackTest extends BoilerplateTest
     public function ReversalCashBack()
     {
         $client = $this->client;
-        $merchantCashbackReversalId = "TESTXXXXXXXXX";
-        $merchatCashbackId = "TESTXXXXXXXXXXX";
+        $merchantCashbackReversalId = "TESTXXXXXXXXX456";
+        $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
         $amount = [
             "amount" => 1,
             "currency" => "JPY"
@@ -72,8 +69,8 @@ final class CashbackTest extends BoilerplateTest
      */
     public function CheckReversalCashBackDetails()
     {
-        $merchantCashbackReversalId = "TESTXXXXXXXXX";
-        $merchatCashbackId = "TESTXXXXXXXXXXX";
+        $merchantCashbackReversalId = "TESTXXXXXXXXX456";
+        $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
         $resp = $this->client->cashback->getReversalCashbackDetails($merchantCashbackReversalId, $merchatCashbackId);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
