@@ -98,7 +98,7 @@ final class CashbackTest extends BoilerplateTest
     {
         $this->GiveCashBack();
         $this->CheckCashBackDetails();
-        $this->ReversalCashBack();
+        // $this->ReversalCashBack();
         // $this->CheckReversalCashBackDetails();
     }
 }

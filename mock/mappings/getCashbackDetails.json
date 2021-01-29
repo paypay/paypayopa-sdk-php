@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "POST",
-        "urlPath": "^\\/v2\\/cashback\\/.*[0-9a-zA-Z].*$"
+        "urlPath": "/v2/cashback/testXXXXXXXXXXXXXXX"
     },
     "response": {
         "status": 201,
