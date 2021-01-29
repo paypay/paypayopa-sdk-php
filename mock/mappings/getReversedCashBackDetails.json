@@ -1,7 +1,7 @@
 {
     "request": {
         "method": "GET",
-        "urlPath": "^\\/v2\\/cashback_reversal\\/.*[0-9a-zA-Z].*$\\/.*[0-9a-zA-Z].*$"
+        "urlPath": "/v2/cashback_reversal/TESTXXXXXXXXX/TESTXXXXXXXXXXX"
     },
     "response": {
         "status": 201,
