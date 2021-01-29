@@ -97,8 +97,8 @@ final class CashbackTest extends BoilerplateTest
     public function testCreateAndCancel()
     {
         $this->GiveCashBack();
-        $this->CheckCashBackDetails();
-        // $this->ReversalCashBack();
+        // $this->CheckCashBackDetails();
+        $this->ReversalCashBack();
         // $this->CheckReversalCashBackDetails();
     }
 }
