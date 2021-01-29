@@ -72,7 +72,6 @@ class CashBack extends Controller
         $url = $main->GetConfig('API_URL') . $main->GetEndpoint('CASHBACK') . "/$merchatCashbackId";
         $endpoint = '/v2' . $main->GetEndpoint('CASHBACK') . "/$merchatCashbackId";
         $options = $this->HmacCallOpts('GET', $endpoint);
-
         return $this->doCall(true, "v2_getCashbackDetails", $url, [], $options);
     }
 
@@ -87,8 +86,6 @@ class CashBack extends Controller
     */
     public function reverseCashBack($payload)
     {
-        var_dump('payload:: ');
-        var_dump($payload);
         $this->payloadTypeCheck($payload, new CashBackPayload());
         $data = $payload->serialize();
         $header =  $this->headerConstant;
