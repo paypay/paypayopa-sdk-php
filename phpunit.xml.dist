@@ -13,7 +13,7 @@
     <testsuite name="Cashback">
       <file> tests/CashbackTest.php</file>
     </testsuite>
-    <testsuite name="Core Classes">
+    <!-- <testsuite name="Core Classes">
       <file> tests/CoreClassesTest.php</file>
     </testsuite>
     <testsuite name="Payloads">
@@ -40,6 +40,6 @@
     </testsuite>
     <testsuite name="Housekeeping">
       <file> tests/ZCleanupTest.php</file>
-    </testsuite>
+    </testsuite> -->
   </testsuites>
 </phpunit>

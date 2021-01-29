@@ -25,3 +25,7 @@ run_coverage:
 	vendor/bin/php-coveralls -v
 coverall_upload:
 	vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+run_mock1:
+	cd mock && java -jar wiremock.jar --verbose &
+	sleep 7
+	vendor/bin/phpunit --testdox --debug -c phpunit.xml.dist

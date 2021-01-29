@@ -4,7 +4,7 @@ namespace PayPay\OpenPaymentAPI\Models;
 
 use DateTime;
 
-class CashBackPayload extends BasePaymentInfo
+class CashBackPayload extends Model // BasePaymentInfo
 {
     /**
      * merchantCashbackId

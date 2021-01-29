@@ -42,16 +42,14 @@ class CashBack extends Controller
      * @throws ClientControllerException
      * @throws ModelException
      */
-    public function give_cashback($payload)
+    public function giveCashback($payload)
     {
         // unset($payload->merchantCashbackReversalId);
         $payload->merchantCashbackReversalId = "dummy";
-        // var_dump('payload:: ');
-        // var_dump($payload);
         $this->payloadTypeCheck($payload, new CashBackPayload());
         $data = $payload->serialize();
         $header =  $this->headerConstant;
-        $url = $this->api_url . $this->main()->GetEndpoint('CASHBACK');
+        $url =  $this->api_url . $this->main()->GetEndpoint('CASHBACK');
         $endpoint = '/v2' . $this->main()->GetEndpoint('CASHBACK');
         $options = $this->HmacCallOpts('POST', $endpoint, $header, $data);
         $options['TIMEOUT'] = 30;

@@ -14,7 +14,6 @@ final class CashbackTest extends BoilerplateTest
     {
         $this->InitCheck();
         $client = $this->client;
-        // $paymentId = $data['paymentId'];
         $merchatCashbackId = uniqid('TESTUSER');
         $amount = [
             "amount" => 1, // $similar?12:rand(5, 10),
@@ -22,9 +21,8 @@ final class CashbackTest extends BoilerplateTest
         ];
         $CPPayload = new CashBackPayload();
         $CPPayload->setMerchantCashbackId($merchatCashbackId)->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
-        // Get data for QR code
         var_dump('resp 1: ', $merchatCashbackId);
-        $resp = $client->cashback->give_cashback($CPPayload, $similar);
+        $resp = $client->cashback->giveCashback($CPPayload, $similar);
         var_dump('resp: ', $merchatCashbackId);
         var_dump($resp);
         $resultInfo = $resp['resultInfo'];
@@ -38,7 +36,7 @@ final class CashbackTest extends BoilerplateTest
      */
     public function CheckCashBackDetails()
     {
-        $merchatCashbackId ='TESTUSER601286fbc6530'; // $this->data['merchantRefundId'];
+        $merchatCashbackId ='TESTUSER60139c565afec'; // $this->data['merchantRefundId'];
         $resp = $this->client->cashback->getCashbackDetails($merchatCashbackId);
         var_dump('resp: ', $merchatCashbackId);
         var_dump($resp);
@@ -54,9 +52,8 @@ final class CashbackTest extends BoilerplateTest
     public function ReversalCashBack($similar=false)
     {
         $client = $this->client;
-        // TESTUSER6012857a11197
-        $merchantCashbackReversalId ='12345Test'; // uniqid('TESTUSER');
-        $merchatCashbackId = 'TESTUSER601286fbc6530'; // uniqid('TESTUSER');
+        $merchantCashbackReversalId = uniqid('TESTUSER');
+        $merchatCashbackId = 'TESTUSER60139c565afec'; // uniqid('TESTUSER');
         $amount = [
             "amount" => 1, // $similar?12:rand(5, 10),
             "currency" => "JPY"
