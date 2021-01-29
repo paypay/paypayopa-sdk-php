@@ -38,9 +38,9 @@ final class CashbackTest extends BoilerplateTest
      */
     public function CheckCashBackDetails()
     {
-        $data=$this->data;
-        $merchatCashbackId = $data;
-        // $merchatCashbackId = uniqid('TESTUSER');
+        // $data=$this->data;
+        // $merchatCashbackId = $data;
+        $merchatCashbackId = "testXXXXXXXXXXXXXXX"; //uniqid('TESTUSER');
         $resp = $this->client->cashback->getCashbackDetails($merchatCashbackId);
         var_dump('resp: ', $merchatCashbackId);
         var_dump($resp);
@@ -97,7 +97,7 @@ final class CashbackTest extends BoilerplateTest
     public function testCreateAndCancel()
     {
         $this->GiveCashBack();
-        // $this->CheckCashBackDetails();
+        $this->CheckCashBackDetails();
         // $this->ReversalCashBack();
         // $this->CheckReversalCashBackDetails();
     }
