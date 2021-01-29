@@ -1,6 +1,6 @@
 {
     "request": {
-        "method": "POST",
+        "method": "GET",
         "urlPath": "/v2/cashback/testXXXXXXXXXXXXXXX"
     },
     "response": {

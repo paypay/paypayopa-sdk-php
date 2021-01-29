@@ -1,6 +1,6 @@
 {
     "request": {
-        "method": "POST",
+        "method": "GET",
         "urlPath": "^\\/v2\\/cashback_reversal\\/.*[0-9a-zA-Z].*$\\/.*[0-9a-zA-Z].*$"
     },
     "response": {
