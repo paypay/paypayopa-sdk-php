@@ -10,6 +10,9 @@
   </coverage>
   <logging/>
   <testsuites>
+    <testsuite name="Cashback">
+      <file> tests/CashbackTest.php</file>
+    </testsuite>
     <testsuite name="Core Classes">
       <file> tests/CoreClassesTest.php</file>
     </testsuite>

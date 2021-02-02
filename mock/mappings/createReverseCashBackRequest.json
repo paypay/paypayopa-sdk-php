@@ -1,0 +1,20 @@
+{
+    "request": {
+        "method": "POST",
+        "urlPath": "/v2/cashback_reversal"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "REQUEST_ACCEPTED",
+                "message": "Request accepted",
+                "codeId": "08100001"
+            },
+            "data": null
+        }
+    }
+}

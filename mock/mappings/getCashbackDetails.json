@@ -1,0 +1,35 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/v2/cashback/testXXXXXXXXXXXXXXX123"
+    },
+    "response": {
+        "status": 201,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "SUCCESS",
+                "message": "Success",
+                "codeId": "08100001"
+            },
+            "data": {
+                "status": "SUCCESS",
+                "acceptedAt": 1611747653,
+                "merchantAlias": "test",
+                "amount": {
+                    "amount": 1,
+                    "currency": "JPY"
+                },
+                "requestedAt": 1611747650,
+                "metadata": "",
+                "cashbackId": "test",
+                "merchantCashbackId": "test",
+                "userAuthorizationId": "test",
+                "orderDescription": "order description",
+                "walletType": "PREPAID"
+            }
+        }
+    }
+}
