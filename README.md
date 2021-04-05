@@ -1,4 +1,4 @@
-# Paypay SDK - PHP
+# Paypay SDK - PHP.
 
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Packagist Version](https://img.shields.io/packagist/v/paypayopa/php-sdk)](https://packagist.org/packages/paypayopa/php-sdk)
