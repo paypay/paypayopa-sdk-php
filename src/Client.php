@@ -106,7 +106,6 @@ class Client
         $this->endpoints = require(__DIR__ . '/conf/endpoints.php');
         $this->apiMappings = require(__DIR__ . '/conf/apiMappings.php');
         $this->versions = require(__DIR__ . '/conf/apiVersions.php');
-
         if (!$requestHandler) {
             $this->requestHandler = new GuzzleHttpClient(['base_uri' => $this->config["API_URL"]]);
         } else {
