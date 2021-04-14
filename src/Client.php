@@ -89,7 +89,7 @@ class Client
      * Initialize a Client object with session,
      * optional auth handler, and options
      * @param array|null $auth API credentials
-     * @param boolean|string $productionmode Sandbox environment flag
+     * @param boolean|string $productionmode Sandbox environment flag (perfMode will use perf url)
      * @param GuzzleHttpClient|boolean $requestHandler
      * @throws ClientException
      */
