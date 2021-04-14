@@ -112,7 +112,7 @@ class Client
             if ($requestHandler instanceof GuzzleHttpClient) {
                 $this->requestHandler = $requestHandler;
             } else {
-                throw new ClientException('Invalid request handler', 500);
+                throw new ClientException('Invalid request handler.', 500);
             }
         }
         $this->code = new Code($this, $auth);
