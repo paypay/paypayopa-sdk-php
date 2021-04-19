@@ -101,18 +101,18 @@ class Client
         $this->auth = $auth;
         $toStg = !$productionmode ? '-stg' : '';
         $toStg = $productionmode === 'test' ? '-test' : $toStg;
+        $toStg = $productionmode === 'perfMode' ? '-perf' : $toStg;
         $this->config = require(__DIR__ . "/conf/config${toStg}.php");
         $this->endpoints = require(__DIR__ . '/conf/endpoints.php');
         $this->apiMappings = require(__DIR__ . '/conf/apiMappings.php');
         $this->versions = require(__DIR__ . '/conf/apiVersions.php');
-
         if (!$requestHandler) {
             $this->requestHandler = new GuzzleHttpClient(['base_uri' => $this->config["API_URL"]]);
         } else {
             if ($requestHandler instanceof GuzzleHttpClient) {
                 $this->requestHandler = $requestHandler;
             } else {
-                throw new ClientException('Invalid request handler', 500);
+                throw new ClientException('Invalid request handler.', 500);
             }
         }
         $this->code = new Code($this, $auth);
