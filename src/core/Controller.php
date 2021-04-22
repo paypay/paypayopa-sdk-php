@@ -115,9 +115,6 @@ class Controller
      */
     protected function doCall($lookupApi, $apiId, $url, $data, $options)
     {
-        var_dump('url::');
-        var_dump($url);
-        
         if ($lookupApi) {
             $apiInfo = $this->main()->GetApiMapping($apiId);
             $callType = strtolower($apiInfo["method"]);
