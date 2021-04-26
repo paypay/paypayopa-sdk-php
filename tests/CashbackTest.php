@@ -51,12 +51,13 @@ final class CashbackTest extends BoilerplateTest
         $client = $this->client;
         $merchantCashbackReversalId = "TESTXXXXXXXXX456";
         $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
+        $reason = "reason"
         $amount = [
             "amount" => 1,
             "currency" => "JPY"
         ];
-        $CPPayload = new CashBackPayload();
-        $CPPayload->setMerchantCashbackReversalId($merchantCashbackReversalId)->setMerchantCashbackId($merchatCashbackId)->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
+        $CPPayload = new ReverseCashBackPayload();
+        $CPPayload->setMerchantCashbackReversalId($merchantCashbackReversalId)->setMerchantCashbackId($merchatCashbackId)->setRequestedAt()->setReason($reason)->setAmount($amount);
         $resp = $client->cashback->reverseCashBack($CPPayload);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
