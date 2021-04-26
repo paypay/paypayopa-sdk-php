@@ -51,7 +51,7 @@ final class CashbackTest extends BoilerplateTest
         $client = $this->client;
         $merchantCashbackReversalId = "TESTXXXXXXXXX456";
         $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
-        $reason = "reason"
+        $reason = "reason";
         $amount = [
             "amount" => 1,
             "currency" => "JPY"
