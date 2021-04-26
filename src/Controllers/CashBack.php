@@ -5,6 +5,7 @@ namespace PayPay\OpenPaymentAPI\Controller;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\ModelException;
 use PayPay\OpenPaymentAPI\Models\CashBackPayload;
+use PayPay\OpenPaymentAPI\Models\ReverseCashBackPayload;
 
 class CashBack extends Controller
 {
