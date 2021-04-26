@@ -5,6 +5,7 @@ namespace PayPay\OpenPaymentAPI\Controller;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\ModelException;
 use PayPay\OpenPaymentAPI\Models\CashBackPayload;
+use PayPay\OpenPaymentAPI\Models\ReverseCashBackPayload;
 
 class CashBack extends Controller
 {
@@ -77,7 +78,7 @@ class CashBack extends Controller
     */
     public function reverseCashBack($payload)
     {
-        $this->payloadTypeCheck($payload, new CashBackPayload());
+        $this->payloadTypeCheck($payload, new ReverseCashBackPayload());
         $data = $payload->serialize();
         $header =  $this->headerConstant;
         $url = $this->api_url ."/cashback_reversal"; // $this->main()->GetEndpoint('CASHBACK');
