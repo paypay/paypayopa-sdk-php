@@ -50,7 +50,7 @@
         "guzzlehttp/guzzle": "^6.0 || ^7.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "friendsofphp/php-cs-fixer": "^2.16 || ^3.0",
         "php-coveralls/php-coveralls": "^2.2",
         "phpstan/phpstan": "^0.12.33",
         "phpunit/phpunit": "^9"
