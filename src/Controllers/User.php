@@ -41,7 +41,7 @@ class User extends Controller
             $userAuthorizationId = $this->userAuthorizationId;
         }
         $url = $this->api_url . $this->main()->GetEndpoint('USER_AUTH') . "/$userAuthorizationId";
-        $endpoint = 'v2' . $this->main()->GetEndpoint('USER_AUTH') . "/$userAuthorizationId";
+        $endpoint = '/v2' . $this->main()->GetEndpoint('USER_AUTH') . "/$userAuthorizationId";
         $options = $this->HmacCallOpts('DELETE', $endpoint);
 
         return $this->doCall(false, 'delete', $url, [], $options);
