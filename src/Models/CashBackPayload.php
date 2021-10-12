@@ -228,4 +228,26 @@ class CashBackPayload extends Model // BasePaymentInfo
 
         return $this;
     }
+
+    /**
+     * Get the value of walletType
+     * @return string
+     */
+    public function getWalletType()
+    {
+        return $this->walletType;
+    }
+
+    /**
+     * Set the value of walletType
+     * @param string $walletType
+     * @return  self
+     */
+    public function setWalletType($walletType)
+    {
+        $this->_memberize('walletType', 'string');
+        $this->walletType = $walletType;
+
+        return $this;
+    }
 }
