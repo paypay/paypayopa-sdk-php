@@ -7,87 +7,91 @@ require_once('TestBoilerplate.php');
 final class CashbackTest extends BoilerplateTest
 {
     /**
-     * Give cashback
+     * Tests giveCashback
      *
      * @return void
      */
-    public function GiveCashBack()
+    public function testGiveCashBack()
     {
         $this->InitCheck();
         $client = $this->client;
-        $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
+        $merchantCashbackId = "testXXXXXXXXXXXXXXX123";
         $amount = [
             "amount" => 1,
             "currency" => "JPY"
         ];
         $CPPayload = new CashBackPayload();
-        $CPPayload->setMerchantCashbackId($merchatCashbackId)->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
+        $CPPayload->setMerchantCashbackId($merchantCashbackId)->setRequestedAt()->setUserAuthorizationId($this->config['uaid'])->setAmount($amount);
         $resp = $client->cashback->giveCashback($CPPayload);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
-        $tempMerchatCashbackId = $merchatCashbackId;
-        $this->data = $tempMerchatCashbackId;
+        $tempMerchantCashbackId = $merchantCashbackId;
+        $this->data = $tempMerchantCashbackId;
     }
 
     /**
-     * CheckCashBackDetails
+     * Tests getCashbackDetails when code is SUCCESS
      *
      * @return void
      */
-    public function CheckCashBackDetails()
+    public function testCheckCashBackDetailsSuccess()
     {
-        $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
-        $resp = $this->client->cashback->getCashbackDetails($merchatCashbackId);
+        $merchantCashbackId = "test-success";
+        $resp = $this->client->cashback->getCashbackDetails($merchantCashbackId);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
+        $this->assertEquals('00000000000000001111', $resp['data']['cashbackId']);
+        $this->assertEquals(1, $resp['data']['amount']['amount']);
     }
 
     /**
-    * Give ReversalCashBack
+     * Tests getCashbackDetails when code is NOT_ENOUGH_MONEY
+     *
+     * @return void
+     */
+    public function testCheckCashBackDetailsNotEnoughMoney()
+    {
+        $merchantCashbackId = "test-not-enough-money";
+        $resp = $this->client->cashback->getCashbackDetails($merchantCashbackId);
+        $resultInfo = $resp['resultInfo'];
+        $this->assertEquals('NOT_ENOUGH_MONEY', $resultInfo['code']);
+        $this->assertEquals('00000000000000009999', $resp['data']['cashbackId']);
+        $this->assertEquals(100000, $resp['data']['amount']['amount']);
+    }
+
+    /**
+    * Tests reverseCashBack
     *
     * @return void
     */
-    public function ReversalCashBack()
+    public function testReversalCashBack()
     {
         $client = $this->client;
         $merchantCashbackReversalId = "TESTXXXXXXXXX456";
-        $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
+        $merchantCashbackId = "testXXXXXXXXXXXXXXX123";
         $reason = "reason";
         $amount = [
             "amount" => 1,
             "currency" => "JPY"
         ];
         $CPPayload = new ReverseCashBackPayload();
-        $CPPayload->setMerchantCashbackReversalId($merchantCashbackReversalId)->setMerchantCashbackId($merchatCashbackId)->setRequestedAt()->setReason($reason)->setAmount($amount);
+        $CPPayload->setMerchantCashbackReversalId($merchantCashbackReversalId)->setMerchantCashbackId($merchantCashbackId)->setRequestedAt()->setReason($reason)->setAmount($amount);
         $resp = $client->cashback->reverseCashBack($CPPayload);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('REQUEST_ACCEPTED', $resultInfo['code']);
     }
 
     /**
-     * CheckCashBackDetails
+     * Tests giveReversalCashbackDetails
      *
      * @return void
      */
-    public function CheckReversalCashBackDetails()
+    public function testCheckReversalCashBackDetails()
     {
         $merchantCashbackReversalId = "TESTXXXXXXXXX456";
-        $merchatCashbackId = "testXXXXXXXXXXXXXXX123";
-        $resp = $this->client->cashback->getReversalCashbackDetails($merchantCashbackReversalId, $merchatCashbackId);
+        $merchantCashbackId = "testXXXXXXXXXXXXXXX123";
+        $resp = $this->client->cashback->getReversalCashbackDetails($merchantCashbackReversalId, $merchantCashbackId);
         $resultInfo = $resp['resultInfo'];
         $this->assertEquals('SUCCESS', $resultInfo['code']);
-    }
-    
-    /**
-     * tests Create And Cancel
-     *
-     * @return void
-     */
-    public function testCreateAndCancel()
-    {
-        $this->GiveCashBack();
-        $this->CheckCashBackDetails();
-        $this->ReversalCashBack();
-        $this->CheckReversalCashBackDetails();
     }
 }

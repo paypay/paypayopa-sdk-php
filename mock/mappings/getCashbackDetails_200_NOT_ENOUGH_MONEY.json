@@ -1,0 +1,35 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPath": "/v2/cashback/test-not-enough-money"
+    },
+    "response": {
+        "status": 200,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "jsonBody": {
+            "resultInfo": {
+                "code": "NOT_ENOUGH_MONEY",
+                "message": "Not enough balance in the campaign budget to complete the cashback transaction",
+                "codeId": "WAL_500017"
+            },
+            "data": {
+                "status": "FAILURE",
+                "acceptedAt": 1634012345,
+                "merchantAlias": "000000000000000000",
+                "amount": {
+                    "amount": 100000,
+                    "currency": "JPY"
+                },
+                "requestedAt": 1601912345,
+                "metadata": {},
+                "cashbackId": "00000000000000009999",
+                "merchantCashbackId": "test-not-enough-money",
+                "userAuthorizationId": "00000000-0000-0000-0000-000000000000",
+                "orderDescription": "order description",
+                "walletType": "PREPAID"
+            }
+        }
+    }
+}

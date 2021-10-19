@@ -1,10 +1,10 @@
 {
     "request": {
         "method": "GET",
-        "urlPath": "/v2/cashback/testXXXXXXXXXXXXXXX123"
+        "urlPath": "/v2/cashback/test-success"
     },
     "response": {
-        "status": 201,
+        "status": 200,
         "headers": {
             "Content-Type": "application/json"
         },
@@ -24,9 +24,9 @@
                 },
                 "requestedAt": 1611747650,
                 "metadata": "",
-                "cashbackId": "test",
-                "merchantCashbackId": "test",
-                "userAuthorizationId": "test",
+                "cashbackId": "00000000000000001111",
+                "merchantCashbackId": "test-success",
+                "userAuthorizationId": "00000000-0000-0000-0000-000000000000",
                 "orderDescription": "order description",
                 "walletType": "PREPAID"
             }
