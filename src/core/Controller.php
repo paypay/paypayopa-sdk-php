@@ -167,7 +167,7 @@ class Controller
      */
     protected function parseResultInfo($apiInfo, $resultInfo, $statusCode)
     {
-        if (strcmp($resultInfo['code'], "SUCCESS") !== 0 && strcmp($resultInfo['code'], "REQUEST_ACCEPTED")) {
+        if ($statusCode >= 400) {
             throw new ClientControllerException(
                 $apiInfo,
                 $resultInfo, //PayPay API message

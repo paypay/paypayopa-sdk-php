@@ -4,7 +4,7 @@
         "urlPath": "/v2/cashback"
     },
     "response": {
-        "status": 201,
+        "status": 202,
         "headers": {
             "Content-Type": "application/json"
         },
