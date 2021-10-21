@@ -41,9 +41,9 @@ class Wallet extends Controller
                 throw new ClientControllerException(false, "Invalid Direct Debit Product Type", 500);
             }
         }
-        $url = $this->api_url . $this->main()->GetEndpoint('WALLET_BALANCE');
+        $url = $this->api_url . $this->main()->GetEndpoint('WALLET_BALANCE') . '?' . http_build_query($data);
         $endpoint = '/v2' . $this->main()->GetEndpoint('WALLET_BALANCE');
-        $options = $this->HmacCallOpts('GET', $endpoint, 'application/json;charset=UTF-8;', $data);
+        $options = $this->HmacCallOpts('GET', $endpoint);
 
         return $this->doCall(true, "v2_checkWalletBalance", $url, [], $options);
     }
