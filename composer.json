@@ -46,7 +46,7 @@
     "require": {
         "php": ">=7.0.0",
         "ext-json": "*",
-        "firebase/php-jwt": "^5.2",
+        "firebase/php-jwt": "^5.5",
         "guzzlehttp/guzzle": "^6.0 || ^7.0"
     },
     "require-dev": {

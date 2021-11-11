@@ -2,7 +2,7 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use Firebase\JWT\JWT;
+use Firebase\JWT;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
@@ -77,9 +77,8 @@ class User extends Controller
      */
     public function decodeUserAuth($encodedString)
     {
-        $key = base64_decode($this->auth['API_SECRET']);
-        $jwt = new JWT();
-        return (array) $jwt->decode($encodedString, $key, array('HS256'));
+        $key = new JWT\Key(base64_decode($this->auth['API_SECRET']), 'HS256');
+        return (array) JWT\JWT::decode($encodedString, $key);
     }
     /**
      * Get the authorization status of a user
