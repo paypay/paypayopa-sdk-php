@@ -49,6 +49,8 @@ jobs:
           var fs = require('fs');
           fs.writeFileSync('${{github.workspace}}/coverage-artifact.zip', Buffer.from(download.data));
 
+    - run: mkdir -p build/logs/
+
     - run: unzip -j coverage-artifact.zip clover.xml -d build/logs/
 
     - name: codeclimate after-build
