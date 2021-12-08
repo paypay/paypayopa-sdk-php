@@ -20,12 +20,17 @@ class ClientControllerException extends Exception
         $this->documentationUrl = $documentationUrl;
         $this->apiInfo = $apiInfo;
         if (gettype($resultInfo) === 'array') {
-            parent::__construct($resultInfo['message'], $code);
+            parent::__construct($resultInfo['code'], $code);
             $this->resultInfo = $resultInfo;
+            $code = $resultInfo["code"];
+            $codeId = $resultInfo["codeId"];
+            $apiName = $this->apiInfo["api_name"];
+            echo "This link helps you to troubleshoot the issue: ${documentationUrl}?api_name=${apiName}&code=${code}&code_id=${codeId}";
         }
         if (gettype($resultInfo) === 'string') {
             // If string message error
             parent::__construct($resultInfo, $code);
+            echo "$resultInfo";
         }
     }
 
