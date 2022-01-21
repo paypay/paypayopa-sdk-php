@@ -210,21 +210,24 @@ use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 */
 // setup payment object
 $CAPayload = new CapturePaymentAuthPayload();
+
+// Use the `merchantPaymentId` from a successful invocation of the create payment authorization API.
 $CAPayload->setMerchantPaymentId("YOUR_TRANSACTION_ID");
+
 $amount = [
     "amount" => 1,
     "currency" => "JPY"
 ];
 $CAPayload->setAmount($amount);
 
+// Set a unique value to identify this capture.
 $CAPayload->setMerchantCaptureId("MERCHANT_CAPTURE_ID")
+
 $CAPayload->setRequestedAt();
 $CAPayload->setOrderDescription("ORDER_DESCRIPTION")
-$CAPayload->setCodeType("ORDER_QR");
 $response = $client->payment->capturePaymentAuth($CAPayload);
 
 $data = $response['data'];
-
 ```
 
     For a list of params refer to the API guide :
