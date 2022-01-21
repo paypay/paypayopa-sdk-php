@@ -18,12 +18,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: make run_mock
 
-      - name: Upload coverage GitHub artifact
-        uses: actions/upload-artifact@v2
-        with:
-          # Consumed by the `build-ci-target.yml` `upload-codeclimate` job.
-          name: clover-coverage-${{ matrix.php-version }}
-          path: ./build/logs/clover.xml
+      - name: Code Climate before-build
+        env:
+          CC_TEST_REPORTER_ID: fa3e49a5bc2592fd1397209f68833c40c47adb8de7940e460ffd07a852922660
+        run: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
 
       - name: Upload coverage results to Coveralls
         env:
@@ -32,3 +33,8 @@ jobs:
 
       - name: Upload to CoPilot
         run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
+
+      - name: Code Climate after-build
+        env:
+          CC_TEST_REPORTER_ID: fa3e49a5bc2592fd1397209f68833c40c47adb8de7940e460ffd07a852922660
+        run: ./cc-test-reporter after-build --exit-code 0
