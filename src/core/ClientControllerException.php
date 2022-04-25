@@ -27,7 +27,6 @@ class ClientControllerException extends Exception
             // If string message error
             parent::__construct($resultInfo, $code);
         }
-        print("This link helps you to troubleshoot the issue: ".$this->getResolutionUrl());
     }
 
     /**
