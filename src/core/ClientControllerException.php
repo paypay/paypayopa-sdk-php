@@ -8,6 +8,7 @@ class ClientControllerException extends Exception
 {
     private $resultInfo = false;
     private $apiInfo = false;
+    private $status = 500;
 
     /**
      * @param string|bool $apiInfo
@@ -19,6 +20,7 @@ class ClientControllerException extends Exception
     {
         $this->documentationUrl = $documentationUrl;
         $this->apiInfo = $apiInfo;
+        $status->$code;
         if (gettype($resultInfo) === 'array') {
             parent::__construct($resultInfo['message'], $code);
             $this->resultInfo = $resultInfo;
@@ -43,5 +45,10 @@ class ClientControllerException extends Exception
         $codeId = $resultInfo["codeId"];
         $apiName = $this->apiInfo["api_name"];
         return "${documentationUrl}?api_name=${apiName}&code=${code}&code_id=${codeId}";
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
     }
 }
