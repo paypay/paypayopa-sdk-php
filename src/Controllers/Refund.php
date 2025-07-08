@@ -45,13 +45,17 @@ class Refund extends Controller
     /**
      * Get refund details.
      * @param String $merchantRefundId The unique refund transaction id provided by merchant
+     * @param string $paymentId
      * @return array
      * @throws ClientControllerException
      */
-    public function getRefundDetails($merchantRefundId)
+    public function getRefundDetails($merchantRefundId, $paymentId)
     {
+        $data = [
+            'paymentId' => $paymentId
+        ];
         $main = $this->MainInst;
-        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND') . "/$merchantRefundId";
+        $url = $main->GetConfig('API_URL') . $main->GetEndpoint('REFUND') . "/$merchantRefundId" . '?' . http_build_query($data);
         $endpoint = '/v2' . $main->GetEndpoint('REFUND') . "/$merchantRefundId";
         $options = $this->HmacCallOpts('GET', $endpoint);
 
