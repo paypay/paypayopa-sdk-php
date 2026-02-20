@@ -2,7 +2,7 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Client\RequestExceptionInterface;
 use PayPay\OpenPaymentAPI\Client;
 
 use function PayPay\OpenPaymentAPI\Helpers\PayPayEncryptHeader;
@@ -130,7 +130,8 @@ class Controller
         $response = null;
         try {
             if ($callType === 'post') {
-                $response = $request->$callType(
+                $response = $request->request(
+                    $callType,
                     $url,
                     [
                         'headers' => $options["HEADERS"],
@@ -140,14 +141,15 @@ class Controller
                 );
             }
             if ($callType === 'get' || $callType === 'delete') {
-                $response = $request->$callType(
+                $response = $request->request(
+                    $callType,
                     $url,
                     [
                         'headers' => $options["HEADERS"]
                     ]
                 );
             }
-        } catch (RequestException $e) {
+        } catch (RequestExceptionInterface $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
             }
