@@ -68,7 +68,7 @@ include('PATH_TO_SDK_FOLDER/Client.php');
 $client = new Client([
     'API_KEY' => 'YOUR_API_KEY',
     'API_SECRET'=>'YOUR_API_SECRET',
-	'MERCHANT_ID'=>'YOUR_MERCHANT_ID'
+    'MERCHANT_ID'=>'YOUR_MERCHANT_ID'
 ]);
 
 ```
