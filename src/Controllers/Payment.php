@@ -2,8 +2,8 @@
 
 namespace PayPay\OpenPaymentAPI\Controller;
 
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\RequestExceptionInterface;
 use PayPay\OpenPaymentAPI\Client;
 use PayPay\OpenPaymentAPI\Models\CapturePaymentAuthPayload;
 use PayPay\OpenPaymentAPI\Models\CreateContinuousPaymentPayload;
@@ -41,7 +41,7 @@ class Payment extends Controller
      * @return array
      * @throws ClientControllerException
      * @throws ModelException
-     * @throws GuzzleException
+     * @throws ClientExceptionInterface
      */
     public function createPayment($payload, $agreeSimilarTransaction = false)
     {
@@ -147,7 +147,7 @@ class Payment extends Controller
      * @return array
      * @throws ClientControllerException
      * @throws ModelException
-     * @throws GuzzleException
+     * @throws ClientExceptionInterface
      */
     public function createPaymentAuth($payload, $agreeSimilarTransaction = false)
     {
@@ -220,7 +220,7 @@ class Payment extends Controller
      * @param array $data
      * @return array
      * @throws ClientControllerException
-     * @throws GuzzleException
+     * @throws ClientExceptionInterface
      */
     private function doSimilarTransactionCall($apiId, $url, $options, $data)
     {
@@ -240,7 +240,7 @@ class Payment extends Controller
                     'timeout' => $options['TIMEOUT']
                 ]
             );
-        } catch (RequestException $e) {
+        } catch (RequestExceptionInterface $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
             }

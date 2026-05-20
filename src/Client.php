@@ -2,7 +2,7 @@
 
 namespace PayPay\OpenPaymentAPI;
 
-use GuzzleHttp\Client as GuzzleHttpClient;
+use Psr\Http\Client\ClientInterface;
 use PayPay\OpenPaymentAPI\Controller\Code;
 use PayPay\OpenPaymentAPI\Controller\Payment;
 use PayPay\OpenPaymentAPI\Controller\Refund;
@@ -43,9 +43,9 @@ class Client
      */
     private $versions;
     /**
-     * Guzzle client to handle http calls
+     * PSR Http compatible client to handle http calls
      *
-     * @var GuzzleHttpClient
+     * @var ClientInterface
      */
     private $requestHandler;
     /**
@@ -90,10 +90,10 @@ class Client
      * optional auth handler, and options
      * @param array|null $auth API credentials
      * @param boolean|string $productionmode Sandbox environment flag
-     * @param GuzzleHttpClient|boolean $requestHandler
+     * @param ClientInterface|null $requestHandler
      * @throws ClientException
      */
-    public function __construct($auth = null, $productionmode = false, $requestHandler = false)
+    public function __construct($auth = null, $productionmode = false, $requestHandler = null)
     {
         if (!isset($auth['API_KEY']) || !isset($auth['API_SECRET'])) {
             throw new ClientException("Invalid auth credentials", 1);
@@ -106,10 +106,10 @@ class Client
         $this->endpoints = require(__DIR__ . '/conf/endpoints.php');
         $this->apiMappings = require(__DIR__ . '/conf/apiMappings.php');
         $this->versions = require(__DIR__ . '/conf/apiVersions.php');
-        if (!$requestHandler) {
-            $this->requestHandler = new GuzzleHttpClient(['base_uri' => $this->config["API_URL"]]);
+        if ($requestHandler === null) {
+            $this->requestHandler = new \GuzzleHttp\Client(['base_uri' => $this->config["API_URL"]]);
         } else {
-            if ($requestHandler instanceof GuzzleHttpClient) {
+            if ($requestHandler instanceof ClientInterface) {
                 $this->requestHandler = $requestHandler;
             } else {
                 throw new ClientException('Invalid request handler.', 500);
@@ -189,7 +189,7 @@ class Client
     /**
      * get client request handler for controller
      *
-     * @return GuzzleHttpClient
+     * @return ClientInterface
      */
     public function http()
     {

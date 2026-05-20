@@ -3,8 +3,8 @@
 namespace PayPay\OpenPaymentAPI\Controller;
 
 use Firebase\JWT;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\RequestExceptionInterface;
 use PayPay\OpenPaymentAPI\Models\AccountLinkPayload;
 use PayPay\OpenPaymentAPI\Models\ModelException;
 
@@ -86,7 +86,7 @@ class User extends Controller
      * @param string $userAuthorizationId
      * @return array
      * @throws ClientControllerException
-     * @throws GuzzleException
+     * @throws ClientExceptionInterface
      */
     public function getUserAuthorizationStatus($userAuthorizationId)
     {
@@ -106,7 +106,7 @@ class User extends Controller
      * @param string $userAuthorizationId
      * @return array
      * @throws ClientControllerException
-     * @throws GuzzleException
+     * @throws ClientExceptionInterface
      */
     public function getMaskedUserProfile($userAuthorizationId)
     {
@@ -128,7 +128,7 @@ class User extends Controller
      * @param string $userAuthorizationId
      * @return array
      * @throws ClientControllerException
-     * @throws GuzzleException
+     * @throws ClientExceptionInterface
      */
     private function doAuthCall($apiId, $url, $options, $userAuthorizationId)
     {
@@ -141,7 +141,7 @@ class User extends Controller
                     'query' =>  ['userAuthorizationId' => $userAuthorizationId]
                 ]
             );
-        } catch (RequestException $e) {
+        } catch (RequestExceptionInterface $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
             }
