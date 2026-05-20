@@ -32,7 +32,7 @@ class CoreClassesTest extends BoilerplateTest
         $collector["ENDPOINT_VERSION"] = $client->GetEndpointVersion('SUBSCRIPTION');
         $collector["MERCHANT_ID"] = $client->GetMid();
         foreach ($collector as $key => $value) {
-            $this->assertNotNull($value, "${key} invalid");
+            $this->assertNotNull($value, "{$key} invalid");
         }
     }
     public function testClientBadNwClient()
@@ -68,7 +68,7 @@ class CoreClassesTest extends BoilerplateTest
         $collector["ENDPOINT_VERSION"] = $client->GetEndpointVersion('SUBSCRIPTION');
         $collector["MERCHANT_ID"] = $client->GetMid();
         foreach ($collector as $key => $value) {
-            $this->assertNotNull($value, "${key} invalid");
+            $this->assertNotNull($value, "{$key} invalid");
         }
     }
     public function testClientProduction()
@@ -87,7 +87,7 @@ class CoreClassesTest extends BoilerplateTest
         $collector["ENDPOINT_VERSION"] = $client->GetEndpointVersion('SUBSCRIPTION');
         $collector["MERCHANT_ID"] = $client->GetMid();
         foreach ($collector as $key => $value) {
-            $this->assertNotNull($value, "${key} invalid");
+            $this->assertNotNull($value, "{$key} invalid");
         }
     }
     public function testClientTestMode()
@@ -106,7 +106,7 @@ class CoreClassesTest extends BoilerplateTest
         $collector["ENDPOINT_VERSION"] = $client->GetEndpointVersion('SUBSCRIPTION');
         $collector["MERCHANT_ID"] = $client->GetMid();
         foreach ($collector as $key => $value) {
-            $this->assertNotNull($value, "${key} invalid");
+            $this->assertNotNull($value, "{$key} invalid");
         }
     }
     public function testClientNoMid()

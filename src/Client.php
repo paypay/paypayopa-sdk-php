@@ -102,7 +102,7 @@ class Client
         $toStg = !$productionmode ? '-stg' : '';
         $toStg = $productionmode === 'test' ? '-test' : $toStg;
         $toStg = $productionmode === 'perfMode' ? '-perf' : $toStg;
-        $this->config = require(__DIR__ . "/conf/config${toStg}.php");
+        $this->config = require(__DIR__ . "/conf/config{$toStg}.php");
         $this->endpoints = require(__DIR__ . '/conf/endpoints.php');
         $this->apiMappings = require(__DIR__ . '/conf/apiMappings.php');
         $this->versions = require(__DIR__ . '/conf/apiVersions.php');

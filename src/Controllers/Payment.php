@@ -265,7 +265,7 @@ class Payment extends Controller
         switch ($paymentType) {
             case 'pending':
                 $version = $this->main()->GetEndpointVersion('REQUEST_ORDER');
-                $endpoint = "/${version}" . $main->GetEndpoint('REQUEST_ORDER') . "/$merchantPaymentId";
+                $endpoint = "/{$version}" . $main->GetEndpoint('REQUEST_ORDER') . "/$merchantPaymentId";
                 $url = $this->api_url . $main->GetEndpoint('REQUEST_ORDER') . "/$merchantPaymentId";
                 $url = str_replace('v2', $version, $url);
                 break;
